@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Slopy</title>
+<meta name="theme-color" content="#2D72C8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="description" content="Das Betriebssystem für dein Ski-Equipment.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@200;300;400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#2D72C8;--blue-mid:#1a5ba8;--blue-tint:#EBF2FB;
+  --obsidian:#14141A;--snow:#F7F8FA;--white:#FFFFFF;
+  --gray-100:#F0F2F5;--gray-200:#E2E6EA;--gray-400:#9AA3AE;--gray-600:#5A6472;
+  --green:#16A34A;--green-tint:#DCFCE7;
+  --amber:#D97706;--amber-tint:#FEF3C7;
+  --red:#DC2626;--red-tint:#FEE2E2;
+  --fd:'Josefin Sans',sans-serif;--fb:'Inter',sans-serif;
+  --r:12px;--rs:8px;
+}
+html,body{height:100%;background:var(--snow);color:var(--obsidian);font-family:var(--fb);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+#app{max-width:480px;margin:0 auto;min-height:100%;background:#fff;position:relative;overflow-x:hidden}
+.spinner{border:2.5px solid var(--blue-tint);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.load-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;flex-direction:column;gap:14px}
+.badge-w{width:52px;height:52px;background:var(--blue);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-s{font-family:var(--fd);font-weight:200;font-size:1.5rem;color:#fff;letter-spacing:-1px}
+.logo-t{font-family:var(--fd);font-weight:200;font-size:2rem;letter-spacing:8px;color:var(--blue);text-transform:lowercase}
+.headline{font-family:var(--fd);font-weight:200;font-size:2rem;letter-spacing:3px;line-height:1.2}
+.sub-h{font-family:var(--fd);font-weight:300;font-size:1.3rem;letter-spacing:2px}
+.lbl{font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--gray-600)}
+.muted{color:var(--gray-600);font-size:.875rem}
+.topbar{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid var(--gray-100);padding:12px 20px;display:flex;align-items:center;justify-content:space-between}
+.tb-title{font-family:var(--fd);font-weight:300;font-size:.95rem;letter-spacing:4px;text-transform:lowercase}
+.screen{padding:20px 20px 100px}
+.back-btn{background:none;border:none;cursor:pointer;padding:6px;margin:-6px;color:var(--blue);display:flex;align-items:center;gap:4px;font-size:.875rem}
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-top:1px solid var(--gray-100);display:flex;padding-bottom:env(safe-area-inset-bottom);z-index:50}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 0;background:none;border:none;cursor:pointer;font-family:var(--fb);font-size:10px;font-weight:400;color:var(--gray-400);transition:color .2s}
+.nb.on{color:var(--blue);font-weight:500}
+.nb svg{width:22px;height:22px;stroke-width:1.5}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px 20px;border-radius:var(--r);font-family:var(--fb);font-size:.9rem;font-weight:500;cursor:pointer;border:none;transition:all .2s}
+.btn:active{transform:scale(.98)}
+.btn:disabled{opacity:.6;cursor:default;transform:none}
+.bp{background:var(--blue);color:#fff}.bp:hover:not(:disabled){background:var(--blue-mid)}
+.bs{background:var(--blue-tint);color:var(--blue)}
+.bg{background:transparent;color:var(--blue);border:1.5px solid var(--blue)}
+.btn-sm{padding:8px 14px;font-size:.8rem;width:auto;border-radius:var(--rs)}
+.ig{margin-bottom:14px}
+.il{display:block;font-size:.8rem;font-weight:500;color:var(--gray-600);margin-bottom:5px}
+.input{width:100%;padding:11px 13px;background:var(--snow);border:1.5px solid var(--gray-200);border-radius:var(--rs);font-family:var(--fb);font-size:.95rem;color:var(--obsidian);outline:none;transition:border-color .2s}
+.input:focus{border-color:var(--blue);background:#fff}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.card{background:#fff;border:1px solid var(--gray-200);border-radius:var(--r);padding:14px 16px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.csel{cursor:pointer;transition:all .2s;border:1.5px solid var(--gray-200)}
+.csel:hover{border-color:var(--blue)}
+.csel.on{border-color:var(--blue);background:var(--blue-tint)}
+.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:500;white-space:nowrap}
+.sb{background:var(--amber-tint);color:var(--amber)}
+.si{background:var(--blue-tint);color:var(--blue)}
+.sr{background:var(--green-tint);color:var(--green)}
+.sc{background:var(--gray-100);color:var(--gray-600)}
+.sca{background:var(--red-tint);color:var(--red)}
+.steps{display:flex;align-items:center;margin-bottom:24px}
+.sd{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0}
+.sd.done{background:var(--green);color:#fff}
+.sd.active{background:var(--blue);color:#fff}
+.sd.pend{background:var(--gray-100);color:var(--gray-600)}
+.sl{flex:1;height:2px;background:var(--gray-100)}
+.sl.done{background:var(--green)}
+#toast{position:fixed;bottom:96px;left:50%;transform:translateX(-50%) translateY(12px);background:var(--obsidian);color:#fff;padding:10px 18px;border-radius:var(--r);font-size:.85rem;opacity:0;transition:all .3s;z-index:300;white-space:nowrap;max-width:calc(100% - 40px);text-align:center;pointer-events:none}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.auth-wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 28px;text-align:center}
+.pp{font-family:var(--fd);font-weight:200;font-size:1.9rem;color:var(--blue);letter-spacing:2px;line-height:1}
+.pp sub{font-size:1rem;font-weight:300;letter-spacing:0}
+.ft{font-size:11px;background:var(--gray-100);color:var(--gray-600);padding:3px 9px;border-radius:20px}
+.csel.on .ft{background:rgba(45,114,200,.12);color:var(--blue)}
+.suc-ico{width:60px;height:60px;background:var(--green-tint);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;animation:pop .4s cubic-bezier(.34,1.56,.64,1)}
+@keyframes pop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+.div{height:1px;background:var(--gray-100);margin:12px 0}
+.pbar{display:flex;gap:3px}
+.ps{flex:1;height:3px;border-radius:2px;background:var(--gray-100);transition:background .4s}
+.ps.fill{background:var(--blue)}
+.ssel{font-family:var(--fb);font-size:.8rem;font-weight:500;padding:6px 10px;border-radius:var(--rs);border:1.5px solid var(--gray-200);background:var(--snow);color:var(--obsidian);cursor:pointer;outline:none;flex:1}
+.empty{text-align:center;padding:48px 20px}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="load-screen">
+    <div class="badge-w"><div class="logo-s">s</div></div>
+    <div class="spinner" style="width:28px;height:28px;margin-top:10px;"></div>
+  </div>
+</div>
+<div id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+'use strict';
+
+// ── Config ───────────────────────────────────────────────
+const SB_URL = 'https://xxayiwmobayqafdupjab.supabase.co';
+const SB_KEY = 'sb_publishable_poGIKcrcKcnoHTw9MO0GxQ_idyZduwH';
+
+const PKG = {
+  essential:  {id:'essential',  name:'Essential',   tag:'Wax & Go',    price:49,  days:3, features:['Heißwachsen','Grundschliff','Kanten entgraten','Bindungscheck']},
+  performance:{id:'performance',name:'Performance', tag:'Race-Ready',  price:79,  days:5, features:['Alles aus Essential','Steinschliff Belag','Kanten schärfen','Fluor-Wachs'], rec:true},
+  world_cup:  {id:'world_cup',  name:'World Cup',   tag:'Profi-Tuning',price:119, days:7, features:['Alles aus Performance','Belagserneuerung','Profil-Schliff','Tuning-Zertifikat']}
+};
+
+const LOG = {
+  home:     {id:'home',     name:'@Home Pickup',      icon:'🏠', desc:'DHL holt direkt bei dir ab.',          addr:true},
+  storebox: {id:'storebox', name:'Storebox Hub',       icon:'📦', desc:'24/7 Smart Locker. PIN per E-Mail.',  addr:false},
+  corporate:{id:'corporate',name:'Corporate Drop-off', icon:'🏔️', desc:'Abgabe beim Partnerhotel / Hub.',    addr:false}
+};
+
+const SF = [
+  {key:'booked',           lbl:'Gebucht'},
+  {key:'pickup_scheduled', lbl:'Abholung geplant'},
+  {key:'dropped_off',      lbl:'Abgegeben'},
+  {key:'in_service',       lbl:'In Bearbeitung'},
+  {key:'quality_check',    lbl:'Qualitätskontrolle'},
+  {key:'ready',            lbl:'Fertig'},
+  {key:'completed',        lbl:'Abgeschlossen'}
+];
+
+// Plug-and-play plugin hooks — alle null = simuliert
+const PLUGINS = {
+  payment:null, logistics:null, locker:null, erp:null, scanner:null, pass:null
+};
+
+// ── State ────────────────────────────────────────────────
+const S = {
+  view:'loading', user:null, profile:null, assets:[], bookings:[],
+  loading:false,
+  draft:{asset_id:null, asset:null, pkg:'performance', log:'home', addr:'', notes:''},
+  na:{brand:'',model:'',len:'',year:'',type:'ski'},
+  confirmed:null
+};
+
+// ── Supabase ─────────────────────────────────────────────
+const db = supabase.createClient(SB_URL, SB_KEY);
+let rtCh = null;
+
+// ── Utils ────────────────────────────────────────────────
+function toast(m,ms=3200){const e=document.getElementById('toast');if(!e)return;e.textContent=m;e.classList.add('show');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('show'),ms)}
+function fd(d){if(!d)return'—';return new Date(d).toLocaleDateString('de-AT',{day:'numeric',month:'short',year:'numeric'})}
+function fe(n){return Number(n||0).toFixed(2).replace('.',',')+' €'}
+function sl(k){return SF.find(s=>s.key===k)?.lbl||k}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function badgeCls(s){if(['booked','pickup_scheduled','dropped_off','in_transit'].includes(s))return'sb';if(['in_service','quality_check'].includes(s))return'si';if(['ready','return_transit'].includes(s))return'sr';if(s==='cancelled')return'sca';return'sc'}
+function statusSel(bid,cur){return `<select class="ssel" onchange="A.updateStatus('${bid}',this.value)"><option value="">Status ändern…</option>${SF.map(s=>`<option value="${s.key}" ${s.key===cur?'selected':''}>${s.lbl}</option>`).join('')}</select>`}
+function setL(v){S.loading=v;document.querySelectorAll('.bp').forEach(b=>b.disabled=v)}
+
+// ── Bottom Nav ────────────────────────────────────────────
+function bnav(a){const items=[{k:'home',l:'Home',i:`<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>`},{k:'book-1',l:'Buchen',i:`<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>`},{k:'my-bookings',l:'Aufträge',i:`<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>`}];return`<nav class="bnav">${items.map(x=>`<button class="nb ${a===x.k?'on':''}" onclick="A.nav('${x.k}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor">${x.i}</svg>${x.l}</button>`).join('')}</nav>`}
+
+function steps(n){return`<div class="steps">${[1,2,3,4].map((x,i)=>(i>0?`<div class="sl ${x<=n?'done':''}"></div>`:'')+`<div class="sd ${x<n?'done':x===n?'active':'pend'}">${x<n?'✓':x}</div>`).join('')}</div>`}
+
+function pbar(st){const keys=SF.map(s=>s.key);const idx=keys.indexOf(st);return`<div class="pbar">${SF.slice(0,5).map((_,i)=>`<div class="ps ${i<=idx?'fill':''}"></div>`).join('')}</div>`}
+
+// ── Views ─────────────────────────────────────────────────
+function vAuth(){return`<div class="auth-wrap"><div class="badge-w" style="width:64px;height:64px;margin-bottom:20px;"><span style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:2rem;color:#fff;letter-spacing:-2px;">s</span></div><div class="logo-t" style="margin-bottom:6px;">slopy</div><p class="muted" style="margin-bottom:36px;font-size:.875rem;">Das Betriebssystem für dein Ski-Equipment.</p><div style="width:100%;max-width:300px;"><div class="ig"><label class="il">E-Mail-Adresse</label><input id="ei" class="input" type="email" placeholder="du@beispiel.at" autocomplete="email" inputmode="email" onkeydown="if(event.key==='Enter')A.sendMagicLink()"></div><button class="btn bp" onclick="A.sendMagicLink()">${S.loading?'<div class="spinner" style="width:16px;height:16px;border-width:2px;"></div>':'Magic Link senden'}</button><p class="muted" style="margin-top:14px;font-size:.8rem;line-height:1.6;">Kein Passwort nötig.</p></div></div>`}
+
+function vAuthSent(){return`<div class="auth-wrap"><div style="font-size:3.5rem;margin-bottom:16px;">📬</div><div class="sub-h" style="margin-bottom:8px;">Link gesendet</div><p class="muted" style="margin-bottom:28px;max-width:260px;line-height:1.6;">Klick auf den Link in deiner E-Mail.</p><button class="btn bs" style="max-width:220px;" onclick="A.go('auth')">Andere E-Mail verwenden</button></div>`}
+
+function vHome(){
+  const name=S.profile?.full_name?.split(' ')[0]||S.user?.email?.split('@')[0]||'dort';
+  const act=S.bookings.find(b=>!['completed','cancelled'].includes(b.status));
+  return`<div class="topbar"><div class="tb-title">slopy</div><button class="btn btn-sm bs" onclick="A.logout()" style="padding:5px 12px;">Logout</button></div>
+<div class="screen">
+<div style="margin-bottom:24px;"><div class="lbl" style="margin-bottom:4px;">Willkommen zurück</div><div class="headline">${esc(name)}</div></div>
+${act?`<div class="card" style="border-color:var(--blue);background:var(--blue-tint);cursor:pointer;margin-bottom:20px;" onclick="A.nav('my-bookings')"><div class="lbl" style="margin-bottom:8px;">Aktiver Auftrag</div><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;"><div><div style="font-weight:500;">${esc(act.assets?.brand||'')} ${esc(act.assets?.model||'')}</div><div class="muted" style="font-size:.78rem;">${PKG[act.service_package]?.name}</div></div><span class="badge ${badgeCls(act.status)}">${sl(act.status)}</span></div>${pbar(act.status)}</div>`:''}
+${S.assets.length===0?`<div class="card" style="text-align:center;padding:24px;background:var(--snow);border-style:dashed;"><div style="font-size:2.5rem;margin-bottom:10px;">🎿</div><div style="font-weight:500;margin-bottom:4px;">Noch kein Equipment</div><p class="muted" style="font-size:.85rem;margin-bottom:16px;">Füg deinen ersten Ski hinzu.</p><button class="btn bp" onclick="A.nav('book-1')">Ski hinzufügen</button></div>`:
+`<div style="margin-bottom:20px;"><div class="lbl" style="margin-bottom:10px;">Mein Equipment</div>${S.assets.map(a=>`<div class="card" style="margin-bottom:8px;"><div style="display:flex;align-items:center;gap:12px;"><div style="width:40px;height:40px;background:var(--blue-tint);border-radius:var(--rs);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;">🎿</div><div><div style="font-weight:500;">${esc(a.brand)} ${esc(a.model)}</div><div class="muted" style="font-size:.78rem;">${a.length_cm?a.length_cm+' cm · ':''} ${a.year||'Saison 24/25'}</div></div></div></div>`).join('')}</div>`}
+<button class="btn bp" onclick="A.nav('book-1')" style="margin-bottom:10px;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>Service buchen</button>
+</div>${bnav('home')}`}
+
+function vBook1(){return`<div class="topbar"><button class="back-btn" onclick="A.nav('home')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>Zurück</button><div class="tb-title">buchen</div><div></div></div>
+<div class="screen">${steps(1)}<div class="lbl" style="margin-bottom:14px;">Welcher Ski?</div>
+${S.assets.map(a=>`<div class="card csel ${S.draft.asset_id===a.id?'on':''}" onclick="A.selectAsset('${a.id}')"><div style="display:flex;align-items:center;gap:12px;"><div style="font-size:1.4rem;">🎿</div><div style="flex:1;"><div style="font-weight:500;">${esc(a.brand)} ${esc(a.model)}</div><div class="muted" style="font-size:.78rem;">${a.length_cm?a.length_cm+' cm ':''} ${a.year||''}</div></div>${S.draft.asset_id===a.id?'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>':''}</div></div>`).join('')}
+<button class="btn bg" onclick="A.go('book-asset')" style="margin-bottom:14px;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>${S.assets.length===0?'Ski hinzufügen':'Anderen Ski hinzufügen'}</button>
+${S.draft.asset_id?`<button class="btn bp" onclick="A.go('book-2')">Weiter <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>`:''}
+</div>`}
+
+function vBookAsset(){const a=S.na;return`<div class="topbar"><button class="back-btn" onclick="A.go('book-1')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>Zurück</button><div class="tb-title">neuer ski</div><div></div></div>
+<div class="screen">
+<div class="ig"><label class="il">Marke *</label><input class="input" type="text" value="${esc(a.brand)}" placeholder="Atomic, Rossignol…" oninput="A.setNA('brand',this.value)"></div>
+<div class="ig"><label class="il">Modell *</label><input class="input" type="text" value="${esc(a.model)}" placeholder="Redster X9i…" oninput="A.setNA('model',this.value)"></div>
+<div class="g2"><div class="ig"><label class="il">Länge (cm)</label><input class="input" type="number" value="${a.len}" placeholder="175" oninput="A.setNA('len',this.value)"></div><div class="ig"><label class="il">Baujahr</label><input class="input" type="number" value="${a.year}" placeholder="2024" oninput="A.setNA('year',this.value)"></div></div>
+<button class="btn bp" onclick="A.addAsset()">${S.loading?'<div class="spinner" style="width:16px;height:16px;border-width:2px;"></div>':'Ski speichern & weiter'}</button>
+</div>`}
+
+function vBook2(){return`<div class="topbar"><button class="back-btn" onclick="A.go('book-1')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>Zurück</button><div class="tb-title">paket</div><div></div></div>
+<div class="screen">${steps(2)}<div class="lbl" style="margin-bottom:14px;">Service-Paket wählen</div>
+${Object.values(PKG).map(p=>`<div class="card csel ${S.draft.pkg===p.id?'on':''}" onclick="A.selectPkg('${p.id}')" style="position:relative;overflow:hidden;padding-top:${p.rec?'26px':'14px'};">${p.rec?`<div style="position:absolute;top:0;right:14px;background:var(--blue);color:#fff;font-size:9px;font-weight:500;padding:3px 10px;border-radius:0 0 8px 8px;letter-spacing:.06em;text-transform:uppercase;">Empfohlen</div>`:''}<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;"><div><div style="font-weight:500;">${p.name}</div><div class="muted" style="font-size:.78rem;">${p.tag} · ${p.days} Werktage</div></div><div class="pp">${p.price}<sub> €</sub></div></div><div style="display:flex;flex-wrap:wrap;gap:5px;">${p.features.map(f=>`<span class="ft">${f}</span>`).join('')}</div></div>`).join('')}
+<button class="btn bp" style="margin-top:6px;" onclick="A.go('book-3')">Weiter <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+</div>`}
+
+function vBook3(){const l=LOG[S.draft.log];return`<div class="topbar"><button class="back-btn" onclick="A.go('book-2')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>Zurück</button><div class="tb-title">logistik</div><div></div></div>
+<div class="screen">${steps(3)}<div class="lbl" style="margin-bottom:14px;">Wie gibst du ab?</div>
+${Object.values(LOG).map(x=>`<div class="card csel ${S.draft.log===x.id?'on':''}" onclick="A.selectLog('${x.id}')"><div style="display:flex;align-items:center;gap:12px;"><div style="font-size:1.4rem;width:42px;height:42px;background:${S.draft.log===x.id?'rgba(45,114,200,.12)':'var(--gray-100)'};border-radius:var(--rs);display:flex;align-items:center;justify-content:center;flex-shrink:0;">${x.icon}</div><div style="flex:1;"><div style="font-weight:500;">${x.name}</div><div class="muted" style="font-size:.78rem;">${x.desc}</div></div>${S.draft.log===x.id?'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>':''}</div></div>`).join('')}
+${l?.addr?`<div class="ig" style="margin-top:6px;"><label class="il">Abholadresse</label><input class="input" type="text" placeholder="Straße Nr, PLZ Ort" value="${esc(S.draft.addr)}" oninput="A.setD('addr',this.value)"></div>`:''}
+<div class="ig"><label class="il">Anmerkungen (optional)</label><input class="input" type="text" placeholder="z.B. Klingel 2. Stock" value="${esc(S.draft.notes)}" oninput="A.setD('notes',this.value)"></div>
+<button class="btn bp" onclick="A.go('book-4')">Zur Bestätigung <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+</div>`}
+
+function vBook4(){const ast=S.assets.find(a=>a.id===S.draft.asset_id)||S.draft.asset;const p=PKG[S.draft.pkg];const l=LOG[S.draft.log];return`<div class="topbar"><button class="back-btn" onclick="A.go('book-3')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>Zurück</button><div class="tb-title">bestätigung</div><div></div></div>
+<div class="screen">${steps(4)}<div class="lbl" style="margin-bottom:14px;">Bestellung prüfen</div>
+<div class="card" style="margin-bottom:14px;">${[['Equipment',`${ast?.brand||'?'} ${ast?.model||''}`],['Paket',`${p?.name} · ${p?.days} Werktage`],['Logistik',l?.name||'—'],['Adresse',S.draft.addr||'—']].map(([k,v])=>`<div style="display:flex;justify-content:space-between;align-items:baseline;padding:9px 0;border-bottom:1px solid var(--gray-100);"><span class="muted" style="font-size:.85rem;flex-shrink:0;margin-right:12px;">${k}</span><span style="font-weight:500;font-size:.85rem;text-align:right;">${esc(v)}</span></div>`).join('')}<div style="display:flex;justify-content:space-between;align-items:baseline;padding:12px 0 0;"><span style="font-weight:600;">Gesamt</span><span class="pp" style="font-size:1.6rem;">${p?.price}<sub> €</sub></span></div></div>
+<div style="background:var(--amber-tint);border-radius:var(--r);padding:11px 14px;margin-bottom:14px;font-size:.8rem;color:var(--amber);line-height:1.6;">💳 Stripe-Zahlung kommt in Kürze. Aktuell: Testbuchung ohne Zahlung.</div>
+<button class="btn bp" onclick="A.createBooking()">${S.loading?'<div class="spinner" style="width:16px;height:16px;border-width:2px;"></div>':'Jetzt buchen — '+fe(p?.price)}</button>
+</div>`}
+
+function vBookConfirm(){const b=S.confirmed;if(!b){A.go('home');return''}const p=PKG[b.service_package];const l=LOG[b.logistics_type];return`<div class="screen" style="display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:52px;"><div class="suc-ico"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div><div class="sub-h" style="margin-bottom:6px;">Buchung bestätigt</div><p class="muted" style="margin-bottom:28px;max-width:260px;font-size:.875rem;line-height:1.6;">${p?.name} Service gebucht. Wir melden uns für die Abholung.</p>
+<div class="card" style="width:100%;text-align:left;margin-bottom:12px;">${[['Paket',p?.name],['Preis',fe(b.price)],['Logistik',l?.name],['Fertig ca.',fd(b.estimated_completion)]].map(([k,v])=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--gray-100);"><span class="muted">${k}</span><span style="font-weight:500;">${esc(v||'—')}</span></div>`).join('')}<div style="display:flex;justify-content:space-between;padding:10px 0 0;"><span style="font-weight:500;">Auftrags-ID</span><span style="font-family:monospace;font-size:.78rem;color:var(--blue);">${b.id.slice(0,8).toUpperCase()}</span></div></div>
+<button class="btn bp" onclick="A.nav('my-bookings')" style="margin-bottom:10px;">Meine Aufträge</button>
+<button class="btn bs" onclick="A.nav('home')">Zurück zum Dashboard</button></div>`}
+
+function vMyBookings(){return`<div class="topbar"><div class="tb-title">meine aufträge</div></div>
+<div class="screen">${S.bookings.length===0?`<div class="empty"><div style="font-size:2.5rem;margin-bottom:12px;">📋</div><div style="font-weight:500;margin-bottom:6px;">Noch keine Aufträge</div><p class="muted" style="font-size:.85rem;margin-bottom:20px;">Dein erster Service ist wenige Klicks entfernt.</p><button class="btn bp" style="max-width:200px;margin:0 auto;" onclick="A.nav('book-1')">Service buchen</button></div>`:S.bookings.map(b=>`<div class="card" style="margin-bottom:10px;"><div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;"><div><div style="font-weight:500;">${esc(b.assets?.brand||'?')} ${esc(b.assets?.model||'')}</div><div class="muted" style="font-size:.78rem;">${PKG[b.service_package]?.name} · ${fd(b.created_at)}</div></div><span class="badge ${badgeCls(b.status)}">${sl(b.status)}</span></div>${pbar(b.status)}<div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;"><span class="muted" style="font-size:.78rem;">${LOG[b.logistics_type]?.name||b.logistics_type}</span><span style="font-family:'Josefin Sans',sans-serif;font-weight:200;letter-spacing:1px;color:var(--blue);">${fe(b.price)}</span></div></div>`).join('')}</div>
+${bnav('my-bookings')}`}
+
+function vAdmin(){
+  const act=S.bookings.filter(b=>!['completed','cancelled'].includes(b.status));
+  const rev=S.bookings.filter(b=>b.status!=='cancelled').reduce((s,b)=>s+Number(b.price||0),0);
+  return`<div class="topbar"><div style="display:flex;align-items:center;gap:10px;"><div class="badge-w" style="width:32px;height:32px;"><div class="logo-s" style="font-size:.9rem;">s</div></div><div class="tb-title">admin</div></div><button class="btn btn-sm bs" onclick="A.logout()" style="padding:5px 12px;">Logout</button></div>
+<div class="screen">
+<div class="g2" style="margin-bottom:20px;">
+<div class="card" style="text-align:center;padding:14px;background:var(--blue-tint);border-color:transparent;"><div style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:2rem;letter-spacing:2px;color:var(--blue);">${act.length}</div><div style="font-size:.72rem;color:var(--gray-600);margin-top:2px;text-transform:uppercase;letter-spacing:.06em;">Aktive Aufträge</div></div>
+<div class="card" style="text-align:center;padding:14px;"><div style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:2rem;letter-spacing:2px;color:var(--blue);">${rev.toFixed(0)} €</div><div style="font-size:.72rem;color:var(--gray-600);margin-top:2px;text-transform:uppercase;letter-spacing:.06em;">Gesamtumsatz</div></div>
+</div>
+<div class="lbl" style="margin-bottom:12px;">Alle Buchungen</div>
+${S.bookings.length===0?`<div class="empty"><p class="muted">Noch keine Buchungen.</p></div>`:S.bookings.map(b=>{const ci=SF.findIndex(s=>s.key===b.status);const ns=ci>=0&&ci<SF.length-1?SF[ci+1]:null;return`<div class="card" style="margin-bottom:10px;"><div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;"><div style="flex:1;min-width:0;margin-right:10px;"><div style="font-weight:500;font-size:.95rem;">${esc(b.assets?.brand||'?')} ${esc(b.assets?.model||'')}</div><div class="muted" style="font-size:.75rem;">${b.profiles?.email||b.user_id?.slice(0,8)||'—'}</div><div class="muted" style="font-size:.75rem;">${PKG[b.service_package]?.name} · ${fe(b.price)} · ${LOG[b.logistics_type]?.name}</div>${b.logistics_address?`<div class="muted" style="font-size:.72rem;">${esc(b.logistics_address)}</div>`:''}</div><div style="flex-shrink:0;"><span class="badge ${badgeCls(b.status)}">${sl(b.status)}</span><div class="muted" style="font-size:.7rem;text-align:right;margin-top:3px;">${fd(b.created_at)}</div></div></div>${b.status!=='completed'&&b.status!=='cancelled'?`<div class="div" style="margin:8px 0;"></div><div style="display:flex;align-items:center;gap:8px;">${statusSel(b.id,b.status)}${ns?`<button class="btn bp btn-sm" onclick="A.updateStatus('${b.id}','${ns.key}')">→ ${ns.lbl}</button>`:''}</div>`:''}</div>`}).join('')}
+</div>`}
+
+// ── Router ────────────────────────────────────────────────
+function go(view){
+  S.view=view;
+  if(rtCh){db.removeChannel(rtCh);rtCh=null}
+  const app=document.getElementById('app');
+  if(!app)return;
+  switch(view){
+    case 'auth':         app.innerHTML=vAuth();         break;
+    case 'auth-sent':    app.innerHTML=vAuthSent();     break;
+    case 'home':         app.innerHTML=vHome();         subUser(); break;
+    case 'book-1':       app.innerHTML=vBook1();        break;
+    case 'book-asset':   app.innerHTML=vBookAsset();    break;
+    case 'book-2':       app.innerHTML=vBook2();        break;
+    case 'book-3':       app.innerHTML=vBook3();        break;
+    case 'book-4':       app.innerHTML=vBook4();        break;
+    case 'book-confirm': app.innerHTML=vBookConfirm();  break;
+    case 'my-bookings':  app.innerHTML=vMyBookings();   subUser(); break;
+    case 'admin':        app.innerHTML=vAdmin();        subAdmin(); break;
+    default: app.innerHTML=vAuth();
+  }
+  window.scrollTo(0,0);
+}
+
+// ── Realtime ──────────────────────────────────────────────
+function subUser(){if(!S.user||rtCh)return;rtCh=db.channel('rt-user').on('postgres_changes',{event:'UPDATE',schema:'public',table:'bookings',filter:`user_id=eq.${S.user.id}`},p=>{S.bookings=S.bookings.map(b=>b.id===p.new.id?{...b,...p.new}:b);toast('Auftrag aktualisiert: '+sl(p.new.status));go('my-bookings')}).subscribe()}
+function subAdmin(){if(rtCh)return;rtCh=db.channel('rt-admin').on('postgres_changes',{event:'*',schema:'public',table:'bookings'},p=>{if(p.eventType==='INSERT'){S.bookings.unshift(p.new);toast('Neue Buchung!')}else if(p.eventType==='UPDATE'){S.bookings=S.bookings.map(b=>b.id===p.new.id?{...b,...p.new}:b)}go('admin')}).subscribe()}
+
+// ── Auth ──────────────────────────────────────────────────
+async function sendMagicLink(){const e=document.getElementById('ei')?.value?.trim();if(!e||!e.includes('@')){toast('Bitte gültige E-Mail eingeben');return}setL(true);const{error}=await db.auth.signInWithOtp({email:e,options:{emailRedirectTo:window.location.origin}});setL(false);if(error){toast('Fehler: '+error.message);return}go('auth-sent')}
+async function logout(){if(rtCh){db.removeChannel(rtCh);rtCh=null}await db.auth.signOut();S.user=null;S.profile=null;S.assets=[];S.bookings=[];go('auth')}
+
+// ── Data ──────────────────────────────────────────────────
+async function loadProfile(u){S.user=u;const{data}=await db.from('profiles').select('*').eq('id',u.id).single();if(data){S.profile=data;return}const{data:c}=await db.from('profiles').upsert({id:u.id,email:u.email}).select().single();S.profile=c}
+async function loadAssets(){if(!S.user)return;const{data}=await db.from('assets').select('*').eq('user_id',S.user.id).order('created_at',{ascending:false});S.assets=data||[]}
+async function loadMyBookings(){if(!S.user)return;const{data}=await db.from('bookings').select('*, assets(*)').eq('user_id',S.user.id).order('created_at',{ascending:false});S.bookings=data||[]}
+async function loadAllBookings(){const{data}=await db.from('bookings').select('*, assets(*), profiles(*)').order('created_at',{ascending:false});S.bookings=data||[]}
+
+async function addAsset(){const a=S.na;if(!a.brand.trim()||!a.model.trim()){toast('Marke und Modell sind Pflichtfelder');return}setL(true);const{data,error}=await db.from('assets').insert({user_id:S.user.id,type:'ski',brand:a.brand.trim(),model:a.model.trim(),length_cm:a.len?parseInt(a.len):null,year:a.year?parseInt(a.year):null}).select().single();setL(false);if(error){toast('Fehler: '+error.message);return}S.assets.unshift(data);S.draft.asset_id=data.id;S.draft.asset=data;S.na={brand:'',model:'',len:'',year:'',type:'ski'};toast('Ski gespeichert');go('book-2')}
+
+async function createBooking(){if(!S.draft.asset_id){toast('Bitte Ski auswählen');return}const p=PKG[S.draft.pkg];if(!p)return;setL(true);const est=new Date();est.setDate(est.getDate()+p.days+2);const{data,error}=await db.from('bookings').insert({user_id:S.user.id,asset_id:S.draft.asset_id,service_package:S.draft.pkg,logistics_type:S.draft.log,logistics_address:S.draft.addr||null,logistics_notes:S.draft.notes||null,price:p.price,status:'booked',estimated_completion:est.toISOString().split('T')[0]}).select().single();setL(false);if(error){toast('Fehler: '+error.message);console.error(error);return}
+// Plugin hooks
+// if(PLUGINS.logistics) await PLUGINS.logistics.schedulePickup(data)
+// if(PLUGINS.locker && data.logistics_type==='storebox') await PLUGINS.locker.reserve(data)
+// if(PLUGINS.erp) await PLUGINS.erp.createOrder(data)
+S.bookings.unshift({...data,assets:S.draft.asset});S.confirmed={...data,assets:S.draft.asset};go('book-confirm')}
+
+async function updateStatus(id,ns){if(!ns)return;const{error}=await db.from('bookings').update({status:ns}).eq('id',id);if(error){toast('Fehler');return}S.bookings=S.bookings.map(b=>b.id===id?{...b,status:ns}:b);toast('Status: '+sl(ns));go('admin')}
+
+// ── Global API ────────────────────────────────────────────
+window.A={
+  go,sendMagicLink,logout,addAsset,createBooking,updateStatus,
+  selectAsset(id){S.draft.asset_id=id;S.draft.asset=S.assets.find(a=>a.id===id);go('book-1')},
+  selectPkg(id){S.draft.pkg=id;go('book-2')},
+  selectLog(id){S.draft.log=id;go('book-3')},
+  setD(k,v){S.draft[k]=v},
+  setNA(k,v){S.na[k]=v},
+  async nav(v){
+    if(rtCh){db.removeChannel(rtCh);rtCh=null}
+    if(v==='home'){await loadAssets();await loadMyBookings();go('home')}
+    else if(v==='book-1'){await loadAssets();S.draft={asset_id:null,asset:null,pkg:'performance',log:'home',addr:'',notes:''};go('book-1')}
+    else if(v==='my-bookings'){await loadMyBookings();go('my-bookings')}
+    else if(v==='admin'){await loadAllBookings();go('admin')}
+    else go(v)
+  }
+};
+
+// ── Init ──────────────────────────────────────────────────
+async function init(){
+  const{data:{session}}=await db.auth.getSession();
+  if(session){await loadProfile(session.user);await loadAssets();await loadMyBookings();if(S.profile?.role==='admin'){await loadAllBookings();go('admin')}else go('home')}
+  else go('auth');
+  db.auth.onAuthStateChange(async(ev,session)=>{
+    if(ev==='SIGNED_IN'&&session){await loadProfile(session.user);await loadAssets();await loadMyBookings();if(S.profile?.role==='admin'){await loadAllBookings();go('admin')}else go('home')}
+    else if(ev==='SIGNED_OUT')go('auth')
+  })
+}
+init();
+</script>
+</body>
+</html>
