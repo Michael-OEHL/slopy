@@ -161,7 +161,7 @@ function steps(n){return`<div class="steps">${[1,2,3,4].map((x,i)=>(i>0?`<div cl
 function pbar(st){const keys=SF.map(s=>s.key);const idx=keys.indexOf(st);return`<div class="pbar">${SF.slice(0,5).map((_,i)=>`<div class="ps ${i<=idx?'fill':''}"></div>`).join('')}</div>`}
 
 // ── Views ─────────────────────────────────────────────────
-function vAuth(){return`<div class="auth-wrap"><div class="badge-w" style="width:64px;height:64px;margin-bottom:20px;"><span style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:2rem;color:#fff;letter-spacing:-2px;">s</span></div><div class="logo-t" style="margin-bottom:6px;">slopy</div><p class="muted" style="margin-bottom:36px;font-size:.875rem;">Das Betriebssystem für dein Ski-Equipment.</p><div style="width:100%;max-width:300px;"><div class="ig"><label class="il">E-Mail-Adresse</label><input id="ei" class="input" type="email" placeholder="du@beispiel.at" autocomplete="email" inputmode="email" onkeydown="if(event.key==='Enter')A.sendMagicLink()"></div><button class="btn bp" onclick="A.sendMagicLink()">${S.loading?'<div class="spinner" style="width:16px;height:16px;border-width:2px;"></div>':'Magic Link senden'}</button><p class="muted" style="margin-top:14px;font-size:.8rem;line-height:1.6;">Kein Passwort nötig.</p></div></div>`}
+function vAuth(){return`<div class="auth-wrap"><div class="badge-w" style="width:64px;height:64px;margin-bottom:20px;"><span style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:2rem;color:#fff;letter-spacing:-2px;">s</span></div><div class="logo-t" style="margin-bottom:6px;">slopy</div><p class="muted" style="margin-bottom:28px;font-size:.875rem;">Das Betriebssystem für dein Ski-Equipment.</p><div style="width:100%;max-width:300px;"><div class="ig"><label class="il">E-Mail-Adresse</label><input id="ei" class="input" type="email" placeholder="du@beispiel.at" autocomplete="email" inputmode="email"></div><div class="ig"><label class="il">Passwort</label><input id="pi" class="input" type="password" placeholder="Passwort" autocomplete="current-password" onkeydown="if(event.key==='Enter')A.login()"></div><button class="btn bp" style="margin-bottom:10px;" onclick="A.login()">${S.loading?'<div class="spinner" style="width:16px;height:16px;border-width:2px;"></div>':'Einloggen'}</button><button class="btn bs" onclick="A.register()">${S.loading?'<div class="spinner" style="width:16px;height:16px;border-width:2px;"></div>':'Neu registrieren'}</button></div></div>`}
 
 function vAuthSent(){return`<div class="auth-wrap"><div style="font-size:3.5rem;margin-bottom:16px;">📬</div><div class="sub-h" style="margin-bottom:8px;">Link gesendet</div><p class="muted" style="margin-bottom:28px;max-width:260px;line-height:1.6;">Klick auf den Link in deiner E-Mail.</p><button class="btn bs" style="max-width:220px;" onclick="A.go('auth')">Andere E-Mail verwenden</button></div>`}
 
@@ -263,7 +263,8 @@ function subUser(){if(!S.user||rtCh)return;rtCh=db.channel('rt-user').on('postgr
 function subAdmin(){if(rtCh)return;rtCh=db.channel('rt-admin').on('postgres_changes',{event:'*',schema:'public',table:'bookings'},p=>{if(p.eventType==='INSERT'){S.bookings.unshift(p.new);toast('Neue Buchung!')}else if(p.eventType==='UPDATE'){S.bookings=S.bookings.map(b=>b.id===p.new.id?{...b,...p.new}:b)}go('admin')}).subscribe()}
 
 // ── Auth ──────────────────────────────────────────────────
-async function sendMagicLink(){const e=document.getElementById('ei')?.value?.trim();if(!e||!e.includes('@')){toast('Bitte gültige E-Mail eingeben');return}setL(true);const{error}=await db.auth.signInWithOtp({email:e,options:{emailRedirectTo:window.location.origin}});setL(false);if(error){toast('Fehler: '+error.message);return}go('auth-sent')}
+async function login(){const e=document.getElementById("ei")?.value?.trim();const p=document.getElementById("pi")?.value;if(!e||!p){toast("E-Mail und Passwort eingeben");return}setL(true);const{error}=await db.auth.signInWithPassword({email:e,password:p});setL(false);if(error){toast("Falsche E-Mail oder Passwort");return}}
+async function register(){const e=document.getElementById("ei")?.value?.trim();const p=document.getElementById("pi")?.value;if(!e||!p){toast("E-Mail und Passwort eingeben");return}if(p.length<6){toast("Passwort min. 6 Zeichen");return}setL(true);const{error}=await db.auth.signUp({email:e,password:p});setL(false);if(error){toast("Fehler: "+error.message);return}toast("Account erstellt!")}
 async function logout(){if(rtCh){db.removeChannel(rtCh);rtCh=null}await db.auth.signOut();S.user=null;S.profile=null;S.assets=[];S.bookings=[];go('auth')}
 
 // ── Data ──────────────────────────────────────────────────
@@ -285,7 +286,7 @@ async function updateStatus(id,ns){if(!ns)return;const{error}=await db.from('boo
 
 // ── Global API ────────────────────────────────────────────
 window.A={
-  go,sendMagicLink,logout,addAsset,createBooking,updateStatus,
+  go,login,register,logout,addAsset,createBooking,updateStatus,
   selectAsset(id){S.draft.asset_id=id;S.draft.asset=S.assets.find(a=>a.id===id);go('book-1')},
   selectPkg(id){S.draft.pkg=id;go('book-2')},
   selectLog(id){S.draft.log=id;go('book-3')},
