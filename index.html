@@ -4,604 +4,1264 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Slopy</title>
-<meta name="theme-color" content="#2D72C8">
+<meta name="theme-color" content="#F7F8FA">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="light-content">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@200;300;400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@200;300;400;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --blue:#2D72C8;--blue-mid:#1a5ba8;--blue-tint:#EBF2FB;
-  --obsidian:#14141A;--snow:#F7F8FA;
-  --g100:#F0F2F5;--g200:#E2E6EA;--g400:#9AA3AE;--g600:#5A6472;
-  --green:#16A34A;--gtint:#DCFCE7;
-  --amber:#D97706;--atint:#FEF3C7;
-  --red:#DC2626;--rtint:#FEE2E2;
-  --fd:'Josefin Sans',sans-serif;--fb:'Inter',sans-serif;
-  --r:12px;--rs:8px;
+  --blue:#2D72C8;
+  --blue-dark:#1a5ba8;
+  --blue-tint:#EBF2FB;
+  --blue-soft:rgba(45,114,200,0.08);
+  --obsidian:#14141A;
+  --snow:#F7F8FA;
+  --white:#FFFFFF;
+  --g50:#F9FAFB;
+  --g100:#F0F2F5;
+  --g200:#E2E6EA;
+  --g300:#C8CDD4;
+  --g400:#9AA3AE;
+  --g500:#6B7684;
+  --g600:#5A6472;
+  --green:#16A34A;
+  --green-tint:#DCFCE7;
+  --amber:#D97706;
+  --amber-tint:#FEF3C7;
+  --red:#DC2626;
+  --red-tint:#FEE2E2;
+  --fd:'Josefin Sans',sans-serif;
+  --fb:'Inter',sans-serif;
+  --r:14px;
+  --rs:10px;
+  --shadow-sm:0 1px 2px rgba(0,0,0,0.06);
+  --shadow:0 1px 4px rgba(0,0,0,0.08),0 4px 12px rgba(0,0,0,0.06);
+  --shadow-lg:0 4px 16px rgba(0,0,0,0.1),0 12px 32px rgba(0,0,0,0.08);
 }
-html,body{height:100%;background:var(--snow);color:var(--obsidian);font-family:var(--fb);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
-#app{max-width:480px;margin:0 auto;min-height:100%;background:#fff;position:relative}
-.spin{border:2.5px solid var(--blue-tint);border-top-color:var(--blue);border-radius:50%;animation:sp .7s linear infinite}
-@keyframes sp{to{transform:rotate(360deg)}}
-.ls{display:flex;align-items:center;justify-content:center;min-height:100vh;flex-direction:column;gap:14px}
-.bw{background:var(--blue);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.lt{font-family:var(--fd);font-weight:200;font-size:2rem;letter-spacing:8px;color:var(--blue);text-transform:lowercase}
-.hl{font-family:var(--fd);font-weight:200;font-size:2rem;letter-spacing:3px;line-height:1.2}
-.lbl{font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--g600)}
-.mu{color:var(--g600);font-size:.875rem}
-.tb{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid var(--g100);padding:12px 20px;display:flex;align-items:center;justify-content:space-between}
-.tbt{font-family:var(--fd);font-weight:300;font-size:.95rem;letter-spacing:4px;text-transform:lowercase}
-.sc{padding:20px 20px 100px}
-.bb{background:none;border:none;cursor:pointer;padding:6px;margin:-6px;color:var(--blue);display:flex;align-items:center;gap:4px;font-size:.875rem}
-.bn{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-top:1px solid var(--g100);display:flex;padding-bottom:env(safe-area-inset-bottom);z-index:50}
-.ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 0;background:none;border:none;cursor:pointer;font-family:var(--fb);font-size:10px;font-weight:400;color:var(--g400);transition:color .2s}
-.ni.on{color:var(--blue);font-weight:500}
-.ni svg{width:22px;height:22px;stroke-width:1.5}
-.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px 20px;border-radius:var(--r);font-family:var(--fb);font-size:.9rem;font-weight:500;cursor:pointer;border:none;transition:all .2s}
-.btn:active{transform:scale(.98)}
-.btn:disabled{opacity:.6;cursor:default;transform:none}
-.bp{background:var(--blue);color:#fff}.bp:hover:not(:disabled){background:var(--blue-mid)}
-.bs{background:var(--blue-tint);color:var(--blue)}
-.bg{background:transparent;color:var(--blue);border:1.5px solid var(--blue)}
-.bsm{padding:8px 14px;font-size:.8rem;width:auto;border-radius:var(--rs)}
-.ig{margin-bottom:14px}
-.il{display:block;font-size:.8rem;font-weight:500;color:var(--g600);margin-bottom:5px}
-.inp{width:100%;padding:11px 13px;background:var(--snow);border:1.5px solid var(--g200);border-radius:var(--rs);font-family:var(--fb);font-size:.95rem;color:var(--obsidian);outline:none;transition:border-color .2s}
-.inp:focus{border-color:var(--blue);background:#fff}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.card{background:#fff;border:1px solid var(--g200);border-radius:var(--r);padding:14px 16px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
-.cs{cursor:pointer;transition:all .2s;border:1.5px solid var(--g200)}
-.cs:hover{border-color:var(--blue)}
-.cs.on{border-color:var(--blue);background:var(--blue-tint)}
-.cs.on .ft{background:rgba(45,114,200,.12);color:var(--blue)}
-.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:500;white-space:nowrap}
-.sb{background:var(--atint);color:var(--amber)}
-.si{background:var(--blue-tint);color:var(--blue)}
-.sr{background:var(--gtint);color:var(--green)}
-.sc2{background:var(--g100);color:var(--g600)}
-.sca{background:var(--rtint);color:var(--red)}
-.sts{display:flex;align-items:center;margin-bottom:24px}
-.sd2{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0}
-.sd2.d{background:var(--green);color:#fff}
-.sd2.a{background:var(--blue);color:#fff}
-.sd2.p{background:var(--g100);color:var(--g600)}
-.sl2{flex:1;height:2px;background:var(--g100)}
-.sl2.d{background:var(--green)}
-#toast{position:fixed;bottom:96px;left:50%;transform:translateX(-50%) translateY(12px);background:var(--obsidian);color:#fff;padding:10px 18px;border-radius:var(--r);font-size:.85rem;opacity:0;transition:all .3s;z-index:300;white-space:nowrap;max-width:calc(100% - 40px);text-align:center;pointer-events:none}
+
+html,body{
+  height:100%;
+  background:var(--snow);
+  color:var(--obsidian);
+  font-family:var(--fb);
+  font-size:16px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  -webkit-text-size-adjust:100%;
+}
+#app{
+  max-width:430px;
+  margin:0 auto;
+  min-height:100%;
+  background:var(--white);
+  position:relative;
+  overflow-x:hidden;
+}
+
+/* ── LOGO SVG ─────────────────────────────────────────── */
+.logo-svg{display:block;flex-shrink:0}
+
+/* ── LOADING ──────────────────────────────────────────── */
+.load-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;flex-direction:column;gap:20px;background:var(--white)}
+.load-pulse{animation:pulse-logo 1.8s ease-in-out infinite}
+@keyframes pulse-logo{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.7;transform:scale(.96)}}
+.load-dots{display:flex;gap:6px}
+.load-dot{width:5px;height:5px;border-radius:50%;background:var(--blue);opacity:.3;animation:dot-anim 1.2s ease-in-out infinite}
+.load-dot:nth-child(2){animation-delay:.2s}
+.load-dot:nth-child(3){animation-delay:.4s}
+@keyframes dot-anim{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:1;transform:scale(1.3)}}
+
+/* ── AUTH ─────────────────────────────────────────────── */
+.auth-wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 28px;text-align:center;background:var(--white)}
+.auth-logo-wrap{margin-bottom:32px}
+.auth-tagline{font-family:var(--fd);font-size:.75rem;font-weight:200;letter-spacing:.25em;text-transform:uppercase;color:var(--g500);margin-bottom:40px}
+.auth-form{width:100%;max-width:320px}
+.auth-divider{display:flex;align-items:center;gap:12px;margin:16px 0}
+.auth-divider span{font-size:.75rem;color:var(--g400);white-space:nowrap}
+.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--g200)}
+
+/* ── INPUTS ───────────────────────────────────────────── */
+.field{margin-bottom:14px}
+.field-label{display:block;font-size:.72rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--g500);margin-bottom:6px}
+.input{
+  width:100%;padding:13px 14px;
+  background:var(--snow);
+  border:1.5px solid var(--g200);
+  border-radius:var(--rs);
+  font-family:var(--fb);font-size:.95rem;
+  color:var(--obsidian);
+  outline:none;
+  transition:border-color .15s,background .15s;
+  -webkit-appearance:none;
+}
+.input:focus{border-color:var(--blue);background:var(--white)}
+.input::placeholder{color:var(--g400)}
+.input:disabled{opacity:.5;cursor:not-allowed}
+
+/* ── BUTTONS ──────────────────────────────────────────── */
+.btn{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  width:100%;padding:14px 20px;
+  border-radius:var(--rs);
+  font-family:var(--fb);font-size:.9rem;font-weight:500;
+  cursor:pointer;border:none;
+  transition:all .15s;
+  -webkit-tap-highlight-color:transparent;
+}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.55;cursor:default;transform:none}
+.btn-primary{background:var(--blue);color:var(--white)}
+.btn-primary:hover:not(:disabled){background:var(--blue-dark)}
+.btn-secondary{background:var(--blue-tint);color:var(--blue)}
+.btn-secondary:hover:not(:disabled){background:#dceaf8}
+.btn-ghost{background:transparent;color:var(--blue);border:1.5px solid var(--blue)}
+.btn-ghost:hover:not(:disabled){background:var(--blue-soft)}
+.btn-danger{background:var(--red-tint);color:var(--red)}
+.btn-sm{padding:9px 16px;font-size:.82rem;width:auto;border-radius:var(--rs)}
+.btn-xs{padding:6px 12px;font-size:.75rem;width:auto;border-radius:8px}
+.spin-btn{width:18px;height:18px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;flex-shrink:0}
+.spin-btn-blue{border-color:rgba(45,114,200,.3);border-top-color:var(--blue)}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── TOPBAR ───────────────────────────────────────────── */
+.topbar{
+  position:sticky;top:0;z-index:50;
+  background:rgba(255,255,255,.95);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--g100);
+  padding:0 20px;
+  height:56px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.topbar-logo{display:flex;align-items:center;gap:10px}
+.topbar-wordmark{font-family:var(--fd);font-weight:200;font-size:1rem;letter-spacing:6px;color:var(--blue);text-transform:lowercase}
+.topbar-title{font-family:var(--fd);font-weight:200;font-size:.85rem;letter-spacing:5px;text-transform:lowercase;color:var(--obsidian)}
+
+/* ── BOTTOM NAV ───────────────────────────────────────── */
+.bottom-nav{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:430px;
+  background:rgba(255,255,255,.97);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border-top:1px solid var(--g100);
+  display:flex;
+  padding-bottom:env(safe-area-inset-bottom);
+  z-index:50;
+}
+.nav-item{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  gap:3px;padding:10px 0 8px;
+  background:none;border:none;cursor:pointer;
+  font-family:var(--fb);font-size:10px;font-weight:400;
+  color:var(--g400);transition:color .15s;
+  -webkit-tap-highlight-color:transparent;
+}
+.nav-item.active{color:var(--blue);font-weight:500}
+.nav-item svg{width:22px;height:22px;stroke-width:1.6;transition:transform .15s}
+.nav-item.active svg{transform:scale(1.08)}
+
+/* ── SCREEN ───────────────────────────────────────────── */
+.screen{padding:20px 20px 110px;min-height:calc(100vh - 56px)}
+.screen-full{padding:0;min-height:calc(100vh - 56px)}
+
+/* ── BACK BUTTON ──────────────────────────────────────── */
+.back-btn{
+  background:none;border:none;cursor:pointer;
+  display:flex;align-items:center;gap:4px;
+  font-size:.875rem;color:var(--blue);
+  padding:4px;margin:-4px;
+  -webkit-tap-highlight-color:transparent;
+}
+
+/* ── CARDS ────────────────────────────────────────────── */
+.card{
+  background:var(--white);
+  border:1px solid var(--g200);
+  border-radius:var(--r);
+  padding:16px;
+  margin-bottom:10px;
+  box-shadow:var(--shadow-sm);
+}
+.card-interactive{cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent}
+.card-interactive:active{transform:scale(.99);background:var(--g50)}
+.card-selected{border-color:var(--blue);background:var(--blue-soft);border-width:1.5px}
+.card-selected .chip{background:var(--blue-tint);color:var(--blue);border-color:rgba(45,114,200,.2)}
+.card-highlight{border-color:var(--blue);background:linear-gradient(135deg,var(--blue-soft),rgba(45,114,200,.04));border-width:1.5px}
+
+/* ── CHIPS / BADGES ───────────────────────────────────── */
+.chip{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:500;white-space:nowrap;border:1px solid transparent}
+.chip-blue{background:var(--blue-tint);color:var(--blue)}
+.chip-green{background:var(--green-tint);color:var(--green)}
+.chip-amber{background:var(--amber-tint);color:var(--amber)}
+.chip-red{background:var(--red-tint);color:var(--red)}
+.chip-gray{background:var(--g100);color:var(--g600)}
+.chip-outline{background:transparent;border-color:var(--g200);color:var(--g600)}
+
+/* Status → color */
+.s-booked,.s-pickup_scheduled{background:var(--amber-tint);color:var(--amber)}
+.s-dropped_off,.s-in_transit{background:var(--amber-tint);color:var(--amber)}
+.s-in_service,.s-quality_check{background:var(--blue-tint);color:var(--blue)}
+.s-ready,.s-return_transit{background:var(--green-tint);color:var(--green)}
+.s-completed{background:var(--g100);color:var(--g500)}
+.s-cancelled{background:var(--red-tint);color:var(--red)}
+
+/* ── SECTION HEADER ───────────────────────────────────── */
+.section-label{font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--g500);margin-bottom:10px;margin-top:4px}
+.page-title{font-family:var(--fd);font-weight:200;font-size:1.8rem;letter-spacing:.04em;line-height:1.2;margin-bottom:4px}
+.page-subtitle{font-size:.875rem;color:var(--g500);margin-bottom:20px}
+
+/* ── HEALTH RING ──────────────────────────────────────── */
+.health-ring-wrap{position:relative;display:flex;align-items:center;justify-content:center}
+.health-ring-label{position:absolute;text-align:center}
+.health-ring-value{font-family:var(--fd);font-weight:300;font-size:.95rem;line-height:1;color:var(--obsidian)}
+.health-ring-unit{font-size:.6rem;color:var(--g500)}
+
+/* ── PROGRESS BAR ─────────────────────────────────────── */
+.progress-track{display:flex;gap:3px;height:3px}
+.progress-seg{flex:1;border-radius:2px;background:var(--g200);transition:background .3s}
+.progress-seg.filled{background:var(--blue)}
+.progress-seg.filled.complete{background:var(--green)}
+
+/* ── STEPS INDICATOR ──────────────────────────────────── */
+.steps-row{display:flex;align-items:center;margin-bottom:24px}
+.step-circle{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;transition:all .2s}
+.step-circle.done{background:var(--green);color:#fff}
+.step-circle.active{background:var(--blue);color:#fff}
+.step-circle.pending{background:var(--g100);color:var(--g500)}
+.step-line{flex:1;height:2px;background:var(--g200);transition:background .2s}
+.step-line.done{background:var(--green)}
+
+/* ── TRACKING STEPPER ─────────────────────────────────── */
+.tracking-step{display:flex;gap:14px;padding:10px 0;align-items:flex-start}
+.tracking-dot{width:20px;height:20px;border-radius:50%;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;border:2px solid var(--g200)}
+.tracking-dot.done{background:var(--green);border-color:var(--green)}
+.tracking-dot.active{background:var(--blue);border-color:var(--blue);box-shadow:0 0 0 5px rgba(45,114,200,.12)}
+.tracking-dot.pending{background:var(--white);border-color:var(--g200)}
+
+/* ── AVATAR ───────────────────────────────────────────── */
+.avatar{border-radius:50%;background:var(--blue-tint);display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-weight:300;color:var(--blue);flex-shrink:0}
+
+/* ── TOAST ────────────────────────────────────────────── */
+#toast{
+  position:fixed;bottom:90px;left:50%;
+  transform:translateX(-50%) translateY(10px);
+  background:var(--obsidian);color:var(--white);
+  padding:11px 20px;border-radius:var(--rs);
+  font-size:.85rem;font-weight:400;
+  opacity:0;transition:all .25s;
+  z-index:500;pointer-events:none;
+  white-space:nowrap;max-width:calc(100% - 40px);
+  text-align:center;
+  box-shadow:var(--shadow-lg);
+}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-.aw{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 28px;text-align:center}
-.pp{font-family:var(--fd);font-weight:200;font-size:1.9rem;color:var(--blue);letter-spacing:2px;line-height:1}
-.pp sub{font-size:1rem;font-weight:300;letter-spacing:0}
-.ft{font-size:11px;background:var(--g100);color:var(--g600);padding:3px 9px;border-radius:20px}
-.si2{width:60px;height:60px;background:var(--gtint);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;animation:pop .4s cubic-bezier(.34,1.56,.64,1)}
+
+/* ── DIVIDER ──────────────────────────────────────────── */
+.divider{height:1px;background:var(--g100);margin:14px 0}
+
+/* ── SELECT ───────────────────────────────────────────── */
+.status-select{
+  font-family:var(--fb);font-size:.82rem;font-weight:500;
+  padding:8px 12px;border-radius:var(--rs);
+  border:1.5px solid var(--g200);background:var(--snow);
+  color:var(--obsidian);cursor:pointer;outline:none;flex:1;
+  -webkit-appearance:none;
+}
+
+/* ── ADMIN SPECIFIC ───────────────────────────────────── */
+.admin-wrap{background:var(--g50);min-height:100vh}
+.admin-topbar{
+  position:sticky;top:0;z-index:50;
+  background:var(--obsidian);
+  padding:0 20px;height:56px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.admin-topbar-logo{display:flex;align-items:center;gap:10px}
+.admin-topbar-wordmark{font-family:var(--fd);font-weight:200;font-size:1rem;letter-spacing:6px;color:var(--white);text-transform:lowercase}
+.admin-badge{font-size:.65rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);padding:3px 10px;border-radius:20px;border:1px solid rgba(255,255,255,.1)}
+.admin-screen{padding:20px 20px 40px}
+.admin-card{background:var(--white);border:1px solid var(--g200);border-radius:var(--r);padding:16px;margin-bottom:10px;box-shadow:var(--shadow-sm)}
+.admin-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.admin-stat{background:var(--white);border:1px solid var(--g200);border-radius:var(--r);padding:16px;box-shadow:var(--shadow-sm)}
+.admin-stat-value{font-family:var(--fd);font-weight:200;font-size:2rem;letter-spacing:.02em;color:var(--blue);line-height:1;margin-bottom:4px}
+.admin-stat-label{font-size:.72rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--g500)}
+
+/* ── GRID 2 ───────────────────────────────────────────── */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* ── SUCCESS ──────────────────────────────────────────── */
+.success-ico{width:64px;height:64px;border-radius:50%;background:var(--green-tint);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;animation:pop .4s cubic-bezier(.34,1.56,.64,1)}
 @keyframes pop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
-.dv{height:1px;background:var(--g100);margin:12px 0}
-.pb{display:flex;gap:3px}
-.ps{flex:1;height:3px;border-radius:2px;background:var(--g100);transition:background .4s}
-.ps.fill{background:var(--blue)}
-.ss{font-family:var(--fb);font-size:.8rem;font-weight:500;padding:6px 10px;border-radius:var(--rs);border:1.5px solid var(--g200);background:var(--snow);color:var(--obsidian);cursor:pointer;outline:none;flex:1}
-.empty{text-align:center;padding:48px 20px}
-/* Profile avatar */
-.av{width:64px;height:64px;background:var(--blue-tint);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-weight:300;font-size:1.4rem;color:var(--blue);flex-shrink:0}
-/* Tracking stepper */
-.trk-step{display:flex;align-items:flex-start;gap:12px;padding:10px 0;position:relative;z-index:1}
-.trk-dot{width:20px;height:20px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;border:2px solid var(--g200)}
-.trk-dot.d{background:var(--green);border-color:var(--green)}
-.trk-dot.a{background:var(--blue);border-color:var(--blue);box-shadow:0 0 0 4px rgba(45,114,200,.15)}
-.trk-dot.p{background:#fff;border-color:var(--g200)}
+
+/* ── EMPTY STATE ──────────────────────────────────────── */
+.empty{text-align:center;padding:52px 20px}
+.empty-icon{font-size:3rem;margin-bottom:14px;opacity:.6}
+
+/* ── ANIMATIONS ───────────────────────────────────────── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.fade-up{animation:fadeUp .3s ease forwards}
 </style>
 </head>
 <body>
 <div id="app">
-  <div class="ls">
-    <div class="bw" style="width:52px;height:52px;"><span style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:1.5rem;color:#fff;letter-spacing:-1px;">s</span></div>
-    <div class="spin" style="width:28px;height:28px;margin-top:8px;"></div>
+  <div class="load-wrap">
+    <div class="load-pulse">
+      <svg width="72" height="72" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="200" cy="200" r="195" fill="#2D72C8"/>
+        <path d="M 226,80 C 271,67 120,116 124,160 C 128,200 232,191 232,235 C 232,271 125,284 143,290" fill="none" stroke="#fff" stroke-width="11" stroke-linecap="round"/>
+        <path d="M 196,93 C 238,83 147,127 151,169 C 155,207 196,200 196,242 C 196,276 148,284 163,290" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity="0.42"/>
+      </svg>
+    </div>
+    <div class="load-dots"><div class="load-dot"></div><div class="load-dot"></div><div class="load-dot"></div></div>
   </div>
 </div>
 <div id="toast"></div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 'use strict';
-const SU='https://xxayiwmobayqafdupjab.supabase.co';
-const SK='sb_publishable_poGIKcrcKcnoHTw9MO0GxQ_idyZduwH';
-const PKG={
-  essential:{id:'essential',name:'Essential',tag:'Wax & Go',price:49,days:3,features:['Heißwachsen','Grundschliff','Kanten entgraten','Bindungscheck']},
-  performance:{id:'performance',name:'Performance',tag:'Race-Ready',price:79,days:5,features:['Alles aus Essential','Steinschliff Belag','Kanten schärfen','Fluor-Wachs'],rec:true},
-  world_cup:{id:'world_cup',name:'World Cup',tag:'Profi-Tuning',price:119,days:7,features:['Alles aus Performance','Belagserneuerung','Profil-Schliff','Tuning-Zertifikat']}
+
+// ── Config ────────────────────────────────────────────────
+const SB_URL = 'https://xxayiwmobayqafdupjab.supabase.co';
+const SB_KEY = 'sb_publishable_poGIKcrcKcnoHTw9MO0GxQ_idyZduwH';
+
+const LOGO_SVG = `<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="200" cy="200" r="195" fill="#2D72C8"/>
+  <path d="M 226,80 C 271,67 120,116 124,160 C 128,200 232,191 232,235 C 232,271 125,284 143,290" fill="none" stroke="#fff" stroke-width="11" stroke-linecap="round"/>
+  <path d="M 196,93 C 238,83 147,127 151,169 C 155,207 196,200 196,242 C 196,276 148,284 163,290" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity="0.42"/>
+</svg>`;
+
+const LOGO_WHITE_SVG = `<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="200" cy="200" r="195" fill="rgba(255,255,255,0.15)"/>
+  <path d="M 226,80 C 271,67 120,116 124,160 C 128,200 232,191 232,235 C 232,271 125,284 143,290" fill="none" stroke="#fff" stroke-width="11" stroke-linecap="round"/>
+  <path d="M 196,93 C 238,83 147,127 151,169 C 155,207 196,200 196,242 C 196,276 148,284 163,290" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity="0.42"/>
+</svg>`;
+
+const PKG = {
+  essential:   { id:'essential',   name:'Essential',   tag:'Wax & Go',    price:49,  days:3, features:['Heißwachsen','Grundschliff','Kanten entgraten','Bindungscheck'] },
+  performance: { id:'performance', name:'Performance', tag:'Race-Ready',  price:79,  days:5, features:['Alles aus Essential','Steinschliff Belag','Kanten schärfen','Fluor-Wachs'], rec:true },
+  world_cup:   { id:'world_cup',   name:'World Cup',   tag:'Profi-Tuning',price:119, days:7, features:['Alles aus Performance','Belagserneuerung','Profil-Schliff','Tuning-Zertifikat'] }
 };
-const LOG={
-  home:{id:'home',name:'@Home Pickup',icon:'🏠',desc:'DHL holt direkt bei dir ab.',addr:true},
-  storebox:{id:'storebox',name:'Storebox Hub',icon:'📦',desc:'24/7 Smart Locker. PIN per E-Mail.',addr:false},
-  corporate:{id:'corporate',name:'Corporate Drop-off',icon:'🏔️',desc:'Abgabe beim Partnerhotel / Hub.',addr:false}
+
+const LOG = {
+  home:      { id:'home',      name:'@Home Pickup',      icon:'🏠', desc:'DHL holt direkt bei dir ab.',          needsAddr:true },
+  storebox:  { id:'storebox',  name:'Storebox Hub',       icon:'📦', desc:'24/7 Smart Locker · PIN per E-Mail.',  needsAddr:false },
+  corporate: { id:'corporate', name:'Corporate Drop-off', icon:'🏔️', desc:'Abgabe beim Partnerhotel / Hub.',     needsAddr:false }
 };
-const SF=[
-  {key:'booked',lbl:'Gebucht'},
-  {key:'pickup_scheduled',lbl:'Abholung geplant'},
-  {key:'dropped_off',lbl:'Abgegeben'},
-  {key:'in_service',lbl:'In Bearbeitung'},
-  {key:'quality_check',lbl:'Qualitätskontrolle'},
-  {key:'ready',lbl:'Fertig — Rücktransport'},
-  {key:'completed',lbl:'Abgeschlossen'}
+
+const STATUS_FLOW = [
+  { key:'booked',           label:'Gebucht' },
+  { key:'pickup_scheduled', label:'Abholung geplant' },
+  { key:'dropped_off',      label:'Abgegeben' },
+  { key:'in_service',       label:'In Bearbeitung' },
+  { key:'quality_check',    label:'Qualitätskontrolle' },
+  { key:'ready',            label:'Fertig — Rücktransport' },
+  { key:'completed',        label:'Abgeschlossen' }
 ];
-const S={
-  view:'loading',user:null,profile:null,assets:[],bookings:[],
+
+// ── State ─────────────────────────────────────────────────
+const S = {
+  view:'loading', user:null, profile:null,
+  assets:[], bookings:[],
   loading:false,
-  draft:{asset_id:null,asset:null,pkg:'performance',log:'home',addr:'',notes:''},
-  na:{brand:'',model:'',len:'',year:'',type:'ski'},
+  draft:{ asset_id:null, asset:null, pkg:'performance', log:'home', addr:'', notes:'' },
+  newAsset:{ brand:'', model:'', len:'', year:'', type:'ski' },
   confirmed:null
 };
-const db=supabase.createClient(SU,SK);
-let rtCh=null;
 
-// Utils
-function toast(m,ms=3200){const e=document.getElementById('toast');if(!e)return;e.textContent=m;e.classList.add('show');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('show'),ms)}
-function fd(d){if(!d)return'—';return new Date(d).toLocaleDateString('de-AT',{day:'numeric',month:'short',year:'numeric'})}
-function fe(n){return Number(n||0).toFixed(2).replace('.',',')+' €'}
-function sl(k){return SF.find(s=>s.key===k)?.lbl||k}
-function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
-function bc(s){if(['booked','pickup_scheduled','dropped_off','in_transit'].includes(s))return'sb';if(['in_service','quality_check'].includes(s))return'si';if(['ready','return_transit'].includes(s))return'sr';if(s==='cancelled')return'sca';return'sc2'}
-function setL(v){S.loading=v;document.querySelectorAll('.bp').forEach(b=>b.disabled=v)}
-function initials(n,e){if(n){const p=n.split(' ');return(p[0]?.[0]||'')+(p[1]?.[0]||'');} return(e?.[0]||'').toUpperCase()}
+const db = supabase.createClient(SB_URL, SB_KEY);
+let rtCh = null;
 
-// Nav
-function bnav(a){
-  const items=[
-    {k:'home',l:'Home',i:`<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>`},
-    {k:'book-1',l:'Buchen',i:`<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>`},
-    {k:'my-bookings',l:'Aufträge',i:`<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>`},
-    {k:'profile',l:'Profil',i:`<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>`}
-  ];
-  return`<nav class="bn">${items.map(x=>`<button class="ni ${a===x.k?'on':''}" onclick="A.nav('${x.k}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor">${x.i}</svg>${x.l}</button>`).join('')}</nav>`
+// ── Utils ─────────────────────────────────────────────────
+const toast = (m,ms=3000) => {
+  const el = document.getElementById('toast');
+  if(!el) return;
+  el.textContent = m; el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), ms);
+};
+const fmtDate = d => d ? new Date(d).toLocaleDateString('de-AT',{day:'numeric',month:'short',year:'numeric'}) : '—';
+const fmtEur  = n => Number(n||0).toFixed(2).replace('.',',') + ' €';
+const fmtPct  = n => Math.round(n||0) + '%';
+const slabel  = k => STATUS_FLOW.find(s=>s.key===k)?.label || k;
+const esc     = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const setL    = v => { S.loading=v; document.querySelectorAll('.btn-primary').forEach(b=>b.disabled=v); };
+const getHour = () => new Date().getHours();
+const greeting = () => getHour()<12 ? 'Guten Morgen' : getHour()<18 ? 'Guten Tag' : 'Guten Abend';
+const healthColor = v => v >= 70 ? '#16A34A' : v >= 40 ? '#D97706' : '#DC2626';
+const healthOverall = a => Math.round(((a.edge_health||100)+(a.base_health||100)+(a.wax_health||100))/3);
+const initials = (n,e) => { if(n){const p=n.trim().split(' ');return((p[0]?.[0]||'')+(p[1]?.[0]||'')).toUpperCase();} return (e?.[0]||'').toUpperCase(); };
+const badgeClass = s => {
+  if(['booked','pickup_scheduled','dropped_off','in_transit'].includes(s)) return 'chip s-booked';
+  if(['in_service','quality_check'].includes(s)) return 'chip s-in_service';
+  if(['ready','return_transit'].includes(s)) return 'chip s-ready';
+  if(s==='completed') return 'chip s-completed';
+  if(s==='cancelled') return 'chip s-cancelled';
+  return 'chip chip-gray';
+};
+
+// ── Health Ring SVG ───────────────────────────────────────
+function healthRing(value, size=64, label) {
+  const r = (size-8)/2;
+  const circ = 2*Math.PI*r;
+  const offset = circ * (1 - Math.min(value,100)/100);
+  const color = healthColor(value);
+  return `<div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+    <div class="health-ring-wrap" style="width:${size}px;height:${size}px;">
+      <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="transform:rotate(-90deg)">
+        <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="#F0F2F5" stroke-width="6"/>
+        <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="${color}" stroke-width="6"
+          stroke-linecap="round" stroke-dasharray="${circ}" stroke-dashoffset="${offset}"
+          style="transition:stroke-dashoffset 1s ease"/>
+      </svg>
+      <div class="health-ring-label">
+        <div class="health-ring-value" style="color:${color}">${Math.round(value)}</div>
+      </div>
+    </div>
+    <div style="font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--g500)">${label}</div>
+  </div>`;
 }
-function steps(n){return`<div class="sts">${[1,2,3,4].map((x,i)=>(i>0?`<div class="sl2 ${x<=n?'d':''}"></div>`:'')+`<div class="sd2 ${x<n?'d':x===n?'a':'p'}">${x<n?'✓':x}</div>`).join('')}</div>`}
-function pbar(st){const keys=SF.map(s=>s.key);const idx=keys.indexOf(st);return`<div class="pb">${SF.slice(0,5).map((_,i)=>`<div class="ps ${i<=idx?'fill':''}"></div>`).join('')}</div>`}
 
-// ── VIEWS ────────────────────────────────────────────────────
+// ── Progress Bar ──────────────────────────────────────────
+function progressBar(status) {
+  const keys = STATUS_FLOW.map(s=>s.key);
+  const idx = keys.indexOf(status);
+  const done = status === 'completed';
+  return `<div class="progress-track">${STATUS_FLOW.slice(0,6).map((_,i) =>
+    `<div class="progress-seg ${i<=idx?'filled':''}${done?' complete':''}"></div>`
+  ).join('')}</div>`;
+}
 
-function vAuth(){return`<div class="aw">
-<div class="bw" style="width:64px;height:64px;margin-bottom:20px;"><span style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:2rem;color:#fff;letter-spacing:-2px;">s</span></div>
-<div class="lt" style="margin-bottom:6px;">slopy</div>
-<p class="mu" style="margin-bottom:28px;font-size:.875rem;">Das Betriebssystem für dein Ski-Equipment.</p>
-<div style="width:100%;max-width:300px;">
-<div class="ig"><label class="il">E-Mail</label><input id="ei" class="inp" type="email" placeholder="du@beispiel.at" autocomplete="email"></div>
-<div class="ig"><label class="il">Passwort</label><input id="pi" class="inp" type="password" placeholder="Mindestens 6 Zeichen" onkeydown="if(event.key==='Enter')A.login()"></div>
-<button class="btn bp" onclick="A.login()" style="margin-bottom:10px;">${S.loading?'<div class="spin" style="width:16px;height:16px;border-width:2px;"></div>':'Einloggen'}</button>
-<button class="btn bg" onclick="A.register()">${S.loading?'<div class="spin" style="width:16px;height:16px;border-width:2px;"></div>':'Neu registrieren'}</button>
-</div></div>`}
+// ── Steps Indicator ───────────────────────────────────────
+function stepsIndicator(current) {
+  return `<div class="steps-row">${[1,2,3,4].map((n,i) => {
+    const cls = n<current?'done':n===current?'active':'pending';
+    return (i>0?`<div class="step-line ${n<=current?'done':''}"></div>`:'')+
+      `<div class="step-circle ${cls}">${n<current?'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>':n}</div>`;
+  }).join('')}</div>`;
+}
 
-function vHome(){
-  const name=S.profile?.full_name?.split(' ')[0]||S.user?.email?.split('@')[0]||'dort';
-  const act=S.bookings.find(b=>!['completed','cancelled'].includes(b.status));
-  const h=new Date().getHours();
-  const gr=h<12?'Guten Morgen':h<18?'Guten Tag':'Guten Abend';
-  return`<div class="tb"><div class="tbt">slopy</div><button class="btn bsm bs" onclick="A.nav('profile')" style="padding:5px 12px;display:flex;align-items:center;gap:7px;"><div class="av" style="width:28px;height:28px;font-size:.75rem;">${initials(S.profile?.full_name,S.user?.email)}</div>${esc(name)}</button></div>
-<div class="sc">
-<div style="margin-bottom:24px;"><div class="lbl" style="margin-bottom:4px;">${gr}</div><div class="hl">${esc(name)}</div></div>
-${act?`<div class="card" style="border-color:var(--blue);background:var(--blue-tint);cursor:pointer;margin-bottom:20px;" onclick="A.nav('my-bookings')">
-<div class="lbl" style="margin-bottom:8px;">Aktiver Auftrag</div>
-<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-<div><div style="font-weight:500;">${esc(act.assets?.brand||'')} ${esc(act.assets?.model||'')}</div><div class="mu" style="font-size:.78rem;">${PKG[act.service_package]?.name}</div></div>
-<span class="badge ${bc(act.status)}">${sl(act.status)}</span></div>
-${pbar(act.status)}
-<div class="mu" style="font-size:.75rem;margin-top:8px;">Fertig ca. ${fd(act.estimated_completion)}</div>
-</div>`:''}
-${S.assets.length===0?`<div class="card" style="text-align:center;padding:24px;background:var(--snow);border-style:dashed;"><div style="font-size:2.5rem;margin-bottom:10px;">🎿</div><div style="font-weight:500;margin-bottom:4px;">Noch kein Equipment</div><p class="mu" style="font-size:.85rem;margin-bottom:16px;">Füg deinen ersten Ski hinzu.</p><button class="btn bp" onclick="A.nav('book-1')">Ski hinzufügen</button></div>`:
-`<div style="margin-bottom:20px;"><div class="lbl" style="margin-bottom:10px;">Mein Equipment (${S.assets.length})</div>
-${S.assets.map(a=>`<div class="card" style="margin-bottom:8px;">
-<div style="display:flex;align-items:center;gap:12px;">
-<div style="width:40px;height:40px;background:var(--blue-tint);border-radius:var(--rs);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;">🎿</div>
-<div style="flex:1;">
-<div style="font-weight:500;">${esc(a.brand)} ${esc(a.model)}</div>
-<div class="mu" style="font-size:.78rem;">${a.length_cm?a.length_cm+' cm · ':''} ${a.year||''}
-</div></div>
-<div style="text-align:right;">
-<div style="font-size:11px;color:var(--g600);margin-bottom:2px;">Health</div>
-<div style="font-weight:500;color:${a.edge_health<50?'var(--amber)':'var(--green)'};">${Math.round((a.edge_health+a.base_health+a.wax_health)/3)}%</div>
-</div></div></div>`).join('')}
-</div>`}
-<button class="btn bp" onclick="A.nav('book-1')" style="margin-bottom:10px;">
-<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-Service buchen</button>
-</div>${bnav('home')}`}
+// ── Bottom Nav (Customer) ─────────────────────────────────
+function bottomNav(active) {
+  const items = [
+    { k:'home',        l:'Home',    svg:`<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>` },
+    { k:'book-1',      l:'Buchen',  svg:`<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>` },
+    { k:'my-bookings', l:'Aufträge',svg:`<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>` },
+    { k:'profile',     l:'Profil',  svg:`<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>` }
+  ];
+  return `<nav class="bottom-nav">${items.map(x=>`
+    <button class="nav-item ${active===x.k?'active':''}" onclick="A.nav('${x.k}')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">${x.svg}</svg>${x.l}
+    </button>`).join('')}</nav>`;
+}
 
-function vProfile(){
-  const p=S.profile;
-  const ini=initials(p?.full_name,S.user?.email);
-  return`<div class="tb"><button class="bb" onclick="A.nav('home')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>Zurück</button><div class="tbt">profil</div><div></div></div>
-<div class="sc">
-<div style="display:flex;flex-direction:column;align-items:center;margin-bottom:28px;gap:12px;">
-<div class="av" style="width:72px;height:72px;font-size:1.6rem;">${ini}</div>
-<div style="text-align:center;">
-<div style="font-weight:500;font-size:1rem;">${esc(p?.full_name||'—')}</div>
-<div class="mu" style="font-size:.85rem;">${esc(S.user?.email||'')}</div>
-<div style="margin-top:6px;"><span class="badge" style="background:var(--blue-tint);color:var(--blue);">${p?.role==='admin'?'Admin':'Kunde'}</span></div>
-</div></div>
+// ════════════════════════════════════════════════════════════
+// CUSTOMER VIEWS
+// ════════════════════════════════════════════════════════════
 
-<div class="lbl" style="margin-bottom:12px;">Profil bearbeiten</div>
-<div class="ig"><label class="il">Vollständiger Name</label><input id="fn" class="inp" type="text" value="${esc(p?.full_name||'')}" placeholder="Vor- und Nachname"></div>
-<div class="ig"><label class="il">Telefon</label><input id="ph" class="inp" type="tel" value="${esc(p?.phone||'')}" placeholder="+43 123 456 789" inputmode="tel"></div>
-<div class="ig"><label class="il">E-Mail</label><input class="inp" type="email" value="${esc(S.user?.email||'')}" disabled style="opacity:.6;cursor:not-allowed;"></div>
-<button class="btn bp" onclick="A.saveProfile()" style="margin-bottom:10px;">${S.loading?'<div class="spin" style="width:16px;height:16px;border-width:2px;"></div>':'Speichern'}</button>
+function vAuth() {
+  return `<div class="auth-wrap fade-up">
+    <div class="auth-logo-wrap">
+      <svg width="80" height="80" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="200" cy="200" r="195" fill="#2D72C8"/>
+        <path d="M 226,80 C 271,67 120,116 124,160 C 128,200 232,191 232,235 C 232,271 125,284 143,290" fill="none" stroke="#fff" stroke-width="11" stroke-linecap="round"/>
+        <path d="M 196,93 C 238,83 147,127 151,169 C 155,207 196,200 196,242 C 196,276 148,284 163,290" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity="0.42"/>
+      </svg>
+    </div>
+    <div class="auth-tagline">Zero Friction. Smart Assets.</div>
+    <div class="auth-form">
+      <div class="field">
+        <label class="field-label">E-Mail</label>
+        <input id="auth-email" class="input" type="email" placeholder="du@beispiel.at"
+          autocomplete="email" inputmode="email">
+      </div>
+      <div class="field">
+        <label class="field-label">Passwort</label>
+        <input id="auth-pw" class="input" type="password" placeholder="Mindestens 6 Zeichen"
+          autocomplete="current-password"
+          onkeydown="if(event.key==='Enter')A.login()">
+      </div>
+      <button class="btn btn-primary" onclick="A.login()" style="margin-bottom:10px;">
+        ${S.loading?'<div class="spin-btn"></div>':'Einloggen'}
+      </button>
+      <div class="auth-divider"><span>oder</span></div>
+      <button class="btn btn-ghost" onclick="A.register()">
+        ${S.loading?'<div class="spin-btn spin-btn-blue"></div>':'Neu registrieren'}
+      </button>
+    </div>
+  </div>`;
+}
 
-<div class="dv"></div>
-<div class="lbl" style="margin-bottom:12px;">Account</div>
-<div style="background:var(--snow);border-radius:var(--r);padding:14px 16px;margin-bottom:10px;">
-<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--g100);">
-<span class="mu">Mitglied seit</span><span style="font-size:.85rem;font-weight:500;">${fd(S.user?.created_at)}</span></div>
-<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--g100);">
-<span class="mu">Buchungen gesamt</span><span style="font-size:.85rem;font-weight:500;">${S.bookings.length}</span></div>
-<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;">
-<span class="mu">Equipment</span><span style="font-size:.85rem;font-weight:500;">${S.assets.length} Ski</span></div>
-</div>
-<button class="btn" style="background:var(--rtint);color:var(--red);margin-top:4px;" onclick="A.logout()">Ausloggen</button>
-</div>${bnav('profile')}`}
+function vHome() {
+  const name = S.profile?.full_name?.split(' ')[0] || S.user?.email?.split('@')[0] || 'dort';
+  const active = S.bookings.find(b=>!['completed','cancelled'].includes(b.status));
+  const ini = initials(S.profile?.full_name, S.user?.email);
 
-function vBook1(){return`<div class="tb"><button class="bb" onclick="A.nav('home')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>Zurück</button><div class="tbt">buchen</div><div></div></div>
-<div class="sc">${steps(1)}<div class="lbl" style="margin-bottom:14px;">Welcher Ski?</div>
-${S.assets.map(a=>`<div class="card cs ${S.draft.asset_id===a.id?'on':''}" onclick="A.selectAsset('${a.id}')">
-<div style="display:flex;align-items:center;gap:12px;">
-<div style="font-size:1.4rem;">🎿</div>
-<div style="flex:1;"><div style="font-weight:500;">${esc(a.brand)} ${esc(a.model)}</div>
-<div class="mu" style="font-size:.78rem;">${a.length_cm?a.length_cm+' cm ':''} ${a.year||''}</div></div>
-${S.draft.asset_id===a.id?'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>':''}
-</div></div>`).join('')}
-<button class="btn bg" onclick="A.go('book-asset')" style="margin-bottom:14px;">
-<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-${S.assets.length===0?'Ski hinzufügen':'Anderen Ski hinzufügen'}</button>
-${S.draft.asset_id?`<button class="btn bp" onclick="A.go('book-2')">Weiter <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>`:''}
-</div>`}
+  return `
+    <div class="topbar">
+      <div class="topbar-logo">
+        <svg class="logo-svg" width="28" height="28" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="200" cy="200" r="195" fill="#2D72C8"/>
+          <path d="M 226,80 C 271,67 120,116 124,160 C 128,200 232,191 232,235 C 232,271 125,284 143,290" fill="none" stroke="#fff" stroke-width="11" stroke-linecap="round"/>
+          <path d="M 196,93 C 238,83 147,127 151,169 C 155,207 196,200 196,242 C 196,276 148,284 163,290" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity="0.42"/>
+        </svg>
+        <span class="topbar-wordmark">slopy</span>
+      </div>
+      <button onclick="A.nav('profile')" style="background:none;border:none;cursor:pointer;">
+        <div class="avatar" style="width:34px;height:34px;font-size:.78rem;">${ini}</div>
+      </button>
+    </div>
+    <div class="screen fade-up">
+      <div style="margin-bottom:24px;">
+        <div style="font-size:.75rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--g500);margin-bottom:4px;">${greeting()}</div>
+        <div class="page-title">${esc(name)}</div>
+      </div>
 
-function vBookAsset(){const a=S.na;return`<div class="tb"><button class="bb" onclick="A.go('book-1')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>Zurück</button><div class="tbt">neuer ski</div><div></div></div>
-<div class="sc">
-<div class="ig"><label class="il">Marke *</label><input class="inp" type="text" value="${esc(a.brand)}" placeholder="Atomic, Rossignol…" oninput="A.setNA('brand',this.value)"></div>
-<div class="ig"><label class="il">Modell *</label><input class="inp" type="text" value="${esc(a.model)}" placeholder="Redster X9i…" oninput="A.setNA('model',this.value)"></div>
-<div class="g2">
-<div class="ig"><label class="il">Länge (cm)</label><input class="inp" type="number" value="${a.len}" placeholder="175" oninput="A.setNA('len',this.value)"></div>
-<div class="ig"><label class="il">Baujahr</label><input class="inp" type="number" value="${a.year}" placeholder="2024" oninput="A.setNA('year',this.value)"></div>
-</div>
-<button class="btn bp" onclick="A.addAsset()">${S.loading?'<div class="spin" style="width:16px;height:16px;border-width:2px;"></div>':'Ski speichern & weiter'}</button>
-</div>`}
+      ${active ? `
+        <div class="card card-highlight card-interactive" onclick="A.go('tracking-${active.id}')" style="margin-bottom:20px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+            <div>
+              <div style="font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin-bottom:3px;">Aktiver Auftrag</div>
+              <div style="font-weight:500;">${esc(active.assets?.brand||'')} ${esc(active.assets?.model||'')}</div>
+              <div style="font-size:.8rem;color:var(--g500);">${PKG[active.service_package]?.name}</div>
+            </div>
+            <span class="${badgeClass(active.status)}">${slabel(active.status)}</span>
+          </div>
+          ${progressBar(active.status)}
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px;">
+            <div style="font-size:.78rem;color:var(--g500);">Fertig ca. ${fmtDate(active.estimated_completion)}</div>
+            <div style="font-size:.78rem;color:var(--blue);font-weight:500;">Details →</div>
+          </div>
+        </div>
+      ` : ''}
 
-function vBook2(){return`<div class="tb"><button class="bb" onclick="A.go('book-1')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>Zurück</button><div class="tbt">paket</div><div></div></div>
-<div class="sc">${steps(2)}<div class="lbl" style="margin-bottom:14px;">Service-Paket wählen</div>
-${Object.values(PKG).map(p=>`<div class="card cs ${S.draft.pkg===p.id?'on':''}" onclick="A.selectPkg('${p.id}')" style="position:relative;overflow:hidden;padding-top:${p.rec?'26px':'14px'};">
-${p.rec?`<div style="position:absolute;top:0;right:14px;background:var(--blue);color:#fff;font-size:9px;font-weight:500;padding:3px 10px;border-radius:0 0 8px 8px;letter-spacing:.06em;text-transform:uppercase;">Empfohlen</div>`:''}
-<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;">
-<div><div style="font-weight:500;">${p.name}</div><div class="mu" style="font-size:.78rem;">${p.tag} · ${p.days} Werktage</div></div>
-<div class="pp">${p.price}<sub> €</sub></div></div>
-<div style="display:flex;flex-wrap:wrap;gap:5px;">${p.features.map(f=>`<span class="ft">${f}</span>`).join('')}</div>
-</div>`).join('')}
-<button class="btn bp" style="margin-top:6px;" onclick="A.go('book-3')">Weiter <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
-</div>`}
+      ${S.assets.length === 0 ? `
+        <div class="card" style="text-align:center;padding:32px 20px;border-style:dashed;background:var(--snow);box-shadow:none;margin-bottom:20px;">
+          <div class="empty-icon">🎿</div>
+          <div style="font-weight:500;margin-bottom:6px;">Noch kein Equipment</div>
+          <p style="font-size:.875rem;color:var(--g500);margin-bottom:20px;">Füg deinen ersten Ski hinzu und starte deinen ersten Service.</p>
+          <button class="btn btn-primary" onclick="A.nav('book-1')">Ski hinzufügen</button>
+        </div>
+      ` : `
+        <div style="margin-bottom:20px;">
+          <div class="section-label">Mein Equipment</div>
+          ${S.assets.map(a => {
+            const overall = healthOverall(a);
+            return `<div class="card" style="margin-bottom:8px;">
+              <div style="display:flex;align-items:center;gap:12px;">
+                <div style="width:44px;height:44px;background:var(--blue-tint);border-radius:var(--rs);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;">🎿</div>
+                <div style="flex:1;min-width:0;">
+                  <div style="font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(a.brand)} ${esc(a.model)}</div>
+                  <div style="font-size:.78rem;color:var(--g500);">${a.length_cm?a.length_cm+' cm · ':''} ${a.year||'Saison 24/25'}</div>
+                </div>
+                <div style="text-align:right;flex-shrink:0;">
+                  <div style="font-size:1rem;font-weight:600;color:${healthColor(overall)};">${overall}%</div>
+                  <div style="font-size:.7rem;color:var(--g500);">Health</div>
+                </div>
+              </div>
+            </div>`;
+          }).join('')}
+        </div>
+      `}
 
-function vBook3(){const l=LOG[S.draft.log];return`<div class="tb"><button class="bb" onclick="A.go('book-2')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>Zurück</button><div class="tbt">logistik</div><div></div></div>
-<div class="sc">${steps(3)}<div class="lbl" style="margin-bottom:14px;">Wie gibst du ab?</div>
-${Object.values(LOG).map(x=>`<div class="card cs ${S.draft.log===x.id?'on':''}" onclick="A.selectLog('${x.id}')">
-<div style="display:flex;align-items:center;gap:12px;">
-<div style="font-size:1.4rem;width:42px;height:42px;background:${S.draft.log===x.id?'rgba(45,114,200,.12)':'var(--g100)'};border-radius:var(--rs);display:flex;align-items:center;justify-content:center;flex-shrink:0;">${x.icon}</div>
-<div style="flex:1;"><div style="font-weight:500;">${x.name}</div><div class="mu" style="font-size:.78rem;">${x.desc}</div></div>
-${S.draft.log===x.id?'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>':''}
-</div></div>`).join('')}
-${l?.addr?`<div class="ig" style="margin-top:6px;"><label class="il">Abholadresse</label><input class="inp" type="text" placeholder="Straße Nr, PLZ Ort" value="${esc(S.draft.addr)}" oninput="A.setD('addr',this.value)"></div>`:''}
-<div class="ig"><label class="il">Anmerkungen (optional)</label><input class="inp" type="text" placeholder="z.B. Klingel 2. Stock" value="${esc(S.draft.notes)}" oninput="A.setD('notes',this.value)"></div>
-<button class="btn bp" onclick="A.go('book-4')">Zur Bestätigung <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
-</div>`}
+      <button class="btn btn-primary" onclick="A.nav('book-1')">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        Service buchen
+      </button>
+    </div>
+    ${bottomNav('home')}`;
+}
 
-function vBook4(){
-  const ast=S.assets.find(a=>a.id===S.draft.asset_id)||S.draft.asset;
-  const p=PKG[S.draft.pkg];const l=LOG[S.draft.log];
-  return`<div class="tb"><button class="bb" onclick="A.go('book-3')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>Zurück</button><div class="tbt">bestätigung</div><div></div></div>
-<div class="sc">${steps(4)}<div class="lbl" style="margin-bottom:14px;">Bestellung prüfen</div>
-<div class="card" style="margin-bottom:14px;">
-${[['Equipment',`${ast?.brand||'?'} ${ast?.model||''}`],['Paket',`${p?.name} · ${p?.days} Werktage`],['Logistik',l?.name||'—'],['Adresse',S.draft.addr||'—']].map(([k,v])=>`<div style="display:flex;justify-content:space-between;align-items:baseline;padding:9px 0;border-bottom:1px solid var(--g100);"><span class="mu" style="font-size:.85rem;flex-shrink:0;margin-right:12px;">${k}</span><span style="font-weight:500;font-size:.85rem;text-align:right;">${esc(v)}</span></div>`).join('')}
-<div style="display:flex;justify-content:space-between;align-items:baseline;padding:12px 0 0;">
-<span style="font-weight:600;">Gesamt</span><span class="pp" style="font-size:1.6rem;">${p?.price}<sub> €</sub></span></div>
-</div>
-<div style="background:var(--atint);border-radius:var(--r);padding:11px 14px;margin-bottom:14px;font-size:.8rem;color:var(--amber);line-height:1.6;">💳 Stripe-Zahlung kommt in Kürze. Aktuell: Testbuchung.</div>
-<button class="btn bp" onclick="A.createBooking()">${S.loading?'<div class="spin" style="width:16px;height:16px;border-width:2px;"></div>':'Jetzt buchen — '+fe(p?.price)}</button>
-</div>`}
+function vProfile() {
+  const p = S.profile;
+  const ini = initials(p?.full_name, S.user?.email);
+  const completed = S.bookings.filter(b=>b.status==='completed').length;
+  const total = fmtEur(S.bookings.reduce((s,b)=>s+Number(b.price||0),0));
+  return `
+    <div class="topbar">
+      <button class="back-btn" onclick="A.nav('home')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="topbar-title">profil</div>
+      <div></div>
+    </div>
+    <div class="screen fade-up">
+      <div style="display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:28px;padding-top:8px;">
+        <div class="avatar" style="width:76px;height:76px;font-size:1.5rem;margin-bottom:14px;">${ini}</div>
+        <div style="font-weight:600;font-size:1.05rem;">${esc(p?.full_name||'—')}</div>
+        <div style="font-size:.875rem;color:var(--g500);margin-bottom:8px;">${esc(S.user?.email||'')}</div>
+        <span class="chip chip-blue">${p?.role==='admin'?'Admin':'Kunde'}</span>
+      </div>
 
-function vBookConfirm(){
-  const b=S.confirmed;if(!b){A.go('home');return''}
-  const p=PKG[b.service_package];const l=LOG[b.logistics_type];
-  return`<div class="sc" style="display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:52px;">
-<div class="si2"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
-<div style="font-family:var(--fd);font-weight:300;font-size:1.3rem;letter-spacing:2px;margin-bottom:6px;">Buchung bestätigt</div>
-<p class="mu" style="margin-bottom:28px;max-width:260px;font-size:.875rem;line-height:1.6;">${p?.name} Service gebucht. Wir melden uns für die Abholung.</p>
-<div class="card" style="width:100%;text-align:left;margin-bottom:12px;">
-${[['Paket',p?.name],['Preis',fe(b.price)],['Logistik',l?.name],['Fertig ca.',fd(b.estimated_completion)]].map(([k,v])=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--g100);"><span class="mu">${k}</span><span style="font-weight:500;">${esc(v||'—')}</span></div>`).join('')}
-<div style="display:flex;justify-content:space-between;padding:10px 0 0;"><span style="font-weight:500;">Auftrags-ID</span><span style="font-family:monospace;font-size:.78rem;color:var(--blue);">${b.id.slice(0,8).toUpperCase()}</span></div>
-</div>
-<button class="btn bp" onclick="A.nav('my-bookings')" style="margin-bottom:10px;">Meine Aufträge</button>
-<button class="btn bs" onclick="A.nav('home')">Zurück zum Dashboard</button>
-</div>`}
+      <div class="grid-2" style="margin-bottom:20px;">
+        <div class="card" style="text-align:center;padding:14px;">
+          <div style="font-size:1.4rem;font-weight:600;color:var(--blue);">${S.bookings.length}</div>
+          <div style="font-size:.72rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--g500);margin-top:3px;">Buchungen</div>
+        </div>
+        <div class="card" style="text-align:center;padding:14px;">
+          <div style="font-size:1.4rem;font-weight:600;color:var(--blue);">${S.assets.length}</div>
+          <div style="font-size:.72rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--g500);margin-top:3px;">Equipment</div>
+        </div>
+      </div>
 
-function vMyBookings(){
-  return`<div class="tb"><div class="tbt">meine aufträge</div></div>
-<div class="sc">
-${S.bookings.length===0?`<div class="empty"><div style="font-size:2.5rem;margin-bottom:12px;">📋</div><div style="font-weight:500;margin-bottom:6px;">Noch keine Aufträge</div><p class="mu" style="font-size:.85rem;margin-bottom:20px;">Dein erster Service wartet.</p><button class="btn bp" style="max-width:200px;margin:0 auto;" onclick="A.nav('book-1')">Service buchen</button></div>`:
-S.bookings.map(b=>`<div class="card" style="margin-bottom:10px;cursor:pointer;" onclick="A.go('tracking-${b.id}')">
-<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;">
-<div><div style="font-weight:500;">${esc(b.assets?.brand||'?')} ${esc(b.assets?.model||'')}</div>
-<div class="mu" style="font-size:.78rem;">${PKG[b.service_package]?.name} · ${fd(b.created_at)}</div></div>
-<span class="badge ${bc(b.status)}">${sl(b.status)}</span></div>
-${pbar(b.status)}
-<div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;">
-<span class="mu" style="font-size:.78rem;">${LOG[b.logistics_type]?.name||b.logistics_type}</span>
-<span style="font-family:'Josefin Sans',sans-serif;font-weight:200;letter-spacing:1px;color:var(--blue);">${fe(b.price)}</span>
-</div></div>`).join('')}
-</div>${bnav('my-bookings')}`}
+      <div class="section-label">Profil bearbeiten</div>
+      <div class="field">
+        <label class="field-label">Vollständiger Name</label>
+        <input id="pf-name" class="input" type="text" value="${esc(p?.full_name||'')}" placeholder="Vor- und Nachname">
+      </div>
+      <div class="field">
+        <label class="field-label">Telefon</label>
+        <input id="pf-phone" class="input" type="tel" value="${esc(p?.phone||'')}" placeholder="+43 123 456 789" inputmode="tel">
+      </div>
+      <div class="field">
+        <label class="field-label">E-Mail</label>
+        <input class="input" type="email" value="${esc(S.user?.email||'')}" disabled>
+      </div>
+      <button class="btn btn-primary" onclick="A.saveProfile()" style="margin-bottom:14px;">
+        ${S.loading?'<div class="spin-btn"></div>':'Speichern'}
+      </button>
+      <div class="divider"></div>
+      <button class="btn btn-danger" onclick="A.logout()">Ausloggen</button>
+    </div>
+    ${bottomNav('profile')}`;
+}
 
-function vTracking(bid){
-  const b=S.bookings.find(x=>x.id===bid);
-  if(!b)return`<div class="sc"><p>Auftrag nicht gefunden.</p></div>`;
-  const keys=SF.map(s=>s.key);
-  const curIdx=keys.indexOf(b.status);
-  return`<div class="tb"><button class="bb" onclick="A.nav('my-bookings')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>Zurück</button><div class="tbt">tracking</div><div></div></div>
-<div class="sc">
-<div class="card" style="border-color:var(--blue);background:var(--blue-tint);margin-bottom:20px;">
-<div style="display:flex;justify-content:space-between;align-items:flex-start;">
-<div><div style="font-weight:500;">${esc(b.assets?.brand||'')} ${esc(b.assets?.model||'')}</div>
-<div class="mu" style="font-size:.78rem;">${PKG[b.service_package]?.name}</div></div>
-<span class="badge ${bc(b.status)}">${sl(b.status)}</span></div>
-<div style="margin-top:12px;">${pbar(b.status)}</div>
-<div class="mu" style="font-size:.75rem;margin-top:8px;">Fertig ca. ${fd(b.estimated_completion)}</div>
-</div>
-<div class="lbl" style="margin-bottom:14px;">Status-Verlauf</div>
-<div style="position:relative;padding-left:10px;">
-<div style="position:absolute;left:19px;top:14px;width:2px;height:calc(100% - 28px);background:var(--g100);border-radius:1px;"></div>
-<div style="position:absolute;left:19px;top:14px;width:2px;height:${Math.min(100,(curIdx/(SF.length-1))*100)}%;background:var(--blue);border-radius:1px;transition:height .5s;"></div>
-${SF.map((s,i)=>{
-  const done=i<curIdx;const active=i===curIdx;const pend=i>curIdx;
-  return`<div class="trk-step">
-<div class="trk-dot ${done?'d':active?'a':'p'}">${done?`<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>`:''}</div>
-<div style="padding-top:1px;">
-<div style="font-weight:${active?600:400};font-size:.9rem;color:${pend?'var(--g400)':'var(--obsidian)'};">${s.lbl}</div>
-${active?`<div style="font-size:.75rem;color:var(--blue);margin-top:1px;">Aktueller Status</div>`:''}
-</div></div>`}).join('')}
-</div>
-<div class="dv"></div>
-<div style="display:flex;gap:8px;">
-<div style="flex:1;background:var(--snow);border-radius:var(--rs);padding:12px 14px;">
-<div style="font-size:10px;color:var(--g600);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;">Logistik</div>
-<div style="font-weight:500;font-size:.88rem;">${LOG[b.logistics_type]?.name}</div>
-</div>
-<div style="flex:1;background:var(--snow);border-radius:var(--rs);padding:12px 14px;">
-<div style="font-size:10px;color:var(--g600);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;">Preis</div>
-<div style="font-weight:500;font-size:.88rem;">${fe(b.price)}</div>
-</div>
-</div>
-</div>`}
+function vBook1() {
+  return `
+    <div class="topbar">
+      <button class="back-btn" onclick="A.nav('home')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="topbar-title">service buchen</div>
+      <div></div>
+    </div>
+    <div class="screen fade-up">
+      ${stepsIndicator(1)}
+      <div class="section-label">Welcher Ski?</div>
+      ${S.assets.map(a => `
+        <div class="card card-interactive ${S.draft.asset_id===a.id?'card-selected':''}" onclick="A.selectAsset('${a.id}')">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="font-size:1.5rem;">🎿</div>
+            <div style="flex:1;">
+              <div style="font-weight:500;">${esc(a.brand)} ${esc(a.model)}</div>
+              <div style="font-size:.8rem;color:var(--g500);">${a.length_cm?a.length_cm+' cm ·':''} ${a.year||''}</div>
+            </div>
+            ${S.draft.asset_id===a.id?`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>`:''}
+          </div>
+        </div>
+      `).join('')}
+      <button class="btn btn-ghost" onclick="A.go('book-asset')" style="margin-bottom:16px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        ${S.assets.length===0?'Ski hinzufügen':'Anderen Ski hinzufügen'}
+      </button>
+      ${S.draft.asset_id ? `
+        <button class="btn btn-primary" onclick="A.go('book-2')">
+          Weiter
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>` : ''}
+    </div>`;
+}
 
-function vAdmin(){
-  const act=S.bookings.filter(b=>!['completed','cancelled'].includes(b.status));
-  const rev=S.bookings.reduce((s,b)=>s+Number(b.price||0),0);
-  const today=S.bookings.filter(b=>{const d=new Date(b.created_at);const n=new Date();return d.toDateString()===n.toDateString()});
-  return`<div class="tb">
-<div style="display:flex;align-items:center;gap:10px;">
-<div class="bw" style="width:32px;height:32px;"><span style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:.9rem;color:#fff;letter-spacing:-1px;">s</span></div>
-<div class="tbt">admin</div></div>
-<button class="btn bsm bs" onclick="A.logout()" style="padding:5px 12px;">Logout</button></div>
-<div class="sc">
-<div class="g2" style="margin-bottom:8px;">
-<div class="card" style="text-align:center;padding:14px;background:var(--blue-tint);border-color:transparent;">
-<div style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:2rem;letter-spacing:2px;color:var(--blue);">${act.length}</div>
-<div style="font-size:.72rem;color:var(--g600);text-transform:uppercase;letter-spacing:.06em;">Aktiv</div></div>
-<div class="card" style="text-align:center;padding:14px;">
-<div style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:2rem;letter-spacing:2px;color:var(--blue);">${today.length}</div>
-<div style="font-size:.72rem;color:var(--g600);text-transform:uppercase;letter-spacing:.06em;">Heute</div></div>
-</div>
-<div class="card" style="text-align:center;padding:12px;margin-bottom:16px;">
-<div style="font-size:.72rem;color:var(--g600);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;">Gesamtumsatz</div>
-<div style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:1.6rem;letter-spacing:2px;color:var(--blue);">${fe(rev)}</div>
-</div>
-<div class="lbl" style="margin-bottom:12px;">Alle Buchungen (${S.bookings.length})</div>
-${S.bookings.length===0?`<div class="empty"><p class="mu">Noch keine Buchungen.</p></div>`:
-S.bookings.map(b=>{
-  const ci=SF.findIndex(s=>s.key===b.status);
-  const ns=ci>=0&&ci<SF.length-1?SF[ci+1]:null;
-  return`<div class="card" style="margin-bottom:10px;">
-<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;">
-<div style="flex:1;min-width:0;margin-right:10px;">
-<div style="font-weight:500;font-size:.95rem;">${esc(b.assets?.brand||'?')} ${esc(b.assets?.model||'')}</div>
-<div class="mu" style="font-size:.75rem;">${b.profiles?.email||b.user_id?.slice(0,8)||'—'}</div>
-<div class="mu" style="font-size:.75rem;">${PKG[b.service_package]?.name} · ${fe(b.price)} · ${LOG[b.logistics_type]?.name}</div>
-${b.logistics_address?`<div class="mu" style="font-size:.72rem;">📍 ${esc(b.logistics_address)}</div>`:''}
-</div>
-<div style="flex-shrink:0;">
-<span class="badge ${bc(b.status)}">${sl(b.status)}</span>
-<div class="mu" style="font-size:.7rem;text-align:right;margin-top:3px;">${fd(b.created_at)}</div>
-</div></div>
-${b.status!=='completed'&&b.status!=='cancelled'?`<div class="dv" style="margin:8px 0;"></div>
-<div style="display:flex;align-items:center;gap:8px;">
-<select class="ss" onchange="A.updateStatus('${b.id}',this.value)">
-<option value="">Status ändern…</option>
-${SF.map(s=>`<option value="${s.key}" ${s.key===b.status?'selected':''}>${s.lbl}</option>`).join('')}
-</select>
-${ns?`<button class="btn bp bsm" onclick="A.updateStatus('${b.id}','${ns.key}')">→ ${ns.lbl}</button>`:''}
-</div>`:''}
-</div>`}).join('')}
-</div>`}
+function vBookAsset() {
+  const a = S.newAsset;
+  return `
+    <div class="topbar">
+      <button class="back-btn" onclick="A.go('book-1')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="topbar-title">ski hinzufügen</div>
+      <div></div>
+    </div>
+    <div class="screen fade-up">
+      <div class="field"><label class="field-label">Marke *</label><input class="input" type="text" value="${esc(a.brand)}" placeholder="Atomic, Rossignol, Fischer…" oninput="A.setNA('brand',this.value)"></div>
+      <div class="field"><label class="field-label">Modell *</label><input class="input" type="text" value="${esc(a.model)}" placeholder="Redster X9i, Hero Elite…" oninput="A.setNA('model',this.value)"></div>
+      <div class="grid-2">
+        <div class="field"><label class="field-label">Länge (cm)</label><input class="input" type="number" value="${a.len}" placeholder="175" inputmode="numeric" oninput="A.setNA('len',this.value)"></div>
+        <div class="field"><label class="field-label">Baujahr</label><input class="input" type="number" value="${a.year}" placeholder="2024" inputmode="numeric" oninput="A.setNA('year',this.value)"></div>
+      </div>
+      <button class="btn btn-primary" onclick="A.addAsset()">
+        ${S.loading?'<div class="spin-btn"></div>':'Ski speichern & weiter'}
+      </button>
+    </div>`;
+}
 
-// ── ROUTER ────────────────────────────────────────────────
-function go(view){
-  S.view=view;
-  if(rtCh){db.removeChannel(rtCh);rtCh=null}
-  const app=document.getElementById('app');
-  if(!app)return;
-  if(view.startsWith('tracking-')){
-    const bid=view.replace('tracking-','');
-    app.innerHTML=vTracking(bid);
+function vBook2() {
+  return `
+    <div class="topbar">
+      <button class="back-btn" onclick="A.go('book-1')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="topbar-title">paket wählen</div>
+      <div></div>
+    </div>
+    <div class="screen fade-up">
+      ${stepsIndicator(2)}
+      <div class="section-label">Service-Paket</div>
+      ${Object.values(PKG).map(p => `
+        <div class="card card-interactive ${S.draft.pkg===p.id?'card-selected':''}" onclick="A.selectPkg('${p.id}')"
+          style="position:relative;overflow:hidden;padding-top:${p.rec?'28px':'16px'};">
+          ${p.rec?`<div style="position:absolute;top:0;right:16px;background:var(--blue);color:#fff;font-size:9px;font-weight:600;padding:3px 12px;border-radius:0 0 8px 8px;letter-spacing:.06em;text-transform:uppercase;">Empfohlen</div>`:''}
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;">
+            <div>
+              <div style="font-weight:600;font-size:.95rem;">${p.name}</div>
+              <div style="font-size:.8rem;color:var(--g500);">${p.tag} · ${p.days} Werktage</div>
+            </div>
+            <div style="font-family:var(--fd);font-weight:200;font-size:1.8rem;letter-spacing:.02em;color:var(--blue);line-height:1;">${p.price}<span style="font-size:.9rem"> €</span></div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;">
+            ${p.features.map(f=>`<span class="chip chip-outline">${f}</span>`).join('')}
+          </div>
+        </div>
+      `).join('')}
+      <button class="btn btn-primary" style="margin-top:8px;" onclick="A.go('book-3')">
+        Weiter
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>`;
+}
+
+function vBook3() {
+  const selLog = LOG[S.draft.log];
+  return `
+    <div class="topbar">
+      <button class="back-btn" onclick="A.go('book-2')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="topbar-title">logistik</div>
+      <div></div>
+    </div>
+    <div class="screen fade-up">
+      ${stepsIndicator(3)}
+      <div class="section-label">Wie gibst du ab?</div>
+      ${Object.values(LOG).map(l => `
+        <div class="card card-interactive ${S.draft.log===l.id?'card-selected':''}" onclick="A.selectLog('${l.id}')">
+          <div style="display:flex;align-items:center;gap:14px;">
+            <div style="width:46px;height:46px;background:${S.draft.log===l.id?'var(--blue-tint)':'var(--g100)'};border-radius:var(--rs);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;">${l.icon}</div>
+            <div style="flex:1;">
+              <div style="font-weight:500;">${l.name}</div>
+              <div style="font-size:.8rem;color:var(--g500);line-height:1.5;">${l.desc}</div>
+            </div>
+            ${S.draft.log===l.id?`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>`:''}
+          </div>
+        </div>
+      `).join('')}
+      ${selLog?.needsAddr ? `
+        <div class="field" style="margin-top:8px;">
+          <label class="field-label">Abholadresse</label>
+          <input class="input" type="text" placeholder="Straße Nr, PLZ Ort"
+            value="${esc(S.draft.addr)}" oninput="A.setD('addr',this.value)">
+        </div>` : ''}
+      <div class="field">
+        <label class="field-label">Anmerkungen (optional)</label>
+        <input class="input" type="text" placeholder="z.B. Klingel 2. Stock, ab 18h"
+          value="${esc(S.draft.notes)}" oninput="A.setD('notes',this.value)">
+      </div>
+      <button class="btn btn-primary" onclick="A.go('book-4')">
+        Zur Bestätigung
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>`;
+}
+
+function vBook4() {
+  const asset = S.assets.find(a=>a.id===S.draft.asset_id)||S.draft.asset;
+  const pkg = PKG[S.draft.pkg];
+  const log = LOG[S.draft.log];
+  return `
+    <div class="topbar">
+      <button class="back-btn" onclick="A.go('book-3')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="topbar-title">bestätigung</div>
+      <div></div>
+    </div>
+    <div class="screen fade-up">
+      ${stepsIndicator(4)}
+      <div class="section-label">Bestellung prüfen</div>
+      <div class="card" style="margin-bottom:16px;">
+        ${[
+          ['Equipment', `${asset?.brand||'?'} ${asset?.model||''}`],
+          ['Paket', `${pkg?.name} · ${pkg?.days} Werktage`],
+          ['Logistik', log?.name||'—'],
+          ['Adresse', S.draft.addr||'—'],
+        ].map(([k,v]) => `
+          <div style="display:flex;justify-content:space-between;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--g100);">
+            <span style="font-size:.875rem;color:var(--g500);flex-shrink:0;margin-right:12px;">${k}</span>
+            <span style="font-size:.875rem;font-weight:500;text-align:right;">${esc(v)}</span>
+          </div>`).join('')}
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 0 2px;">
+          <span style="font-weight:600;">Gesamt</span>
+          <span style="font-family:var(--fd);font-weight:200;font-size:1.8rem;letter-spacing:.02em;color:var(--blue);">${pkg?.price} <span style="font-size:.9rem">€</span></span>
+        </div>
+      </div>
+      <div style="background:var(--amber-tint);border-radius:var(--rs);padding:12px 14px;margin-bottom:16px;font-size:.82rem;color:var(--amber);line-height:1.6;display:flex;gap:8px;align-items:flex-start;">
+        <span style="flex-shrink:0;">💳</span>
+        Stripe-Zahlung kommt in Kürze. Aktuell: Testbuchung ohne Zahlung.
+      </div>
+      <button class="btn btn-primary" onclick="A.createBooking()">
+        ${S.loading?'<div class="spin-btn"></div>':'Jetzt buchen — '+fmtEur(pkg?.price)}
+      </button>
+    </div>`;
+}
+
+function vBookConfirm() {
+  const b = S.confirmed;
+  if(!b) { A.nav('home'); return ''; }
+  const pkg = PKG[b.service_package];
+  const log = LOG[b.logistics_type];
+  return `
+    <div class="screen fade-up" style="display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:56px;">
+      <div class="success-ico">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div style="font-family:var(--fd);font-weight:200;font-size:1.5rem;letter-spacing:.04em;margin-bottom:8px;">Buchung bestätigt</div>
+      <p style="font-size:.875rem;color:var(--g500);margin-bottom:28px;max-width:260px;line-height:1.7;">
+        ${pkg?.name} Service gebucht. Wir melden uns innerhalb von 24h für die Abholung.
+      </p>
+      <div class="card" style="width:100%;text-align:left;margin-bottom:14px;">
+        ${[
+          ['Paket', pkg?.name],
+          ['Preis', fmtEur(b.price)],
+          ['Logistik', log?.name],
+          ['Fertig ca.', fmtDate(b.estimated_completion)],
+        ].map(([k,v]) => `
+          <div style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--g100);">
+            <span style="font-size:.875rem;color:var(--g500);">${k}</span>
+            <span style="font-size:.875rem;font-weight:500;">${esc(v||'—')}</span>
+          </div>`).join('')}
+        <div style="display:flex;justify-content:space-between;padding:10px 0 0;">
+          <span style="font-size:.875rem;font-weight:500;">Auftrags-ID</span>
+          <span style="font-family:monospace;font-size:.78rem;color:var(--blue);">${b.id.slice(0,8).toUpperCase()}</span>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="A.nav('my-bookings')" style="margin-bottom:10px;">Meine Aufträge ansehen</button>
+      <button class="btn btn-secondary" onclick="A.nav('home')">Zurück zum Dashboard</button>
+    </div>`;
+}
+
+function vMyBookings() {
+  return `
+    <div class="topbar">
+      <div class="topbar-logo">
+        <svg class="logo-svg" width="28" height="28" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="200" cy="200" r="195" fill="#2D72C8"/>
+          <path d="M 226,80 C 271,67 120,116 124,160 C 128,200 232,191 232,235 C 232,271 125,284 143,290" fill="none" stroke="#fff" stroke-width="11" stroke-linecap="round"/>
+          <path d="M 196,93 C 238,83 147,127 151,169 C 155,207 196,200 196,242 C 196,276 148,284 163,290" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity="0.42"/>
+        </svg>
+        <span class="topbar-wordmark">slopy</span>
+      </div>
+    </div>
+    <div class="screen fade-up">
+      <div style="margin-bottom:20px;">
+        <div class="page-title">Aufträge</div>
+      </div>
+      ${S.bookings.length === 0 ? `
+        <div class="empty">
+          <div class="empty-icon">📋</div>
+          <div style="font-weight:500;margin-bottom:6px;">Noch keine Aufträge</div>
+          <p style="font-size:.875rem;color:var(--g500);margin-bottom:20px;">Dein erster Service ist wenige Klicks entfernt.</p>
+          <button class="btn btn-primary" style="max-width:200px;margin:0 auto;" onclick="A.nav('book-1')">Service buchen</button>
+        </div>
+      ` : S.bookings.map(b => `
+        <div class="card card-interactive" onclick="A.go('tracking-${b.id}')" style="margin-bottom:10px;">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;">
+            <div style="min-width:0;flex:1;margin-right:10px;">
+              <div style="font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(b.assets?.brand||'?')} ${esc(b.assets?.model||'')}</div>
+              <div style="font-size:.78rem;color:var(--g500);">${PKG[b.service_package]?.name} · ${fmtDate(b.created_at)}</div>
+            </div>
+            <span class="${badgeClass(b.status)}">${slabel(b.status)}</span>
+          </div>
+          ${progressBar(b.status)}
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;">
+            <span style="font-size:.78rem;color:var(--g500);">${LOG[b.logistics_type]?.name||b.logistics_type}</span>
+            <span style="font-family:var(--fd);font-weight:200;font-size:1rem;letter-spacing:.02em;color:var(--blue);">${fmtEur(b.price)}</span>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+    ${bottomNav('my-bookings')}`;
+}
+
+function vTracking(bid) {
+  const b = S.bookings.find(x=>x.id===bid);
+  if(!b) return `<div class="screen"><p style="color:var(--g500)">Auftrag nicht gefunden.</p></div>`;
+  const keys = STATUS_FLOW.map(s=>s.key);
+  const curIdx = keys.indexOf(b.status);
+  const asset = b.assets;
+  return `
+    <div class="topbar">
+      <button class="back-btn" onclick="A.nav('my-bookings')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="topbar-title">live tracking</div>
+      <div></div>
+    </div>
+    <div class="screen fade-up">
+      <div class="card card-highlight" style="margin-bottom:20px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;">
+          <div>
+            <div style="font-weight:600;">${esc(asset?.brand||'')} ${esc(asset?.model||'')}</div>
+            <div style="font-size:.8rem;color:var(--g500);">${PKG[b.service_package]?.name}</div>
+          </div>
+          <span class="${badgeClass(b.status)}">${slabel(b.status)}</span>
+        </div>
+        ${progressBar(b.status)}
+        <div style="display:flex;justify-content:space-between;margin-top:10px;font-size:.78rem;">
+          <span style="color:var(--g500);">${LOG[b.logistics_type]?.name}</span>
+          <span style="color:var(--g500);">Fertig ca. <strong style="color:var(--obsidian);">${fmtDate(b.estimated_completion)}</strong></span>
+        </div>
+      </div>
+
+      <div class="section-label">Status-Verlauf</div>
+      <div style="position:relative;padding-left:8px;">
+        <div style="position:absolute;left:17px;top:14px;width:2px;height:calc(100% - 28px);background:var(--g200);border-radius:1px;"></div>
+        <div style="position:absolute;left:17px;top:14px;width:2px;height:${Math.min(95,(curIdx/(STATUS_FLOW.length-1))*100)}%;background:linear-gradient(to bottom,var(--blue),var(--blue));border-radius:1px;transition:height .6s ease;"></div>
+        ${STATUS_FLOW.map((step,i) => {
+          const done = i < curIdx;
+          const active = i === curIdx;
+          const pend = i > curIdx;
+          return `<div class="tracking-step">
+            <div class="tracking-dot ${done?'done':active?'active':'pending'}">
+              ${done?`<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>`:''}
+            </div>
+            <div style="padding-top:1px;">
+              <div style="font-weight:${active?'600':'400'};font-size:.9rem;color:${pend?'var(--g400)':'var(--obsidian)'};">${step.label}</div>
+              ${active?`<div style="font-size:.75rem;color:var(--blue);margin-top:2px;font-weight:500;">● Aktueller Status</div>`:''}
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+
+      ${asset ? `
+        <div class="divider"></div>
+        <div class="section-label">Equipment Health</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+          ${healthRing(asset.edge_health||100, 72, 'Kanten')}
+          ${healthRing(asset.base_health||100, 72, 'Belag')}
+          ${healthRing(asset.wax_health||100,  72, 'Wachs')}
+        </div>
+      ` : ''}
+    </div>`;
+}
+
+// ════════════════════════════════════════════════════════════
+// ADMIN VIEWS
+// ════════════════════════════════════════════════════════════
+
+function vAdmin() {
+  const active = S.bookings.filter(b=>!['completed','cancelled'].includes(b.status));
+  const today = S.bookings.filter(b=>{const d=new Date(b.created_at);const n=new Date();return d.toDateString()===n.toDateString()});
+  const revenue = S.bookings.filter(b=>b.status!=='cancelled').reduce((s,b)=>s+Number(b.price||0),0);
+
+  return `
+    <div class="admin-wrap">
+      <div class="admin-topbar">
+        <div class="admin-topbar-logo">
+          <svg class="logo-svg" width="28" height="28" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="200" cy="200" r="195" fill="rgba(255,255,255,0.15)"/>
+            <path d="M 226,80 C 271,67 120,116 124,160 C 128,200 232,191 232,235 C 232,271 125,284 143,290" fill="none" stroke="#fff" stroke-width="11" stroke-linecap="round"/>
+            <path d="M 196,93 C 238,83 147,127 151,169 C 155,207 196,200 196,242 C 196,276 148,284 163,290" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity="0.42"/>
+          </svg>
+          <span class="admin-topbar-wordmark">slopy</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span class="admin-badge">Admin</span>
+          <button class="btn btn-xs" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.15);" onclick="A.logout()">Logout</button>
+        </div>
+      </div>
+
+      <div class="admin-screen fade-up">
+        <div class="admin-stat-grid">
+          <div class="admin-stat">
+            <div class="admin-stat-value">${active.length}</div>
+            <div class="admin-stat-label">Aktive Aufträge</div>
+          </div>
+          <div class="admin-stat">
+            <div class="admin-stat-value">${today.length}</div>
+            <div class="admin-stat-label">Heute</div>
+          </div>
+        </div>
+        <div class="admin-card" style="margin-bottom:20px;text-align:center;padding:16px;">
+          <div style="font-size:.7rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--g500);margin-bottom:4px;">Gesamtumsatz</div>
+          <div style="font-family:var(--fd);font-weight:200;font-size:2rem;letter-spacing:.04em;color:var(--blue);">${fmtEur(revenue)}</div>
+        </div>
+
+        <div class="section-label">Alle Buchungen (${S.bookings.length})</div>
+        ${S.bookings.length === 0 ? `
+          <div class="empty"><p style="color:var(--g500)">Noch keine Buchungen.</p></div>
+        ` : S.bookings.map(b => {
+          const curIdx = STATUS_FLOW.findIndex(s=>s.key===b.status);
+          const nextStatus = curIdx >= 0 && curIdx < STATUS_FLOW.length-1 ? STATUS_FLOW[curIdx+1] : null;
+          return `
+            <div class="admin-card" style="margin-bottom:10px;">
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;">
+                <div style="flex:1;min-width:0;margin-right:10px;">
+                  <div style="font-weight:600;font-size:.95rem;">${esc(b.assets?.brand||'?')} ${esc(b.assets?.model||'')}</div>
+                  <div style="font-size:.75rem;color:var(--g500);">${b.profiles?.email || b.user_id?.slice(0,8) || '—'}</div>
+                  <div style="font-size:.75rem;color:var(--g500);">${PKG[b.service_package]?.name} · ${fmtEur(b.price)} · ${LOG[b.logistics_type]?.name}</div>
+                  ${b.logistics_address?`<div style="font-size:.72rem;color:var(--g500);">📍 ${esc(b.logistics_address)}</div>`:''}
+                </div>
+                <div style="flex-shrink:0;text-align:right;">
+                  <span class="${badgeClass(b.status)}">${slabel(b.status)}</span>
+                  <div style="font-size:.7rem;color:var(--g500);margin-top:4px;">${fmtDate(b.created_at)}</div>
+                </div>
+              </div>
+              ${b.status !== 'completed' && b.status !== 'cancelled' ? `
+                <div class="divider" style="margin:8px 0;"></div>
+                <div style="display:flex;gap:8px;align-items:center;">
+                  <select class="status-select" onchange="A.updateStatus('${b.id}',this.value)">
+                    <option value="">Status ändern…</option>
+                    ${STATUS_FLOW.map(s=>`<option value="${s.key}" ${s.key===b.status?'selected':''}>${s.label}</option>`).join('')}
+                  </select>
+                  ${nextStatus ? `
+                    <button class="btn btn-sm btn-primary" onclick="A.updateStatus('${b.id}','${nextStatus.key}')" style="white-space:nowrap;">
+                      → ${nextStatus.label}
+                    </button>` : ''}
+                </div>
+              ` : ''}
+            </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+}
+
+// ════════════════════════════════════════════════════════════
+// ROUTER
+// ════════════════════════════════════════════════════════════
+
+function go(view) {
+  S.view = view;
+  if(rtCh) { db.removeChannel(rtCh); rtCh = null; }
+  const app = document.getElementById('app');
+  if(!app) return;
+
+  if(view.startsWith('tracking-')) {
+    app.innerHTML = vTracking(view.replace('tracking-',''));
   } else {
-    switch(view){
-      case 'auth':app.innerHTML=vAuth();break;
-      case 'home':app.innerHTML=vHome();subUser();break;
-      case 'profile':app.innerHTML=vProfile();break;
-      case 'book-1':app.innerHTML=vBook1();break;
-      case 'book-asset':app.innerHTML=vBookAsset();break;
-      case 'book-2':app.innerHTML=vBook2();break;
-      case 'book-3':app.innerHTML=vBook3();break;
-      case 'book-4':app.innerHTML=vBook4();break;
-      case 'book-confirm':app.innerHTML=vBookConfirm();break;
-      case 'my-bookings':app.innerHTML=vMyBookings();subUser();break;
-      case 'admin':app.innerHTML=vAdmin();subAdmin();break;
-      default:app.innerHTML=vAuth();
+    switch(view) {
+      case 'auth':         app.innerHTML = vAuth();        break;
+      case 'home':         app.innerHTML = vHome();        subCustomer(); break;
+      case 'profile':      app.innerHTML = vProfile();     break;
+      case 'book-1':       app.innerHTML = vBook1();       break;
+      case 'book-asset':   app.innerHTML = vBookAsset();   break;
+      case 'book-2':       app.innerHTML = vBook2();       break;
+      case 'book-3':       app.innerHTML = vBook3();       break;
+      case 'book-4':       app.innerHTML = vBook4();       break;
+      case 'book-confirm': app.innerHTML = vBookConfirm(); break;
+      case 'my-bookings':  app.innerHTML = vMyBookings();  subCustomer(); break;
+      case 'admin':        app.innerHTML = vAdmin();       subAdmin(); break;
+      default:             app.innerHTML = vAuth();
     }
   }
   window.scrollTo(0,0);
 }
 
-// ── REALTIME ──────────────────────────────────────────────
-function subUser(){
-  if(!S.user||rtCh)return;
-  rtCh=db.channel('rt-user')
-    .on('postgres_changes',{event:'UPDATE',schema:'public',table:'bookings',filter:`user_id=eq.${S.user.id}`},p=>{
-      S.bookings=S.bookings.map(b=>b.id===p.new.id?{...b,...p.new}:b);
-      toast('Status aktualisiert: '+sl(p.new.status));
-      go(S.view);
-    }).subscribe()
+// ── Realtime ──────────────────────────────────────────────
+function subCustomer() {
+  if(!S.user || rtCh) return;
+  rtCh = db.channel('rt-customer')
+    .on('postgres_changes', { event:'UPDATE', schema:'public', table:'bookings', filter:`user_id=eq.${S.user.id}` }, p => {
+      S.bookings = S.bookings.map(b => b.id===p.new.id ? {...b,...p.new} : b);
+      toast('Status aktualisiert: ' + slabel(p.new.status));
+      if(S.view === 'home' || S.view === 'my-bookings') go(S.view);
+    }).subscribe();
 }
-function subAdmin(){
-  if(rtCh)return;
-  rtCh=db.channel('rt-admin')
-    .on('postgres_changes',{event:'*',schema:'public',table:'bookings'},async p=>{
-      if(p.eventType==='INSERT'){
-        const{data}=await db.from('bookings').select('*,assets(*),profiles(*)').eq('id',p.new.id).single();
-        if(data)S.bookings.unshift(data);
+
+function subAdmin() {
+  if(rtCh) return;
+  rtCh = db.channel('rt-admin')
+    .on('postgres_changes', { event:'*', schema:'public', table:'bookings' }, async p => {
+      if(p.eventType === 'INSERT') {
+        const { data } = await db.from('bookings').select('*,assets(*),profiles(*)').eq('id',p.new.id).single();
+        if(data) S.bookings.unshift(data);
         toast('Neue Buchung eingegangen!');
-      } else if(p.eventType==='UPDATE'){
-        S.bookings=S.bookings.map(b=>b.id===p.new.id?{...b,...p.new}:b);
+      } else if(p.eventType === 'UPDATE') {
+        S.bookings = S.bookings.map(b => b.id===p.new.id ? {...b,...p.new} : b);
       }
       go('admin');
-    }).subscribe()
+    }).subscribe();
 }
 
-// ── AUTH ──────────────────────────────────────────────────
-async function login(){
-  const e=document.getElementById('ei')?.value?.trim();
-  const p=document.getElementById('pi')?.value;
-  if(!e||!p){toast('E-Mail und Passwort eingeben');return}
+// ── Auth ──────────────────────────────────────────────────
+async function login() {
+  const email = document.getElementById('auth-email')?.value?.trim();
+  const pw = document.getElementById('auth-pw')?.value;
+  if(!email || !pw) { toast('Bitte E-Mail und Passwort eingeben'); return; }
   setL(true);
-  const{error}=await db.auth.signInWithPassword({email:e,password:p});
+  const { error } = await db.auth.signInWithPassword({ email, password:pw });
   setL(false);
-  if(error){toast('Falsche E-Mail oder falsches Passwort');return}
+  if(error) { toast('Falsche E-Mail oder falsches Passwort'); return; }
 }
-async function register(){
-  const e=document.getElementById('ei')?.value?.trim();
-  const p=document.getElementById('pi')?.value;
-  if(!e||!p){toast('E-Mail und Passwort eingeben');return}
-  if(p.length<6){toast('Passwort min. 6 Zeichen');return}
+
+async function register() {
+  const email = document.getElementById('auth-email')?.value?.trim();
+  const pw = document.getElementById('auth-pw')?.value;
+  if(!email || !pw) { toast('Bitte E-Mail und Passwort eingeben'); return; }
+  if(pw.length < 6) { toast('Passwort muss mind. 6 Zeichen haben'); return; }
   setL(true);
-  const{error}=await db.auth.signUp({email:e,password:p});
+  const { error } = await db.auth.signUp({ email, password:pw });
   setL(false);
-  if(error){toast('Fehler: '+error.message);return}
-  toast('Konto erstellt!')
+  if(error) { toast('Fehler: ' + error.message); return; }
+  toast('Konto erstellt!');
 }
-async function logout(){
-  if(rtCh){db.removeChannel(rtCh);rtCh=null}
+
+async function logout() {
+  if(rtCh) { db.removeChannel(rtCh); rtCh = null; }
   await db.auth.signOut();
-  S.user=null;S.profile=null;S.assets=[];S.bookings=[];
-  go('auth')
+  S.user = null; S.profile = null; S.assets = []; S.bookings = [];
+  go('auth');
 }
 
-// ── DATA ──────────────────────────────────────────────────
-async function loadProfile(u){
-  S.user=u;
-  const{data}=await db.from('profiles').select('*').eq('id',u.id).single();
-  if(data){S.profile=data;return}
-  const{data:c}=await db.from('profiles').upsert({id:u.id,email:u.email}).select().single();
-  S.profile=c
+// ── Data ──────────────────────────────────────────────────
+async function loadProfile(user) {
+  S.user = user;
+  const { data } = await db.from('profiles').select('*').eq('id', user.id).single();
+  if(data) { S.profile = data; return; }
+  const { data: created } = await db.from('profiles').upsert({ id:user.id, email:user.email }).select().single();
+  S.profile = created;
 }
-async function loadAssets(){if(!S.user)return;const{data}=await db.from('assets').select('*').eq('user_id',S.user.id).order('created_at',{ascending:false});S.assets=data||[]}
-async function loadMyBookings(){if(!S.user)return;const{data}=await db.from('bookings').select('*,assets(*)').eq('user_id',S.user.id).order('created_at',{ascending:false});S.bookings=data||[]}
-async function loadAllBookings(){const{data}=await db.from('bookings').select('*,assets(*),profiles(*)').order('created_at',{ascending:false});S.bookings=data||[]}
 
-async function addAsset(){
-  const a=S.na;
-  if(!a.brand.trim()||!a.model.trim()){toast('Marke und Modell sind Pflichtfelder');return}
+async function loadAssets() {
+  if(!S.user) return;
+  const { data } = await db.from('assets').select('*').eq('user_id', S.user.id).order('created_at', { ascending:false });
+  S.assets = data || [];
+}
+
+async function loadMyBookings() {
+  if(!S.user) return;
+  const { data } = await db.from('bookings').select('*, assets(*)').eq('user_id', S.user.id).order('created_at', { ascending:false });
+  S.bookings = data || [];
+}
+
+async function loadAllBookings() {
+  const { data } = await db.from('bookings').select('*, assets(*), profiles(*)').order('created_at', { ascending:false });
+  S.bookings = data || [];
+}
+
+async function addAsset() {
+  const a = S.newAsset;
+  if(!a.brand.trim() || !a.model.trim()) { toast('Marke und Modell sind Pflichtfelder'); return; }
   setL(true);
-  const{data,error}=await db.from('assets').insert({user_id:S.user.id,type:'ski',brand:a.brand.trim(),model:a.model.trim(),length_cm:a.len?parseInt(a.len):null,year:a.year?parseInt(a.year):null}).select().single();
+  const { data, error } = await db.from('assets').insert({
+    user_id: S.user.id, type:'ski',
+    brand: a.brand.trim(), model: a.model.trim(),
+    length_cm: a.len ? parseInt(a.len) : null,
+    year: a.year ? parseInt(a.year) : null
+  }).select().single();
   setL(false);
-  if(error){toast('Fehler: '+error.message);return}
-  S.assets.unshift(data);S.draft.asset_id=data.id;S.draft.asset=data;
-  S.na={brand:'',model:'',len:'',year:'',type:'ski'};
-  toast('Ski gespeichert');go('book-2')
+  if(error) { toast('Fehler: ' + error.message); return; }
+  S.assets.unshift(data);
+  S.draft.asset_id = data.id;
+  S.draft.asset = data;
+  S.newAsset = { brand:'', model:'', len:'', year:'', type:'ski' };
+  toast('Ski gespeichert');
+  go('book-2');
 }
 
-async function createBooking(){
-  if(!S.draft.asset_id){toast('Bitte Ski auswählen');return}
-  const p=PKG[S.draft.pkg];if(!p)return;
+async function createBooking() {
+  if(!S.draft.asset_id) { toast('Bitte Ski auswählen'); return; }
+  const pkg = PKG[S.draft.pkg];
+  if(!pkg) return;
   setL(true);
-  const est=new Date();est.setDate(est.getDate()+p.days+2);
-  const{data,error}=await db.from('bookings').insert({user_id:S.user.id,asset_id:S.draft.asset_id,service_package:S.draft.pkg,logistics_type:S.draft.log,logistics_address:S.draft.addr||null,logistics_notes:S.draft.notes||null,price:p.price,status:'booked',estimated_completion:est.toISOString().split('T')[0]}).select().single();
+  const est = new Date();
+  est.setDate(est.getDate() + pkg.days + 2);
+  const { data, error } = await db.from('bookings').insert({
+    user_id: S.user.id,
+    asset_id: S.draft.asset_id,
+    service_package: S.draft.pkg,
+    logistics_type: S.draft.log,
+    logistics_address: S.draft.addr || null,
+    logistics_notes: S.draft.notes || null,
+    price: pkg.price,
+    status: 'booked',
+    estimated_completion: est.toISOString().split('T')[0]
+  }).select().single();
   setL(false);
-  if(error){toast('Fehler: '+error.message);return}
-  S.bookings.unshift({...data,assets:S.draft.asset});
-  S.confirmed={...data,assets:S.draft.asset};
-  go('book-confirm')
+  if(error) { toast('Fehler: ' + error.message); console.error(error); return; }
+  S.bookings.unshift({ ...data, assets: S.draft.asset });
+  S.confirmed = { ...data, assets: S.draft.asset };
+  go('book-confirm');
 }
 
-async function updateStatus(id,ns){
-  if(!ns)return;
-  const{error}=await db.from('bookings').update({status:ns}).eq('id',id);
-  if(error){toast('Fehler');return}
-  S.bookings=S.bookings.map(b=>b.id===id?{...b,status:ns}:b);
-  toast('Status: '+sl(ns));
-  go('admin')
+async function updateStatus(id, newStatus) {
+  if(!newStatus) return;
+  const { error } = await db.from('bookings').update({ status: newStatus }).eq('id', id);
+  if(error) { toast('Fehler beim Update'); return; }
+  S.bookings = S.bookings.map(b => b.id===id ? {...b, status:newStatus} : b);
+  toast('Status: ' + slabel(newStatus));
+  go('admin');
 }
 
-async function saveProfile(){
-  const fn=document.getElementById('fn')?.value?.trim();
-  const ph=document.getElementById('ph')?.value?.trim();
+async function saveProfile() {
+  const name  = document.getElementById('pf-name')?.value?.trim();
+  const phone = document.getElementById('pf-phone')?.value?.trim();
   setL(true);
-  const{error}=await db.from('profiles').update({full_name:fn||null,phone:ph||null}).eq('id',S.user.id);
+  const { error } = await db.from('profiles').update({ full_name:name||null, phone:phone||null }).eq('id', S.user.id);
   setL(false);
-  if(error){toast('Fehler: '+error.message);return}
-  S.profile={...S.profile,full_name:fn,phone:ph};
+  if(error) { toast('Fehler: ' + error.message); return; }
+  S.profile = { ...S.profile, full_name:name, phone };
   toast('Profil gespeichert');
-  go('profile')
+  go('profile');
 }
 
-// ── GLOBAL API ────────────────────────────────────────────
-window.A={
-  go,login,register,logout,addAsset,createBooking,updateStatus,saveProfile,
-  selectAsset(id){S.draft.asset_id=id;S.draft.asset=S.assets.find(a=>a.id===id);go('book-1')},
-  selectPkg(id){S.draft.pkg=id;go('book-2')},
-  selectLog(id){S.draft.log=id;go('book-3')},
-  setD(k,v){S.draft[k]=v},
-  setNA(k,v){S.na[k]=v},
-  async nav(v){
-    if(rtCh){db.removeChannel(rtCh);rtCh=null}
-    if(v==='home'){await loadAssets();await loadMyBookings();go('home')}
-    else if(v==='book-1'){await loadAssets();S.draft={asset_id:null,asset:null,pkg:'performance',log:'home',addr:'',notes:''};go('book-1')}
-    else if(v==='my-bookings'){await loadMyBookings();go('my-bookings')}
-    else if(v==='profile'){await loadAssets();await loadMyBookings();go('profile')}
-    else if(v==='admin'){await loadAllBookings();go('admin')}
-    else go(v)
+// ── Global API ────────────────────────────────────────────
+window.A = {
+  go, login, register, logout, addAsset, createBooking, updateStatus, saveProfile,
+  selectAsset(id) { S.draft.asset_id=id; S.draft.asset=S.assets.find(a=>a.id===id); go('book-1'); },
+  selectPkg(id)   { S.draft.pkg=id; go('book-2'); },
+  selectLog(id)   { S.draft.log=id; go('book-3'); },
+  setD(k,v)  { S.draft[k]=v; },
+  setNA(k,v) { S.newAsset[k]=v; },
+  async nav(view) {
+    if(rtCh) { db.removeChannel(rtCh); rtCh=null; }
+    if(view==='home')         { await loadAssets(); await loadMyBookings(); go('home'); }
+    else if(view==='book-1')  { await loadAssets(); S.draft={asset_id:null,asset:null,pkg:'performance',log:'home',addr:'',notes:''}; go('book-1'); }
+    else if(view==='my-bookings') { await loadMyBookings(); go('my-bookings'); }
+    else if(view==='profile') { await loadAssets(); await loadMyBookings(); go('profile'); }
+    else if(view==='admin')   { await loadAllBookings(); go('admin'); }
+    else go(view);
   }
 };
 
-// ── INIT ──────────────────────────────────────────────────
-async function init(){
-  const{data:{session}}=await db.auth.getSession();
-  if(session){
+// ── Init ──────────────────────────────────────────────────
+async function init() {
+  const { data:{ session } } = await db.auth.getSession();
+  if(session) {
     await loadProfile(session.user);
     await loadAssets();
     await loadMyBookings();
-    if(S.profile?.role==='admin'){await loadAllBookings();go('admin')}
-    else go('home')
-  } else go('auth');
-  db.auth.onAuthStateChange(async(ev,session)=>{
-    if(ev==='SIGNED_IN'&&session){
+    // ROLE SEPARATION: admin → admin view, customer → home view
+    if(S.profile?.role === 'admin') {
+      await loadAllBookings();
+      go('admin');
+    } else {
+      go('home');
+    }
+  } else {
+    go('auth');
+  }
+
+  db.auth.onAuthStateChange(async (event, session) => {
+    if(event === 'SIGNED_IN' && session) {
       await loadProfile(session.user);
       await loadAssets();
       await loadMyBookings();
-      if(S.profile?.role==='admin'){await loadAllBookings();go('admin')}
-      else go('home')
-    } else if(ev==='SIGNED_OUT') go('auth')
-  })
+      if(S.profile?.role === 'admin') {
+        await loadAllBookings();
+        go('admin');
+      } else {
+        go('home');
+      }
+    } else if(event === 'SIGNED_OUT') {
+      go('auth');
+    }
+  });
 }
+
 init();
 </script>
 </body>
