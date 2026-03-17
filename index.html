@@ -1121,8 +1121,11 @@ async function loadProfile(user) {
   S.user = user;
   const { data } = await db.from('profiles').select('*').eq('id', user.id).single();
   if(data) { S.profile = data; return; }
-  const { data: created } = await db.from('profiles').upsert({ id:user.id, email:user.email }, { onConflict: 'id', ignoreDuplicates: true }).select().single();
-  S.profile = created;
+  // New user — insert fresh profile
+  const { data: ins } = await db.from('profiles').insert({ id:user.id, email:user.email, role:'customer' }).select().single();
+  if(ins) { S.profile = ins; return; }
+  // RLS fallback — should not happen for valid users
+  S.profile = { id:user.id, email:user.email, role:'customer', full_name:null, phone:null };
 }
 
 async function loadAssets() {
