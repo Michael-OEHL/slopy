@@ -1121,7 +1121,7 @@ async function loadProfile(user) {
   S.user = user;
   const { data } = await db.from('profiles').select('*').eq('id', user.id).single();
   if(data) { S.profile = data; return; }
-  const { data: created } = await db.from('profiles').upsert({ id:user.id, email:user.email }).select().single();
+  const { data: created } = await db.from('profiles').upsert({ id:user.id, email:user.email }, { onConflict: 'id', ignoreDuplicates: true }).select().single();
   S.profile = created;
 }
 
