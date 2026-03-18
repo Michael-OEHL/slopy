@@ -665,16 +665,15 @@ function stepsIndicator(current) {
 function bottomNav(active) {
   const unread = unreadCount();
   const items = [
-    { k:'home',        l:'Home',    svg:`<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>` },
-    { k:'book-1',      l:'Buchen',  svg:`<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>` },
-    { k:'my-bookings', l:'Aufträge',svg:`<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>` },
-    { k:'notifications',l:'Updates', svg:`<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>` },
-    { k:'profile',     l:'Profil',  svg:`<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>` }
+    { k:'home',        l:'Home',     svg:`<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>` },
+    { k:'book-1',      l:'Buchen',   svg:`<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>` },
+    { k:'my-bookings', l:'Aufträge', svg:`<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>` },
+    { k:'profile',     l:'Profil',   svg:`<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>` }
   ];
   return `<nav class="bottom-nav">${items.map(x=>`
     <button class="nav-item ${active===x.k?'active':''}" onclick="A.nav('${x.k}')" style="position:relative;">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">${x.svg}</svg>
-      ${x.k==='notifications'&&unread>0?'<div class="notif-dot"></div>':''}
+      ${x.k==='profile'&&unread>0?'<div class="notif-dot"></div>':''}
       ${x.l}
     </button>`).join('')}</nav>`;
 }
@@ -784,7 +783,7 @@ function vHome() {
                 <div style="text-align:right;flex-shrink:0;">
                   <div style="font-size:1rem;font-weight:600;color:${healthColor(overall)};">${overall}%</div>
                   <div style="font-size:.7rem;color:var(--g500);">Health</div>
-                  <button onclick="A.go('edit-asset-${a.id}')" style="background:none;border:none;font-size:.7rem;color:var(--blue);cursor:pointer;margin-top:2px;">Bearbeiten</button>
+                  <button onclick="A.go('edit-asset-${a.id}')" style="background:var(--blue-tint);border:none;font-size:.68rem;font-weight:500;color:var(--blue);cursor:pointer;padding:3px 8px;border-radius:4px;margin-top:3px;">Bearbeiten</button>
                 </div>
               </div>
             </div>`;
@@ -797,9 +796,9 @@ function vHome() {
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
         Service buchen
       </button>
-      <button class="btn btn-secondary" onclick="A.nav('b2b')" style="margin-bottom:8px;">
-        <span class="b2b-tag" style="font-size:.6rem;padding:2px 8px;">B2B</span>
-        Unternehmens-Account
+      <button class="btn" onclick="A.nav('b2b')" style="margin-bottom:8px;background:var(--obsidian);color:rgba(255,255,255,.8);font-size:.82rem;">
+        <span style="font-size:.6rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:rgba(45,114,200,.3);color:#7eb3f0;padding:2px 7px;border-radius:2px;">B2B</span>
+        Corporate-Account
       </button>
       <div style="display:flex;justify-content:center;gap:16px;margin-top:20px;padding-top:16px;border-top:1px solid var(--g100);">
         <button onclick="A.go('dsgvo')" style="background:none;border:none;font-size:.72rem;color:var(--g500);cursor:pointer;">Datenschutz</button>
@@ -842,6 +841,13 @@ function vProfile() {
         </div>
       </div>
 
+      ${unreadCount()>0?`<div class="card card-interactive" onclick="A.go('notifications')" style="margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;padding:12px 16px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:36px;height:36px;background:var(--blue-tint);border-radius:var(--rs);display:flex;align-items:center;justify-content:center;font-size:1.1rem;">🔔</div>
+          <div><div style="font-weight:500;font-size:.875rem;">Neue Benachrichtigungen</div><div style="font-size:.75rem;color:var(--g500);">${unreadCount()} ungelesen</div></div>
+        </div>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>`:''}
       <div class="section-label">Profil bearbeiten</div>
       <div class="field">
         <label class="field-label">Vollständiger Name</label>
@@ -1074,7 +1080,8 @@ function vBookConfirm() {
       </div>
       <button class="btn btn-primary" onclick="A.nav('my-bookings')" style="margin-bottom:10px;">Meine Aufträge ansehen</button>
       <button class="btn btn-secondary" onclick="A.nav('home')">Zurück zum Dashboard</button>
-    </div>`;
+    </div>
+    ${bottomNav('my-bookings')}`;
 }
 
 function vMyBookings() {
@@ -1221,7 +1228,9 @@ function vAdminAnalytics() {
         </div>
         <div style="display:flex;align-items:center;gap:10px;">
           <span class="admin-badge">Analytics</span>
-          <button class="btn btn-xs" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.15);" onclick="A.nav('admin')">← Aufträge</button>
+          <button class="btn btn-xs" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.15);" onclick="A.nav('admin')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:3px;"><polyline points="15 18 9 12 15 6"/></svg>Zurück
+          </button>
         </div>
       </div>
 
@@ -1376,9 +1385,9 @@ function vAdmin() {
 
         <!-- Tabs -->
         <div class="admin-tabs">
-          <button class="admin-tab ${tab==='bookings'?'active':''}" onclick="A.setAdminTab('bookings')">Aufträge (${S.bookings.length})</button>
+          <button class="admin-tab ${tab==='bookings'?'active':''}" onclick="A.setAdminTab('bookings')">Alle (${S.bookings.length})</button>
           <button class="admin-tab ${tab==='active'?'active':''}" onclick="A.setAdminTab('active')">Aktiv (${active.length})</button>
-          <button class="admin-tab ${tab==='completed'?'active':''}" onclick="A.setAdminTab('completed')">Abgeschlossen</button>
+          <button class="admin-tab ${tab==='completed'?'active':''}" onclick="A.setAdminTab('completed')">Fertig</button>
         </div>
 
         <!-- Filter Bar -->
@@ -1418,8 +1427,10 @@ function vAdmin() {
                   <div style="font-size:.7rem;color:var(--g500);margin-top:4px;">${fmtDate(b.created_at)}</div>
                 </div>
               </div>
-              <div style="display:flex;justify-content:flex-end;margin-top:4px;">
-                <button class="btn btn-xs" style="background:var(--g100);color:var(--g600);" onclick="A.go('qr-${b.id}')">QR-Code</button>
+              <div style="display:flex;justify-content:flex-end;margin-top:0px;">
+                <button class="btn btn-xs" style="background:var(--g100);color:var(--g600);font-size:.68rem;padding:4px 10px;" onclick="A.go('qr-${b.id}')">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:3px;"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>QR
+                </button>
               </div>
               <div class="divider" style="margin:8px 0;"></div>
               <textarea class="input" id="admin-note-${b.id}" placeholder="Technische Notiz (erscheint im Digital Pass)…" style="font-size:.78rem;min-height:54px;resize:none;" onblur="saveAdminNoteInline('${b.id}',this.value)">${esc(b.admin_notes||'')}</textarea>
@@ -1723,17 +1734,16 @@ function vCapacity() {
       </div>
     </div>
     <div class="admin-screen fade-up">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-        <div>
-          <div style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:1.2rem;letter-spacing:.04em;">${monthName}</div>
-          <div style="font-size:.75rem;color:var(--g500);">Max. ${MAX_PER_DAY} Aufträge/Tag</div>
-        </div>
+      <div style="margin-bottom:16px;">
+        <div class="page-title">${monthName}</div>
+        <div style="font-size:.78rem;color:var(--g500);">Kapazität: max. ${MAX_PER_DAY} Aufträge/Tag</div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;margin-bottom:12px;">
         <div style="display:flex;gap:8px;font-size:.72rem;">
           <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;background:var(--green-tint);display:inline-block;"></span>Frei</span>
           <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;background:var(--amber-tint);display:inline-block;"></span>Halb</span>
           <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;background:var(--red-tint);display:inline-block;"></span>Voll</span>
         </div>
-      </div>
       <div class="cal-grid">
         ${days.map(d=>`<div class="cal-hdr">${d}</div>`).join('')}
         ${Array(firstDay-1).fill('<div></div>').join('')}
@@ -1849,8 +1859,8 @@ function vStripeCheckout() {
       </div>
     </div>
 
-    <div style="background:var(--amber-tint);border-radius:var(--rs);padding:10px 14px;margin-bottom:14px;font-size:.78rem;color:var(--amber);line-height:1.5;">
-      💳 <strong>Demo-Modus:</strong> Gib beliebige Daten ein. Echte Stripe-Integration folgt beim Go-Live.
+    <div style="background:var(--green-tint);border-radius:var(--rs);padding:10px 14px;margin-bottom:14px;font-size:.78rem;color:var(--green);line-height:1.5;display:flex;align-items:center;gap:8px;">
+      <span>✓</span> <span><strong>Test-Modus:</strong> Beliebige Kartendaten eingeben. Live-Zahlung via Stripe folgt.</span>
     </div>
 
     <button class="btn btn-primary" onclick="A.processPayment()">
@@ -1904,49 +1914,143 @@ function vBook1Multi() {
 }
 
 // ════════════════════════════════════════════════════════════
-// B2B VIEW (Point 11)
+// B2B — Full corporate view
 // ════════════════════════════════════════════════════════════
+const B2B_PLANS = {
+  starter:     { name:'Starter',    price:149, devices:5,  features:['5 Geräte','Priority Service','Sammel-Abholung','Basis-Reports'] },
+  professional:{ name:'Professional',price:299,devices:15, features:['15 Geräte','Dedicated Contact','Sammel-Abholung','Volle Analytics','Digital Pass Export'], rec:true },
+  enterprise:  { name:'Enterprise', price:0,   devices:999,features:['Unbegrenzte Geräte','White-Label Option','API-Zugang','Custom SLA','PASSAT-Zertifizierung'] }
+};
+
 function vB2B() {
-  return `<div class="topbar">
-    <button class="back-btn" onclick="A.nav('home')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button>
-    <div class="topbar-title">b2b</div><div></div>
-  </div>
-  <div class="screen fade-up">
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
-      <span class="b2b-tag">B2B</span>
-      <div style="font-size:.875rem;color:var(--g500);">Unternehmens-Dashboard</div>
+  const totalAssets = S.assets.length;
+  const activeBookings = S.bookings.filter(b=>!['completed','cancelled'].includes(b.status));
+  const completedBookings = S.bookings.filter(b=>b.status==='completed');
+  const totalSpent = S.bookings.filter(b=>b.status!=='cancelled').reduce((s,b)=>s+Number(b.price||0),0);
+
+  return `<div style="background:var(--obsidian);min-height:100vh;">
+    <!-- B2B Topbar -->
+    <div style="background:#0d1f35;padding:0 20px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;border-bottom:1px solid rgba(255,255,255,.06);">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <svg width="28" height="28" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="200" cy="200" r="195" fill="rgba(255,255,255,0.12)"/>
+          <path d="M 226,80 C 271,67 120,116 124,160 C 128,200 232,191 232,235 C 232,271 125,284 143,290" fill="none" stroke="#fff" stroke-width="11" stroke-linecap="round"/>
+          <path d="M 196,93 C 238,83 147,127 151,169 C 155,207 196,200 196,242 C 196,276 148,284 163,290" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity="0.42"/>
+        </svg>
+        <div>
+          <div style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:.9rem;letter-spacing:5px;color:#fff;text-transform:lowercase;">slopy</div>
+          <div style="font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:-1px;">Corporate</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:.65rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;background:rgba(45,114,200,.25);color:#7eb3f0;padding:3px 10px;border-radius:2px;border:1px solid rgba(45,114,200,.3);">B2B</span>
+        <button onclick="A.nav('home')" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.7);border-radius:var(--rs);padding:6px 12px;font-size:.75rem;cursor:pointer;">
+          ← Kundenansicht
+        </button>
+      </div>
     </div>
-    <div style="background:linear-gradient(135deg,#0d1f35,#1a3a5c);border-radius:var(--r);padding:24px;margin-bottom:20px;color:#fff;">
-      <div style="font-size:.65rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">Aktives B2B-Paket</div>
-      <div style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:1.6rem;letter-spacing:.04em;margin-bottom:4px;">Corporate Plan</div>
-      <div style="font-size:.78rem;color:rgba(255,255,255,.6);">Bis zu 20 Geräte · Sammel-Abholung · Priority Service</div>
-    </div>
-    <div class="section-label">Equipment-Übersicht (${S.assets.length} Geräte)</div>
-    ${S.assets.map(a=>{
-      const overall = Math.round(((a.edge_health||100)+(a.base_health||100)+(a.wax_health||100))/3);
-      const active = S.bookings.find(b=>b.asset_id===a.id&&!['completed','cancelled'].includes(b.status));
-      return `<div class="card" style="margin-bottom:8px;">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <div style="font-size:1.3rem;">🎿</div>
-          <div style="flex:1;">
-            <div style="font-weight:500;font-size:.875rem;">${esc(a.brand)} ${esc(a.model)}</div>
-            <div style="font-size:.75rem;color:var(--g500);">${a.year||''}</div>
+
+    <div style="padding:20px 20px 60px;">
+
+      <!-- Hero Stats -->
+      <div style="background:linear-gradient(135deg,#0d1f35,#0a1828);border:1px solid rgba(255,255,255,.06);border-radius:var(--r);padding:22px;margin-bottom:16px;">
+        <div style="font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:14px;">Fleet Overview</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+          <div style="text-align:center;">
+            <div style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:2rem;color:#fff;letter-spacing:.02em;line-height:1;">${totalAssets}</div>
+            <div style="font-size:.65rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin-top:3px;">Geräte</div>
           </div>
-          <div style="text-align:right;">
-            ${active ? `<span class="${badgeClass(active.status)}" style="font-size:.68rem;">${slabel(active.status)}</span>` :
-              `<span style="font-size:.8rem;font-weight:600;color:${overall>=70?'var(--green)':overall>=40?'var(--amber)':'var(--red)'};">${overall}%</span>`}
+          <div style="text-align:center;border-left:1px solid rgba(255,255,255,.06);border-right:1px solid rgba(255,255,255,.06);">
+            <div style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:2rem;color:var(--blue);letter-spacing:.02em;line-height:1;">${activeBookings.length}</div>
+            <div style="font-size:.65rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin-top:3px;">Aktiv</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:2rem;color:#4ade80;letter-spacing:.02em;line-height:1;">${completedBookings.length}</div>
+            <div style="font-size:.65rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin-top:3px;">Services</div>
           </div>
         </div>
-      </div>`;
-    }).join('')}
-    <button class="btn btn-primary" onclick="A.nav('book-1')" style="margin-top:8px;">Sammel-Service buchen</button>
-    <div class="divider"></div>
-    <div style="text-align:center;padding:16px;">
-      <div style="font-size:.875rem;color:var(--g500);margin-bottom:12px;line-height:1.6;">Interesse an einem Corporate-Account für dein Unternehmen?</div>
-      <a href="mailto:b2b@slopy.at" class="btn btn-ghost" style="max-width:220px;margin:0 auto;text-decoration:none;">b2b@slopy.at</a>
+      </div>
+
+      <!-- Fleet Health -->
+      <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:var(--r);padding:16px;margin-bottom:16px;">
+        <div style="font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:14px;">Fleet Health</div>
+        ${S.assets.length === 0 ? `<div style="text-align:center;padding:16px;font-size:.875rem;color:rgba(255,255,255,.3);">Noch keine Geräte</div>` :
+          S.assets.map(a => {
+            const overall = Math.round(((a.edge_health||100)+(a.base_health||100)+(a.wax_health||100))/3);
+            const active = S.bookings.find(b=>b.asset_id===a.id&&!['completed','cancelled'].includes(b.status));
+            const color = overall>=70?'#4ade80':overall>=40?'#fbbf24':'#f87171';
+            const barW = overall;
+            return `<div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);">
+              <div style="font-size:1rem;flex-shrink:0;">🎿</div>
+              <div style="flex:1;min-width:0;">
+                <div style="font-size:.82rem;font-weight:500;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(a.brand)} ${esc(a.model)}</div>
+                <div style="height:3px;background:rgba(255,255,255,.08);border-radius:2px;margin-top:5px;overflow:hidden;">
+                  <div style="height:100%;width:${barW}%;background:${color};border-radius:2px;transition:width .5s;"></div>
+                </div>
+              </div>
+              <div style="text-align:right;flex-shrink:0;">
+                ${active ? `<span style="font-size:.65rem;background:rgba(45,114,200,.2);color:#7eb3f0;padding:2px 8px;border-radius:2px;">${slabel(active.status)}</span>` :
+                  `<span style="font-size:.78rem;font-weight:600;color:${color};">${overall}%</span>`}
+              </div>
+            </div>`;
+          }).join('')
+        }
+      </div>
+
+      <!-- Active Bookings -->
+      ${activeBookings.length > 0 ? `
+        <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:var(--r);padding:16px;margin-bottom:16px;">
+          <div style="font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:14px;">Aktive Aufträge</div>
+          ${activeBookings.map(b=>`
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);">
+              <div>
+                <div style="font-size:.82rem;color:#fff;font-weight:500;">${esc(b.assets?.brand||'?')} ${esc(b.assets?.model||'')}</div>
+                <div style="font-size:.72rem;color:rgba(255,255,255,.35);">${PKG[b.service_package]?.name} · ${fmtDate(b.estimated_completion)}</div>
+              </div>
+              <span class="${badgeClass(b.status)}" style="font-size:.65rem;">${slabel(b.status)}</span>
+            </div>`).join('')}
+        </div>
+      ` : ''}
+
+      <!-- Plans -->
+      <div style="margin-bottom:16px;">
+        <div style="font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:12px;">Corporate Pläne</div>
+        ${Object.values(B2B_PLANS).map(p=>`
+          <div style="background:${p.rec?'rgba(45,114,200,.08)':'rgba(255,255,255,.025)'};border:1px solid ${p.rec?'rgba(45,114,200,.3)':'rgba(255,255,255,.06)'};border-radius:var(--r);padding:16px;margin-bottom:8px;position:relative;overflow:hidden;">
+            ${p.rec?`<div style="position:absolute;top:0;right:14px;background:var(--blue);color:#fff;font-size:8px;font-weight:600;padding:2px 10px;border-radius:0 0 6px 6px;letter-spacing:.08em;text-transform:uppercase;">Beliebt</div>`:''}
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;">
+              <div>
+                <div style="font-family:'Josefin Sans',sans-serif;font-weight:300;font-size:.95rem;letter-spacing:.04em;color:#fff;">${p.name}</div>
+                <div style="font-size:.72rem;color:rgba(255,255,255,.4);margin-top:2px;">bis zu ${p.devices===999?'∞':p.devices} Geräte</div>
+              </div>
+              <div style="text-align:right;">
+                ${p.price>0?`<div style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:1.4rem;color:var(--blue);letter-spacing:.02em;">${p.price} €<span style="font-size:.7rem;color:rgba(255,255,255,.3);"> /mo</span></div>`:
+                  `<div style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:1rem;color:rgba(255,255,255,.4);">Auf Anfrage</div>`}
+              </div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:5px;">
+              ${p.features.map(f=>`<span style="font-size:.7rem;background:rgba(255,255,255,.06);color:rgba(255,255,255,.5);padding:3px 9px;border-radius:2px;">${f}</span>`).join('')}
+            </div>
+          </div>`).join('')}
+      </div>
+
+      <!-- CTA -->
+      <div style="background:linear-gradient(135deg,rgba(45,114,200,.12),rgba(45,114,200,.04));border:1px solid rgba(45,114,200,.2);border-radius:var(--r);padding:20px;text-align:center;">
+        <div style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:1.1rem;letter-spacing:.04em;color:#fff;margin-bottom:6px;">Interesse an Corporate?</div>
+        <p style="font-size:.82rem;color:rgba(255,255,255,.5);line-height:1.6;margin-bottom:16px;">Wir konfigurieren ein Paket für dein Unternehmen — ab 5 Geräten.</p>
+        <a href="mailto:b2b@slopy.at" style="display:inline-flex;align-items:center;gap:6px;background:var(--blue);color:#fff;border-radius:var(--rs);padding:10px 24px;font-size:.85rem;font-weight:500;text-decoration:none;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
+          b2b@slopy.at
+        </a>
+      </div>
+
+      <!-- New booking button -->
+      <button class="btn btn-secondary" onclick="A.nav('book-1')" style="margin-top:14px;">
+        + Neuen Service buchen
+      </button>
+
     </div>
-  </div>
-  ${bottomNav('home')}`;
+  </div>`;
 }
 
 // ════════════════════════════════════════════════════════════
