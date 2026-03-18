@@ -356,6 +356,78 @@ html,body{
 .admin-tab{flex:1;padding:12px 8px;background:none;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:.8rem;font-weight:500;color:var(--g500);border-bottom:2px solid transparent;transition:all .15s;text-align:center}
 .admin-tab.active{color:var(--blue);border-bottom-color:var(--blue)}
 
+
+/* ── ONBOARDING ──────────────────────────────────────────── */
+.onboard-wrap{min-height:100vh;display:flex;flex-direction:column;background:var(--white)}
+.onboard-progress{display:flex;gap:4px;padding:16px 20px 0}
+.onboard-seg{flex:1;height:3px;border-radius:2px;background:var(--g200);transition:background .3s}
+.onboard-seg.done{background:var(--blue)}
+.onboard-content{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 28px;text-align:center}
+.onboard-icon{font-size:4rem;margin-bottom:20px;animation:fadeUp .4s ease}
+.onboard-title{font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:1.8rem;letter-spacing:.04em;margin-bottom:10px;line-height:1.2}
+.onboard-body{font-size:.9rem;color:var(--g500);line-height:1.75;max-width:280px;margin-bottom:32px}
+.onboard-footer{padding:20px 24px 36px;display:flex;flex-direction:column;gap:10px}
+
+/* ── DSGVO / LEGAL ───────────────────────────────────────── */
+.legal-wrap{padding:20px 20px 60px;max-width:600px}
+.legal-h1{font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:1.6rem;letter-spacing:.04em;margin-bottom:6px}
+.legal-date{font-size:.78rem;color:var(--g500);margin-bottom:24px}
+.legal-h2{font-family:'Josefin Sans',sans-serif;font-weight:300;font-size:1rem;letter-spacing:.04em;margin:20px 0 8px}
+.legal-p{font-size:.875rem;color:var(--g600);line-height:1.8;margin-bottom:10px}
+.legal-ul{padding-left:18px;margin-bottom:10px}
+.legal-ul li{font-size:.875rem;color:var(--g600);line-height:1.8;margin-bottom:4px}
+
+/* ── COOKIE BANNER ───────────────────────────────────────── */
+#cookie-banner{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--obsidian);color:var(--white);padding:16px 20px;z-index:1000;display:none}
+#cookie-banner.show{display:block}
+.cookie-text{font-size:.78rem;color:rgba(255,255,255,.7);line-height:1.6;margin-bottom:12px}
+.cookie-btns{display:flex;gap:8px}
+.cookie-btn-accept{flex:1;background:var(--blue);color:#fff;border:none;border-radius:var(--rs);padding:10px;font-size:.82rem;font-weight:500;cursor:pointer}
+.cookie-btn-reject{flex:1;background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);border:none;border-radius:var(--rs);padding:10px;font-size:.82rem;cursor:pointer}
+
+/* ── EDIT ASSET ───────────────────────────────────────────── */
+.asset-actions{display:flex;gap:8px;margin-top:10px}
+
+/* ── QR CODE ─────────────────────────────────────────────── */
+.qr-wrap{background:var(--white);border:2px solid var(--g200);border-radius:var(--r);padding:20px;text-align:center;margin-bottom:12px}
+.qr-id{font-family:monospace;font-size:1.1rem;font-weight:700;color:var(--blue);letter-spacing:.1em;margin-top:10px}
+.qr-hint{font-size:.75rem;color:var(--g500);margin-top:4px}
+
+/* ── STAR RATING ─────────────────────────────────────────── */
+.stars{display:flex;gap:6px;justify-content:center;margin:16px 0}
+.star{font-size:2rem;cursor:pointer;transition:transform .15s;filter:grayscale(1);opacity:.4}
+.star.active{filter:none;opacity:1;transform:scale(1.1)}
+.star:hover{transform:scale(1.15)}
+
+/* ── MULTI-ASSET BOOKING ─────────────────────────────────── */
+.asset-check{display:flex;align-items:center;gap:10px;padding:12px 14px;border:1.5px solid var(--g200);border-radius:var(--r);margin-bottom:8px;cursor:pointer;transition:all .15s}
+.asset-check.checked{border-color:var(--blue);background:var(--blue-soft)}
+.asset-check-box{width:20px;height:20px;border-radius:5px;border:2px solid var(--g300);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.asset-check.checked .asset-check-box{background:var(--blue);border-color:var(--blue)}
+
+/* ── CAPACITY / CALENDAR ─────────────────────────────────── */
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-top:10px}
+.cal-day{aspect-ratio:1;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:.7rem;cursor:pointer;position:relative;transition:all .15s}
+.cal-day-num{font-weight:500;line-height:1}
+.cal-day-count{font-size:.55rem;color:var(--g500);margin-top:1px}
+.cal-day.empty-cap{background:var(--green-tint);color:var(--green)}
+.cal-day.half-cap{background:var(--amber-tint);color:var(--amber)}
+.cal-day.full-cap{background:var(--red-tint);color:var(--red)}
+.cal-day.today{box-shadow:0 0 0 2px var(--blue);font-weight:700}
+.cal-day.past{opacity:.35;cursor:default}
+.cal-hdr{font-size:.65rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--g500);text-align:center;padding:4px 0}
+
+/* ── SERVICE REMINDER ────────────────────────────────────── */
+.reminder-card{background:linear-gradient(135deg,var(--blue-tint),rgba(45,114,200,.04));border:1.5px solid rgba(45,114,200,.2);border-radius:var(--r);padding:16px;margin-bottom:14px}
+
+/* ── B2B ─────────────────────────────────────────────────── */
+.b2b-tag{font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:linear-gradient(135deg,#1e3a5f,#2D72C8);color:#fff;padding:3px 10px;border-radius:2px}
+
+/* ── STRIPE ──────────────────────────────────────────────── */
+.stripe-form{background:var(--snow);border:1.5px solid var(--g200);border-radius:var(--r);padding:16px;margin-bottom:14px}
+.stripe-row{display:flex;gap:10px}
+.stripe-badge{display:flex;align-items:center;gap:6px;font-size:.75rem;color:var(--g500);justify-content:center;margin-top:10px}
+
 </style>
 </head>
 <body>
@@ -372,6 +444,15 @@ html,body{
   </div>
 </div>
 <div id="toast"></div>
+
+<!-- Cookie Banner -->
+<div id="cookie-banner">
+  <div class="cookie-text">Wir verwenden ausschließlich technisch notwendige Cookies für die Session-Verwaltung. Keine Tracking- oder Werbe-Cookies.</div>
+  <div class="cookie-btns">
+    <button class="cookie-btn-accept" onclick="acceptCookies()">Akzeptieren</button>
+    <button class="cookie-btn-reject" onclick="rejectCookies()">Ablehnen</button>
+  </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
@@ -426,6 +507,12 @@ const S = {
   adminTab: 'bookings',
   adminFilter: 'all',
   notifications: [],
+  onboardStep: 1,
+  onboardDone: false,
+  rating: { bookingId:null, stars:0 },
+  selectedAssets: [],
+  capacityData: {},
+  b2bMode: false,
 };
 
 const db = supabase.createClient(SB_URL, SB_KEY);
@@ -697,6 +784,7 @@ function vHome() {
                 <div style="text-align:right;flex-shrink:0;">
                   <div style="font-size:1rem;font-weight:600;color:${healthColor(overall)};">${overall}%</div>
                   <div style="font-size:.7rem;color:var(--g500);">Health</div>
+                  <button onclick="A.go('edit-asset-${a.id}')" style="background:none;border:none;font-size:.7rem;color:var(--blue);cursor:pointer;margin-top:2px;">Bearbeiten</button>
                 </div>
               </div>
             </div>`;
@@ -704,10 +792,20 @@ function vHome() {
         </div>
       `}
 
-      <button class="btn btn-primary" onclick="A.nav('book-1')">
+      ${reminderCard()}
+      <button class="btn btn-primary" onclick="A.nav('book-1')" style="margin-bottom:8px;">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
         Service buchen
       </button>
+      <button class="btn btn-secondary" onclick="A.nav('b2b')" style="margin-bottom:8px;">
+        <span class="b2b-tag" style="font-size:.6rem;padding:2px 8px;">B2B</span>
+        Unternehmens-Account
+      </button>
+      <div style="display:flex;justify-content:center;gap:16px;margin-top:20px;padding-top:16px;border-top:1px solid var(--g100);">
+        <button onclick="A.go('dsgvo')" style="background:none;border:none;font-size:.72rem;color:var(--g500);cursor:pointer;">Datenschutz</button>
+        <button onclick="A.go('agb')" style="background:none;border:none;font-size:.72rem;color:var(--g500);cursor:pointer;">AGB</button>
+        <button onclick="A.go('impressum')" style="background:none;border:none;font-size:.72rem;color:var(--g500);cursor:pointer;">Impressum</button>
+      </div>
     </div>
     ${bottomNav('home')}`;
 }
@@ -938,8 +1036,8 @@ function vBook4() {
         <span style="flex-shrink:0;">💳</span>
         Stripe-Zahlung kommt in Kürze. Aktuell: Testbuchung ohne Zahlung.
       </div>
-      <button class="btn btn-primary" onclick="A.createBooking()">
-        ${S.loading?'<div class="spin-btn"></div>':'Jetzt buchen — '+fmtEur(pkg?.price)}
+      <button class="btn btn-primary" onclick="A.go('book-stripe')">
+        Weiter zur Zahlung →
       </button>
     </div>`;
 }
@@ -1076,12 +1174,19 @@ function vTracking(bid) {
       ${asset ? `
         <div class="divider"></div>
         <div class="section-label">Equipment Health</div>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;">
           ${healthRing(asset.edge_health||100, 72, 'Kanten')}
           ${healthRing(asset.base_health||100, 72, 'Belag')}
           ${healthRing(asset.wax_health||100,  72, 'Wachs')}
         </div>
       ` : ''}
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-secondary btn-sm" onclick="A.go('qr-${bid}')" style="flex:1;">
+          QR-Code
+        </button>
+        ${b.status==='completed' ? `<button class="btn btn-secondary btn-sm" onclick="A.go('rate-${bid}')" style="flex:1;">Bewerten ⭐</button>` : ''}
+        <button class="btn btn-secondary btn-sm" onclick="A.go('pass-${bid}')" style="flex:1;">Digital Pass</button>
+      </div>
     </div>`;
 }
 
@@ -1147,9 +1252,13 @@ function vAdmin() {
                   <div style="font-size:.7rem;color:var(--g500);margin-top:4px;">${fmtDate(b.created_at)}</div>
                 </div>
               </div>
+              <div style="display:flex;justify-content:flex-end;margin-top:4px;">
+                <button class="btn btn-xs" style="background:var(--g100);color:var(--g600);" onclick="A.go('qr-${b.id}')">QR-Code</button>
+              </div>
+              <div class="divider" style="margin:8px 0;"></div>
+              <textarea class="input" id="admin-note-${b.id}" placeholder="Technische Notiz (erscheint im Digital Pass)…" style="font-size:.78rem;min-height:54px;resize:none;" onblur="saveAdminNoteInline('${b.id}',this.value)">${esc(b.admin_notes||'')}</textarea>
               ${b.status !== 'completed' && b.status !== 'cancelled' ? `
-                <div class="divider" style="margin:8px 0;"></div>
-                <div style="display:flex;gap:8px;align-items:center;">
+                <div style="display:flex;gap:8px;align-items:center;margin-top:8px;">
                   <select class="status-select" onchange="A.updateStatus('${b.id}',this.value)">
                     <option value="">Status ändern…</option>
                     ${STATUS_FLOW.map(s=>`<option value="${s.key}" ${s.key===b.status?'selected':''}>${s.label}</option>`).join('')}
@@ -1491,7 +1600,10 @@ function vAdmin() {
             <div style="font-size:.7rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--g500);margin-bottom:3px;">Gesamtumsatz</div>
             <div style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:1.8rem;letter-spacing:.04em;color:var(--blue);">${fmtEur(revenue)}</div>
           </div>
-          <button class="btn btn-sm btn-secondary" onclick="A.nav('admin-analytics')">Analytics →</button>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-sm btn-secondary" onclick="A.nav('admin-analytics')">Analytics →</button>
+            <button class="btn btn-sm btn-secondary" onclick="A.nav('admin-capacity')">Kalender →</button>
+          </div>
         </div>
 
         <!-- Tabs -->
@@ -1538,9 +1650,13 @@ function vAdmin() {
                   <div style="font-size:.7rem;color:var(--g500);margin-top:4px;">${fmtDate(b.created_at)}</div>
                 </div>
               </div>
+              <div style="display:flex;justify-content:flex-end;margin-top:4px;">
+                <button class="btn btn-xs" style="background:var(--g100);color:var(--g600);" onclick="A.go('qr-${b.id}')">QR-Code</button>
+              </div>
+              <div class="divider" style="margin:8px 0;"></div>
+              <textarea class="input" id="admin-note-${b.id}" placeholder="Technische Notiz (erscheint im Digital Pass)…" style="font-size:.78rem;min-height:54px;resize:none;" onblur="saveAdminNoteInline('${b.id}',this.value)">${esc(b.admin_notes||'')}</textarea>
               ${b.status !== 'completed' && b.status !== 'cancelled' ? `
-                <div class="divider" style="margin:8px 0;"></div>
-                <div style="display:flex;gap:8px;align-items:center;">
+                <div style="display:flex;gap:8px;align-items:center;margin-top:8px;">
                   <select class="status-select" onchange="A.updateStatus('${b.id}',this.value)">
                     <option value="">Status ändern…</option>
                     ${STATUS_FLOW.map(s=>`<option value="${s.key}" ${s.key===b.status?'selected':''}>${s.label}</option>`).join('')}
@@ -1557,6 +1673,514 @@ function vAdmin() {
     </div>`;
 }
 
+
+// ════════════════════════════════════════════════════════════
+// ONBOARDING (Point 5)
+// ════════════════════════════════════════════════════════════
+function vOnboard() {
+  const step = S.onboardStep;
+  const steps = [
+    { icon:'🎿', title:'Willkommen bei Slopy', body:'Das Betriebssystem für dein Premium-Ski-Equipment. Zero Friction — von der Buchung bis zum zertifizierten Wiederverkauf.', btn:'Los geht's' },
+    { icon:'📱', title:'Dein Ski. Digital.', body:'Füg dein Equipment hinzu und wir tracken den Zustand nach jedem Service automatisch. Dein Restwert steigt mit jeder Wartung.', btn:'Verstanden' },
+    { icon:'🚀', title:'Service buchen in 3 Schritten', body:'Paket wählen, Logistik festlegen, fertig. DHL holt bei dir zu Hause ab oder du nutzt einen unserer Storebox-Hubs.', btn:'Ski hinzufügen' },
+  ];
+  const s = steps[step-1];
+  return `<div class="onboard-wrap fade-up">
+    <div class="onboard-progress">
+      ${[1,2,3].map(n=>`<div class="onboard-seg ${n<=step?'done':''}"></div>`).join('')}
+    </div>
+    <div class="onboard-content">
+      <div class="onboard-icon">${s.icon}</div>
+      <div class="onboard-title">${s.title}</div>
+      <p class="onboard-body">${s.body}</p>
+    </div>
+    <div class="onboard-footer">
+      <button class="btn btn-primary" onclick="A.nextOnboard()">
+        ${s.btn}
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+      ${step < 3 ? `<button class="btn btn-secondary" onclick="A.skipOnboard()">Überspringen</button>` : ''}
+    </div>
+  </div>`;
+}
+
+// ════════════════════════════════════════════════════════════
+// LEGAL PAGES (Point 3)
+// ════════════════════════════════════════════════════════════
+function vDSGVO() {
+  return `<div class="topbar">
+    <button class="back-btn" onclick="history.back()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <div class="topbar-title">datenschutz</div><div></div>
+  </div>
+  <div class="legal-wrap">
+    <div class="legal-h1">Datenschutzerklärung</div>
+    <div class="legal-date">Stand: März 2025</div>
+
+    <div class="legal-h2">1. Verantwortlicher</div>
+    <p class="legal-p">Slopy GmbH (in Gründung), Wien, Österreich. Kontakt: datenschutz@slopy.at</p>
+
+    <div class="legal-h2">2. Welche Daten wir verarbeiten</div>
+    <ul class="legal-ul">
+      <li>E-Mail-Adresse und Name (Accounterstellung)</li>
+      <li>Equipment-Daten (Marke, Modell, Länge, Baujahr)</li>
+      <li>Buchungsdaten (Paket, Logistik, Adresse)</li>
+      <li>Service-Historie und Health-Score-Daten</li>
+      <li>Zahlungsdaten (verarbeitet durch Stripe — wir speichern keine Kartendaten)</li>
+    </ul>
+
+    <div class="legal-h2">3. Zweck der Verarbeitung</div>
+    <ul class="legal-ul">
+      <li>Durchführung von Service-Buchungen</li>
+      <li>Kommunikation über Auftragsstatus</li>
+      <li>Erstellung des Digitalen Produktpasses</li>
+      <li>Verbesserung unserer Dienstleistungen</li>
+    </ul>
+
+    <div class="legal-h2">4. Rechtsgrundlage</div>
+    <p class="legal-p">Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung) und Art. 6 Abs. 1 lit. f DSGVO (berechtigte Interessen).</p>
+
+    <div class="legal-h2">5. Speicherdauer</div>
+    <p class="legal-p">Wir speichern Ihre Daten so lange wie Ihr Account aktiv ist oder solange es zur Vertragserfüllung notwendig ist. Sie können jederzeit die Löschung Ihrer Daten beantragen.</p>
+
+    <div class="legal-h2">6. Ihre Rechte</div>
+    <ul class="legal-ul">
+      <li>Auskunft über gespeicherte Daten</li>
+      <li>Berichtigung unrichtiger Daten</li>
+      <li>Löschung Ihrer Daten ("Recht auf Vergessenwerden")</li>
+      <li>Einschränkung der Verarbeitung</li>
+      <li>Datenübertragbarkeit</li>
+      <li>Widerspruch gegen die Verarbeitung</li>
+    </ul>
+    <p class="legal-p">Für alle Anfragen: datenschutz@slopy.at</p>
+
+    <div class="legal-h2">7. Hosting & Infrastruktur</div>
+    <p class="legal-p">Die App wird auf Vercel (USA, mit EU-Datentransfer-Garantien) gehostet. Die Datenbank läuft auf Supabase (Frankfurt, EU). Zahlungen werden über Stripe (EU) abgewickelt.</p>
+
+    <div class="legal-h2">8. Cookies</div>
+    <p class="legal-p">Wir verwenden ausschließlich technisch notwendige Cookies für die Session-Verwaltung. Keine Tracking- oder Werbe-Cookies.</p>
+
+    <div class="legal-h2">9. Beschwerderecht</div>
+    <p class="legal-p">Sie haben das Recht, Beschwerde bei der österreichischen Datenschutzbehörde (www.dsb.gv.at) einzulegen.</p>
+  </div>`;
+}
+
+function vAGB() {
+  return `<div class="topbar">
+    <button class="back-btn" onclick="history.back()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <div class="topbar-title">agb</div><div></div>
+  </div>
+  <div class="legal-wrap">
+    <div class="legal-h1">Allgemeine Geschäftsbedingungen</div>
+    <div class="legal-date">Stand: März 2025</div>
+
+    <div class="legal-h2">1. Geltungsbereich</div>
+    <p class="legal-p">Diese AGB gelten für alle über die Slopy-Plattform (slopy.at) abgeschlossenen Service-Buchungen zwischen Slopy GmbH (in Gründung) und dem Kunden.</p>
+
+    <div class="legal-h2">2. Vertragsabschluss</div>
+    <p class="legal-p">Der Vertrag kommt mit der Buchungsbestätigung per E-Mail zustande. Der Kunde erhält eine Auftrags-ID zur Nachverfolgung.</p>
+
+    <div class="legal-h2">3. Leistungen</div>
+    <ul class="legal-ul">
+      <li><strong>Essential (€49)</strong>: Heißwachsen, Grundschliff, Kanten entgraten, Bindungscheck</li>
+      <li><strong>Performance (€79)</strong>: Alles aus Essential, Steinschliff, Kanten schärfen, Fluor-Wachs</li>
+      <li><strong>World Cup (€119)</strong>: Alles aus Performance, Belagserneuerung, Profil-Schliff, Tuning-Zertifikat</li>
+    </ul>
+
+    <div class="legal-h2">4. Preise und Zahlung</div>
+    <p class="legal-p">Alle Preise inkl. MwSt. Zahlung erfolgt per Kreditkarte über Stripe vor Service-Beginn. Bei Stornierung bis 24h vor Abholung volle Rückerstattung.</p>
+
+    <div class="legal-h2">5. Logistik</div>
+    <p class="legal-p">Der Transport erfolgt auf Verantwortung des Kunden bis zur Übergabe. Slopy übernimmt keine Haftung für Transportschäden durch externe Dienstleister.</p>
+
+    <div class="legal-h2">6. Haftung</div>
+    <p class="legal-p">Slopy haftet für Schäden, die durch nachweisliches Verschulden im Rahmen des Service entstehen. Die Haftung ist auf den Zeitwert des Equipments begrenzt.</p>
+
+    <div class="legal-h2">7. Gewährleistung</div>
+    <p class="legal-p">Mängel am Service sind innerhalb von 7 Tagen nach Rückgabe zu melden. Bei berechtigter Reklamation erfolgt kostenlose Nachbesserung.</p>
+
+    <div class="legal-h2">8. Anwendbares Recht</div>
+    <p class="legal-p">Es gilt österreichisches Recht. Gerichtsstand ist Wien.</p>
+  </div>`;
+}
+
+function vImpressum() {
+  return `<div class="topbar">
+    <button class="back-btn" onclick="history.back()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <div class="topbar-title">impressum</div><div></div>
+  </div>
+  <div class="legal-wrap">
+    <div class="legal-h1">Impressum</div>
+    <div class="legal-h2">Unternehmensangaben</div>
+    <p class="legal-p">
+      Slopy GmbH (in Gründung)<br>
+      Wien, Österreich<br>
+      E-Mail: hallo@slopy.at<br>
+      Web: slopy.at
+    </p>
+    <div class="legal-h2">Inhaltlich Verantwortlicher</div>
+    <p class="legal-p">Michael Oehlschuster</p>
+    <div class="legal-h2">Haftungsausschluss</div>
+    <p class="legal-p">Trotz sorgfältiger inhaltlicher Kontrolle übernehmen wir keine Haftung für die Inhalte externer Links. Für den Inhalt der verlinkten Seiten sind ausschließlich deren Betreiber verantwortlich.</p>
+    <div class="legal-h2">Urheberrecht</div>
+    <p class="legal-p">Die auf dieser Website veröffentlichten Inhalte unterliegen dem österreichischen Urheberrecht. Eine Vervielfältigung oder Verwendung in anderen elektronischen oder gedruckten Publikationen ist ohne ausdrückliche Genehmigung nicht gestattet.</p>
+  </div>`;
+}
+
+// ════════════════════════════════════════════════════════════
+// EDIT ASSET (Point 8)
+// ════════════════════════════════════════════════════════════
+function vEditAsset(aid) {
+  const a = S.assets.find(x=>x.id===aid);
+  if(!a) { A.nav('home'); return ''; }
+  return `<div class="topbar">
+    <button class="back-btn" onclick="A.nav('home')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <div class="topbar-title">ski bearbeiten</div><div></div>
+  </div>
+  <div class="screen fade-up">
+    <div class="field"><label class="field-label">Marke</label><input id="ea-brand" class="input" type="text" value="${esc(a.brand)}"></div>
+    <div class="field"><label class="field-label">Modell</label><input id="ea-model" class="input" type="text" value="${esc(a.model)}"></div>
+    <div class="grid-2">
+      <div class="field"><label class="field-label">Länge (cm)</label><input id="ea-len" class="input" type="number" value="${a.length_cm||''}"></div>
+      <div class="field"><label class="field-label">Baujahr</label><input id="ea-year" class="input" type="number" value="${a.year||''}"></div>
+    </div>
+    <button class="btn btn-primary" onclick="A.saveAsset('${a.id}')" style="margin-bottom:10px;">
+      ${S.loading?'<div class="spin-btn"></div>':'Änderungen speichern'}
+    </button>
+    <div class="divider"></div>
+    <button class="btn btn-danger" onclick="A.deleteAsset('${a.id}')">Ski löschen</button>
+    <p style="font-size:.75rem;color:var(--g500);text-align:center;margin-top:8px;line-height:1.5;">Löschen ist nur möglich wenn keine aktiven Buchungen vorhanden sind.</p>
+  </div>`;
+}
+
+// ════════════════════════════════════════════════════════════
+// QR CODE (Point 13)
+// ════════════════════════════════════════════════════════════
+function vQRCode(bid) {
+  const b = S.bookings.find(x=>x.id===bid) || (S.profile?.role==='admin' ? S.bookings.find(x=>x.id===bid) : null);
+  if(!b) return '<div class="screen"><p>Nicht gefunden.</p></div>';
+  const shortId = b.id.slice(0,8).toUpperCase();
+  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=SLOPY-${shortId}&format=svg&color=14141A`;
+  return `<div class="topbar">
+    <button class="back-btn" onclick="history.back()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <div class="topbar-title">qr code</div><div></div>
+  </div>
+  <div class="screen fade-up" style="display:flex;flex-direction:column;align-items:center;">
+    <p style="font-size:.875rem;color:var(--g500);text-align:center;margin-bottom:20px;line-height:1.6;">Drucke diesen QR-Code aus und klebe ihn an den Ski. So ist das Equipment eindeutig mit dem Auftrag verknüpft.</p>
+    <div class="qr-wrap">
+      <img src="${qrUrl}" alt="QR Code" style="width:200px;height:200px;">
+      <div class="qr-id">SLOPY-${shortId}</div>
+      <div class="qr-hint">${esc(b.assets?.brand||'')} ${esc(b.assets?.model||'')} · ${PKG[b.service_package]?.name}</div>
+    </div>
+    <button class="btn btn-primary" onclick="window.print()" style="max-width:220px;">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      QR-Code drucken
+    </button>
+    <button class="btn btn-secondary" onclick="history.back()" style="max-width:220px;margin-top:8px;">Zurück</button>
+  </div>`;
+}
+
+// ════════════════════════════════════════════════════════════
+// RATING (Point 14)
+// ════════════════════════════════════════════════════════════
+function vRating(bid) {
+  const b = S.bookings.find(x=>x.id===bid);
+  if(!b) { A.nav('my-bookings'); return ''; }
+  const stars = S.rating.stars || 0;
+  return `<div class="topbar">
+    <button class="back-btn" onclick="A.nav('my-bookings')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <div class="topbar-title">bewertung</div><div></div>
+  </div>
+  <div class="screen fade-up" style="display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:40px;">
+    <div style="font-size:3rem;margin-bottom:16px;">⭐</div>
+    <div style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:1.4rem;letter-spacing:.04em;margin-bottom:8px;">Service bewerten</div>
+    <p style="font-size:.875rem;color:var(--g500);margin-bottom:24px;max-width:260px;line-height:1.6;">
+      Wie war dein ${PKG[b.service_package]?.name} Service für den ${esc(b.assets?.brand||'')} ${esc(b.assets?.model||'')}?
+    </p>
+    <div class="stars">
+      ${[1,2,3,4,5].map(n=>`
+        <span class="star ${n<=stars?'active':''}" onclick="A.setStar(${n},'${bid}')">★</span>
+      `).join('')}
+    </div>
+    <p style="font-size:.82rem;color:var(--g500);margin-bottom:24px;height:20px;">
+      ${stars===1?'Nicht zufrieden':stars===2?'Verbesserungswürdig':stars===3?'In Ordnung':stars===4?'Gut':stars===5?'Ausgezeichnet!':'Bitte wähle eine Bewertung'}
+    </p>
+    <div class="field" style="width:100%;max-width:340px;">
+      <label class="field-label">Anmerkung (optional)</label>
+      <textarea id="rating-note" class="input" placeholder="Was hat dir besonders gefallen oder was können wir verbessern?" style="resize:vertical;min-height:80px;"></textarea>
+    </div>
+    <button class="btn btn-primary" onclick="A.submitRating('${bid}')" style="max-width:260px;" ${stars===0?'disabled':''}>
+      ${S.loading?'<div class="spin-btn"></div>':'Bewertung abschicken'}
+    </button>
+  </div>`;
+}
+
+// ════════════════════════════════════════════════════════════
+// CAPACITY PLANNING (Point 15)
+// ════════════════════════════════════════════════════════════
+function vCapacity() {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth();
+  const daysInMonth = new Date(year, month+1, 0).getDate();
+  const firstDay = new Date(year, month, 1).getDay() || 7; // Mon=1
+  const MAX_PER_DAY = 8;
+
+  // Count bookings per day
+  const counts = {};
+  S.bookings.forEach(b => {
+    if(['completed','cancelled'].includes(b.status)) return;
+    const d = new Date(b.created_at);
+    if(d.getMonth()===month && d.getFullYear()===year) {
+      const key = d.getDate();
+      counts[key] = (counts[key]||0)+1;
+    }
+  });
+
+  const monthName = today.toLocaleDateString('de-AT',{month:'long',year:'numeric'});
+  const days = ['Mo','Di','Mi','Do','Fr','Sa','So'];
+
+  return `<div class="admin-wrap">
+    <div class="admin-topbar">
+      <div class="admin-topbar-logo">
+        <svg class="logo-svg" width="28" height="28" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="200" cy="200" r="195" fill="rgba(255,255,255,0.15)"/>
+          <path d="M 226,80 C 271,67 120,116 124,160 C 128,200 232,191 232,235 C 232,271 125,284 143,290" fill="none" stroke="#fff" stroke-width="11" stroke-linecap="round"/>
+          <path d="M 196,93 C 238,83 147,127 151,169 C 155,207 196,200 196,242 C 196,276 148,284 163,290" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity="0.42"/>
+        </svg>
+        <span class="admin-topbar-wordmark">slopy</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span class="admin-badge">Kapazität</span>
+        <button class="btn btn-xs" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.15);" onclick="A.nav('admin')">← Aufträge</button>
+      </div>
+    </div>
+    <div class="admin-screen fade-up">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+        <div>
+          <div style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:1.2rem;letter-spacing:.04em;">${monthName}</div>
+          <div style="font-size:.75rem;color:var(--g500);">Max. ${MAX_PER_DAY} Aufträge/Tag</div>
+        </div>
+        <div style="display:flex;gap:8px;font-size:.72rem;">
+          <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;background:var(--green-tint);display:inline-block;"></span>Frei</span>
+          <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;background:var(--amber-tint);display:inline-block;"></span>Halb</span>
+          <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;background:var(--red-tint);display:inline-block;"></span>Voll</span>
+        </div>
+      </div>
+      <div class="cal-grid">
+        ${days.map(d=>`<div class="cal-hdr">${d}</div>`).join('')}
+        ${Array(firstDay-1).fill('<div></div>').join('')}
+        ${Array.from({length:daysInMonth},(_,i)=>{
+          const day = i+1;
+          const count = counts[day]||0;
+          const isToday = day===today.getDate();
+          const isPast = new Date(year,month,day) < new Date(today.setHours(0,0,0,0));
+          const capClass = count===0?'empty-cap':count<MAX_PER_DAY*0.6?'empty-cap':count<MAX_PER_DAY?'half-cap':'full-cap';
+          return `<div class="cal-day ${capClass} ${isToday?'today':''} ${isPast?'past':''}">
+            <div class="cal-day-num">${day}</div>
+            ${count>0?`<div class="cal-day-count">${count}/${MAX_PER_DAY}</div>`:''}
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="divider"></div>
+      <div class="section-label">Aktive Aufträge diese Woche</div>
+      ${S.bookings.filter(b=>{
+        if(['completed','cancelled'].includes(b.status)) return false;
+        const d=new Date(b.created_at);
+        const now=new Date();
+        const weekAgo=new Date(now-7*24*60*60*1000);
+        return d>=weekAgo;
+      }).map(b=>`
+        <div class="admin-card" style="margin-bottom:8px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <div style="font-weight:500;font-size:.875rem;">${esc(b.assets?.brand||'')} ${esc(b.assets?.model||'')}</div>
+              <div style="font-size:.75rem;color:var(--g500);">${fmtDate(b.created_at)} · ${PKG[b.service_package]?.name}</div>
+            </div>
+            <span class="${badgeClass(b.status)}">${slabel(b.status)}</span>
+          </div>
+        </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+// ════════════════════════════════════════════════════════════
+// SERVICE REMINDER (Point 10)
+// ════════════════════════════════════════════════════════════
+function reminderCard() {
+  const lastCompleted = S.bookings.find(b=>b.status==='completed');
+  if(!lastCompleted) return '';
+  const daysSince = Math.floor((new Date()-new Date(lastCompleted.updated_at||lastCompleted.created_at))/(1000*60*60*24));
+  if(daysSince < 60) return '';
+  const asset = lastCompleted.assets;
+  return `<div class="reminder-card">
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div style="font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin-bottom:4px;">Service-Empfehlung</div>
+        <div style="font-weight:500;font-size:.88rem;">${esc(asset?.brand||'')} ${esc(asset?.model||'')}</div>
+        <div style="font-size:.78rem;color:var(--g500);margin-top:2px;">Letzter Service vor ${daysSince} Tagen — Zeit für eine Wartung?</div>
+      </div>
+      <button class="btn btn-sm btn-primary" onclick="A.nav('book-1')" style="margin-left:12px;white-space:nowrap;flex-shrink:0;">Buchen</button>
+    </div>
+  </div>`;
+}
+
+// ════════════════════════════════════════════════════════════
+// STRIPE PAYMENT (Point 1 — simulated with real UI)
+// ════════════════════════════════════════════════════════════
+function vStripeCheckout() {
+  const pkg = PKG[S.draft.pkg];
+  const log = LOG[S.draft.log];
+  const asset = S.assets.find(a=>a.id===S.draft.asset_id)||S.draft.asset;
+  return `<div class="topbar">
+    <button class="back-btn" onclick="A.go('book-4')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <div class="topbar-title">zahlung</div><div></div>
+  </div>
+  <div class="screen fade-up">
+    <div class="card" style="margin-bottom:16px;">
+      <div style="font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--g500);margin-bottom:10px;">Bestellübersicht</div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--g100);">
+        <span style="font-size:.875rem;color:var(--g500);">${pkg?.name}</span>
+        <span style="font-size:.875rem;font-weight:500;">${fmtEur(pkg?.price)}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--g100);">
+        <span style="font-size:.875rem;color:var(--g500);">Logistik</span>
+        <span style="font-size:.875rem;font-weight:500;">${log?.name}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:10px 0 0;">
+        <span style="font-weight:600;">Gesamt</span>
+        <span style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:1.6rem;color:var(--blue);">${pkg?.price} €</span>
+      </div>
+    </div>
+
+    <div class="stripe-form">
+      <div style="font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--g500);margin-bottom:12px;">Kartendaten</div>
+      <div class="field">
+        <label class="field-label">Karteninhaber</label>
+        <input id="cc-name" class="input" type="text" placeholder="Vor- und Nachname" autocomplete="cc-name">
+      </div>
+      <div class="field">
+        <label class="field-label">Kartennummer</label>
+        <input id="cc-num" class="input" type="text" placeholder="1234 5678 9012 3456" maxlength="19" inputmode="numeric"
+          oninput="this.value=this.value.replace(/[^0-9]/g,'').replace(/(.{4})/g,'$1 ').trim().slice(0,19)">
+      </div>
+      <div class="stripe-row">
+        <div class="field" style="flex:1;">
+          <label class="field-label">Gültigkeit</label>
+          <input id="cc-exp" class="input" type="text" placeholder="MM/JJ" maxlength="5" inputmode="numeric"
+            oninput="this.value=this.value.replace(/[^0-9]/g,'').replace(/^(.{2})(.+)/,'$1/$2').slice(0,5)">
+        </div>
+        <div class="field" style="flex:1;">
+          <label class="field-label">CVC</label>
+          <input id="cc-cvc" class="input" type="text" placeholder="123" maxlength="4" inputmode="numeric"
+            oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+        </div>
+      </div>
+      <div class="stripe-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Sicher verschlüsselt via Stripe
+      </div>
+    </div>
+
+    <div style="background:var(--amber-tint);border-radius:var(--rs);padding:10px 14px;margin-bottom:14px;font-size:.78rem;color:var(--amber);line-height:1.5;">
+      💳 <strong>Demo-Modus:</strong> Gib beliebige Daten ein. Echte Stripe-Integration folgt beim Go-Live.
+    </div>
+
+    <button class="btn btn-primary" onclick="A.processPayment()">
+      ${S.loading?'<div class="spin-btn"></div>':'Jetzt bezahlen — '+fmtEur(pkg?.price)}
+    </button>
+    <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:12px;font-size:.72rem;color:var(--g500);">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      SSL-verschlüsselt · Keine Kartendaten gespeichert · Stornierung möglich
+    </div>
+  </div>`;
+}
+
+// ════════════════════════════════════════════════════════════
+// MULTI-ASSET BOOKING (Point 9)
+// ════════════════════════════════════════════════════════════
+function vBook1Multi() {
+  const selected = S.selectedAssets || [];
+  return `<div class="topbar">
+    <button class="back-btn" onclick="A.nav('home')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <div class="topbar-title">service buchen</div><div></div>
+  </div>
+  <div class="screen fade-up">
+    ${stepsIndicator(1)}
+    <div class="section-label">Welche Skier? (Mehrfachauswahl möglich)</div>
+    ${S.assets.map(a=>{
+      const isSelected = selected.includes(a.id);
+      return `<div class="asset-check ${isSelected?'checked':''}" onclick="A.toggleAsset('${a.id}')">
+        <div class="asset-check-box">
+          ${isSelected?'<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>':''}
+        </div>
+        <div style="font-size:1.2rem;">🎿</div>
+        <div style="flex:1;">
+          <div style="font-weight:500;">${esc(a.brand)} ${esc(a.model)}</div>
+          <div style="font-size:.78rem;color:var(--g500);">${a.length_cm?a.length_cm+' cm · ':''} ${a.year||''}</div>
+        </div>
+      </div>`;
+    }).join('')}
+    <button class="btn btn-ghost" onclick="A.go('book-asset')" style="margin-bottom:14px;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Ski hinzufügen
+    </button>
+    ${selected.length > 0 ? `
+      <div style="background:var(--blue-tint);border-radius:var(--rs);padding:10px 14px;margin-bottom:12px;font-size:.82rem;color:var(--blue);">
+        ${selected.length} Ski ausgewählt · ${selected.length > 1 ? 'Separate Aufträge werden erstellt' : '1 Auftrag'}
+      </div>
+      <button class="btn btn-primary" onclick="A.go('book-2')">
+        Weiter
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>` : ''}
+  </div>`;
+}
+
+// ════════════════════════════════════════════════════════════
+// B2B VIEW (Point 11)
+// ════════════════════════════════════════════════════════════
+function vB2B() {
+  return `<div class="topbar">
+    <button class="back-btn" onclick="A.nav('home')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <div class="topbar-title">b2b</div><div></div>
+  </div>
+  <div class="screen fade-up">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+      <span class="b2b-tag">B2B</span>
+      <div style="font-size:.875rem;color:var(--g500);">Unternehmens-Dashboard</div>
+    </div>
+    <div style="background:linear-gradient(135deg,#0d1f35,#1a3a5c);border-radius:var(--r);padding:24px;margin-bottom:20px;color:#fff;">
+      <div style="font-size:.65rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">Aktives B2B-Paket</div>
+      <div style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:1.6rem;letter-spacing:.04em;margin-bottom:4px;">Corporate Plan</div>
+      <div style="font-size:.78rem;color:rgba(255,255,255,.6);">Bis zu 20 Geräte · Sammel-Abholung · Priority Service</div>
+    </div>
+    <div class="section-label">Equipment-Übersicht (${S.assets.length} Geräte)</div>
+    ${S.assets.map(a=>{
+      const overall = Math.round(((a.edge_health||100)+(a.base_health||100)+(a.wax_health||100))/3);
+      const active = S.bookings.find(b=>b.asset_id===a.id&&!['completed','cancelled'].includes(b.status));
+      return `<div class="card" style="margin-bottom:8px;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="font-size:1.3rem;">🎿</div>
+          <div style="flex:1;">
+            <div style="font-weight:500;font-size:.875rem;">${esc(a.brand)} ${esc(a.model)}</div>
+            <div style="font-size:.75rem;color:var(--g500);">${a.year||''}</div>
+          </div>
+          <div style="text-align:right;">
+            ${active ? `<span class="${badgeClass(active.status)}" style="font-size:.68rem;">${slabel(active.status)}</span>` :
+              `<span style="font-size:.8rem;font-weight:600;color:${overall>=70?'var(--green)':overall>=40?'var(--amber)':'var(--red)'};">${overall}%</span>`}
+          </div>
+        </div>
+      </div>`;
+    }).join('')}
+    <button class="btn btn-primary" onclick="A.nav('book-1')" style="margin-top:8px;">Sammel-Service buchen</button>
+    <div class="divider"></div>
+    <div style="text-align:center;padding:16px;">
+      <div style="font-size:.875rem;color:var(--g500);margin-bottom:12px;line-height:1.6;">Interesse an einem Corporate-Account für dein Unternehmen?</div>
+      <a href="mailto:b2b@slopy.at" class="btn btn-ghost" style="max-width:220px;margin:0 auto;text-decoration:none;">b2b@slopy.at</a>
+    </div>
+  </div>
+  ${bottomNav('home')}`;
+}
+
 // ════════════════════════════════════════════════════════════
 // ROUTER
 // ════════════════════════════════════════════════════════════
@@ -1571,6 +2195,13 @@ function go(view) {
     app.innerHTML = vTracking(view.replace('tracking-',''));
   } else if(view.startsWith('pass-')) {
     app.innerHTML = vProductPass(view.replace('pass-',''));
+  } else if(view.startsWith('qr-')) {
+    app.innerHTML = vQRCode(view.replace('qr-',''));
+  } else if(view.startsWith('rate-')) {
+    S.rating = { bookingId: view.replace('rate-',''), stars: 0 };
+    app.innerHTML = vRating(view.replace('rate-',''));
+  } else if(view.startsWith('edit-asset-')) {
+    app.innerHTML = vEditAsset(view.replace('edit-asset-',''));
   } else {
     switch(view) {
       case 'auth':            app.innerHTML = vAuth();           break;
@@ -1579,15 +2210,22 @@ function go(view) {
       case 'home':            app.innerHTML = vHome();           subCustomer(); loadNotifications(); break;
       case 'profile':         app.innerHTML = vProfile();        break;
       case 'notifications':   app.innerHTML = vNotifications();  break;
-      case 'book-1':          app.innerHTML = vBook1();          break;
+      case 'book-1':          app.innerHTML = vBook1Multi();     break;
       case 'book-asset':      app.innerHTML = vBookAsset();      break;
       case 'book-2':          app.innerHTML = vBook2();          break;
       case 'book-3':          app.innerHTML = vBook3();          break;
       case 'book-4':          app.innerHTML = vBook4();          break;
+      case 'book-stripe':     app.innerHTML = vStripeCheckout(); break;
       case 'book-confirm':    app.innerHTML = vBookConfirm();    break;
       case 'my-bookings':     app.innerHTML = vMyBookings();     subCustomer(); break;
       case 'admin':           app.innerHTML = vAdmin();          subAdmin(); break;
       case 'admin-analytics': app.innerHTML = vAdminAnalytics(); break;
+      case 'admin-capacity':  app.innerHTML = vCapacity();       break;
+      case 'dsgvo':           app.innerHTML = vDSGVO();          break;
+      case 'agb':             app.innerHTML = vAGB();            break;
+      case 'impressum':       app.innerHTML = vImpressum();      break;
+      case 'onboard':         app.innerHTML = vOnboard();        break;
+      case 'b2b':             app.innerHTML = vB2B();            break;
       default:                app.innerHTML = vAuth();
     }
   }
@@ -1748,6 +2386,165 @@ async function saveProfile() {
   go('profile');
 }
 
+
+
+// ── Onboarding ────────────────────────────────────────────
+function nextOnboard() {
+  if(S.onboardStep < 3) {
+    S.onboardStep++;
+    go('onboard');
+  } else {
+    S.onboardDone = true;
+    try { localStorage.setItem('slopy_onboard_' + S.user?.id, '1'); } catch(e){}
+    A.nav('book-1');
+  }
+}
+function skipOnboard() {
+  S.onboardDone = true;
+  try { localStorage.setItem('slopy_onboard_' + S.user?.id, '1'); } catch(e){}
+  go('home');
+}
+
+// ── Check Onboard ─────────────────────────────────────────
+function checkOnboard() {
+  try {
+    const done = localStorage.getItem('slopy_onboard_' + S.user?.id);
+    if(!done && S.assets.length === 0) {
+      S.onboardStep = 1;
+      go('onboard');
+      return true;
+    }
+  } catch(e){}
+  return false;
+}
+
+// ── Cookie Banner ─────────────────────────────────────────
+function initCookieBanner() {
+  try {
+    if(!localStorage.getItem('slopy_cookie_consent')) {
+      const banner = document.getElementById('cookie-banner');
+      if(banner) banner.classList.add('show');
+    }
+  } catch(e){}
+}
+function acceptCookies() {
+  try { localStorage.setItem('slopy_cookie_consent', 'accepted'); } catch(e){}
+  const b = document.getElementById('cookie-banner');
+  if(b) b.classList.remove('show');
+}
+function rejectCookies() {
+  try { localStorage.setItem('slopy_cookie_consent', 'rejected'); } catch(e){}
+  const b = document.getElementById('cookie-banner');
+  if(b) b.classList.remove('show');
+}
+
+// ── PWA Manifest ──────────────────────────────────────────
+function initPWA() {
+  const manifest = {
+    name: 'Slopy', short_name: 'Slopy',
+    start_url: '/', display: 'standalone',
+    theme_color: '#2D72C8', background_color: '#F7F8FA',
+    icons: [{ src: 'data:image/svg+xml;base64,' + btoa('<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg"><circle cx="200" cy="200" r="200" fill="#2D72C8"/></svg>'), sizes: '192x192', type: 'image/svg+xml' }]
+  };
+  const blob = new Blob([JSON.stringify(manifest)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  let link = document.querySelector('link[rel="manifest"]');
+  if(!link) { link = document.createElement('link'); link.rel = 'manifest'; document.head.appendChild(link); }
+  link.href = url;
+}
+
+// ── Asset Edit / Delete ───────────────────────────────────
+async function saveAsset(id) {
+  const brand = document.getElementById('ea-brand')?.value?.trim();
+  const model = document.getElementById('ea-model')?.value?.trim();
+  const len   = document.getElementById('ea-len')?.value;
+  const year  = document.getElementById('ea-year')?.value;
+  if(!brand||!model) { toast('Marke und Modell sind Pflichtfelder'); return; }
+  setL(true);
+  const { error } = await db.from('assets').update({
+    brand, model,
+    length_cm: len ? parseInt(len) : null,
+    year: year ? parseInt(year) : null
+  }).eq('id', id);
+  setL(false);
+  if(error) { toast('Fehler: '+error.message); return; }
+  S.assets = S.assets.map(a => a.id===id ? {...a, brand, model, length_cm:len?parseInt(len):null, year:year?parseInt(year):null} : a);
+  toast('Ski aktualisiert');
+  A.nav('home');
+}
+
+async function deleteAsset(id) {
+  const hasActive = S.bookings.some(b=>b.asset_id===id&&!['completed','cancelled'].includes(b.status));
+  if(hasActive) { toast('Nicht möglich: Aktive Buchung vorhanden'); return; }
+  if(!confirm('Ski wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.')) return;
+  setL(true);
+  const { error } = await db.from('assets').delete().eq('id', id);
+  setL(false);
+  if(error) { toast('Fehler: '+error.message); return; }
+  S.assets = S.assets.filter(a=>a.id!==id);
+  toast('Ski gelöscht');
+  A.nav('home');
+}
+
+// ── Multi-Asset Toggle ────────────────────────────────────
+function toggleAsset(id) {
+  if(!S.selectedAssets) S.selectedAssets = [];
+  const idx = S.selectedAssets.indexOf(id);
+  if(idx >= 0) S.selectedAssets.splice(idx, 1);
+  else S.selectedAssets.push(id);
+  // Also set primary asset_id
+  S.draft.asset_id = S.selectedAssets[0] || null;
+  S.draft.asset = S.assets.find(a=>a.id===S.draft.asset_id);
+  go('book-1');
+}
+
+// ── Payment Processing ────────────────────────────────────
+async function processPayment() {
+  const name = document.getElementById('cc-name')?.value?.trim();
+  const num  = document.getElementById('cc-num')?.value?.replace(/\s/g,'');
+  const exp  = document.getElementById('cc-exp')?.value?.trim();
+  const cvc  = document.getElementById('cc-cvc')?.value?.trim();
+  if(!name||num.length<15||exp.length<4||cvc.length<3) {
+    toast('Bitte alle Felder ausfüllen');
+    return;
+  }
+  // STRIPE HOOK — when ready:
+  // const { paymentIntent } = await stripe.confirmCardPayment(clientSecret, { payment_method: { card: cardElement } })
+  toast('Zahlung verarbeitet ✓', 2000);
+  await createBooking();
+}
+
+// ── Rating ────────────────────────────────────────────────
+function setStar(n, bid) {
+  S.rating = { bookingId: bid, stars: n };
+  go('rate-' + bid);
+}
+
+async function submitRating(bid) {
+  if(!S.rating.stars) { toast('Bitte Sterne auswählen'); return; }
+  const note = document.getElementById('rating-note')?.value?.trim();
+  setL(true);
+  // Store rating in admin_notes as prefix
+  const ratingText = `⭐ ${S.rating.stars}/5${note?' — '+note:''}`;
+  const b = S.bookings.find(x=>x.id===bid);
+  const existingNotes = b?.admin_notes || '';
+  const newNotes = existingNotes ? existingNotes + ' | Kundenbewertung: ' + ratingText : 'Kundenbewertung: ' + ratingText;
+  const { error } = await db.from('bookings').update({ admin_notes: newNotes }).eq('id', bid);
+  setL(false);
+  if(error) { toast('Fehler beim Speichern'); return; }
+  S.bookings = S.bookings.map(b => b.id===bid ? {...b, admin_notes:newNotes} : b);
+  toast('Bewertung gespeichert — Danke!');
+  A.nav('my-bookings');
+}
+
+// ── Admin Notes ───────────────────────────────────────────
+async function saveAdminNote(bid) {
+  const note = document.getElementById('admin-note-'+bid)?.value?.trim();
+  const { error } = await db.from('bookings').update({ admin_notes: note }).eq('id', bid);
+  if(error) { toast('Fehler'); return; }
+  S.bookings = S.bookings.map(b => b.id===bid ? {...b, admin_notes:note} : b);
+  toast('Notiz gespeichert');
+}
 
 // ── Password Reset ────────────────────────────────────────
 async function sendPwReset() {
@@ -1912,6 +2709,7 @@ async function exportPDF() {
 window.A = {
   go, login, register, logout, addAsset, createBooking, updateStatus, saveProfile,
   sendPwReset, setAdminTab, setAdminFilter, exportPDF,
+  nextOnboard, skipOnboard, saveAsset, deleteAsset, toggleAsset, processPayment, setStar, submitRating, saveAdminNote,
   selectAsset(id) { S.draft.asset_id=id; S.draft.asset=S.assets.find(a=>a.id===id); go('book-1'); },
   selectPkg(id)   { S.draft.pkg=id; go('book-2'); },
   selectLog(id)   { S.draft.log=id; go('book-3'); },
@@ -1958,7 +2756,7 @@ async function init() {
         await loadAllBookings();
         go('admin');
       } else {
-        go('home');
+        if(!checkOnboard()) go('home');
       }
     } else if(event === 'SIGNED_OUT') {
       go('auth');
@@ -1966,7 +2764,15 @@ async function init() {
   });
 }
 
+// ── Admin notes inline ────────────────────────────────────
+window.saveAdminNoteInline = async (bid, val) => {
+  const { error } = await db.from('bookings').update({ admin_notes: val }).eq('id', bid);
+  if(!error) { S.bookings = S.bookings.map(b=>b.id===bid?{...b,admin_notes:val}:b); }
+};
+
 init();
+initPWA();
+setTimeout(initCookieBanner, 1500);
 </script>
 </body>
 </html>
