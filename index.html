@@ -304,6 +304,58 @@ html,body{
 /* ── ANIMATIONS ───────────────────────────────────────── */
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .fade-up{animation:fadeUp .3s ease forwards}
+
+/* ── NOTIFICATIONS ─────────────────────────────────────── */
+.notif-dot{position:absolute;top:-2px;right:-2px;width:8px;height:8px;background:var(--red);border-radius:50%;border:2px solid var(--white)}
+.notif-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--g100);align-items:flex-start}
+.notif-item:last-child{border-bottom:none}
+.notif-icon{width:36px;height:36px;border-radius:var(--rs);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;background:var(--blue-tint)}
+.notif-unread{background:var(--blue-soft);margin:-2px -2px;padding:2px 2px;border-radius:var(--rs)}
+
+/* ── ADMIN ANALYTICS ────────────────────────────────────── */
+.analytics-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.analytics-card{background:var(--white);border:1px solid var(--g200);border-radius:var(--r);padding:16px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.analytics-value{font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:1.8rem;letter-spacing:.02em;color:var(--blue);line-height:1;margin-bottom:3px}
+.analytics-label{font-size:.7rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--g500)}
+.analytics-trend{font-size:.72rem;margin-top:4px}
+.analytics-trend.up{color:var(--green)}
+.analytics-trend.down{color:var(--red)}
+.bar-chart{display:flex;align-items:flex-end;gap:6px;height:80px;padding-top:8px}
+.bar-col{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1}
+.bar{width:100%;background:var(--blue-tint);border-radius:3px 3px 0 0;transition:height .6s ease;min-height:3px;cursor:pointer;position:relative}
+.bar:hover{background:var(--blue)}
+.bar-lbl{font-size:9px;color:var(--g500);font-family:'Josefin Sans',sans-serif;font-weight:200;letter-spacing:.04em}
+.pkg-dist{display:flex;gap:0;border-radius:var(--rs);overflow:hidden;height:10px;margin:10px 0}
+.pkg-seg{transition:width .6s ease;cursor:pointer}
+.pkg-leg{display:flex;gap:14px;flex-wrap:wrap}
+.pkg-leg-item{display:flex;align-items:center;gap:5px;font-size:.75rem;color:var(--g600)}
+.pkg-leg-dot{width:8px;height:8px;border-radius:2px}
+.chart-section{background:var(--white);border:1px solid var(--g200);border-radius:var(--r);padding:16px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.chart-title{font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--g500);margin-bottom:14px}
+
+/* ── FILTER BAR ─────────────────────────────────────────── */
+.filter-bar{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:14px;scrollbar-width:none}
+.filter-bar::-webkit-scrollbar{display:none}
+.filter-chip{font-size:.75rem;font-weight:500;padding:6px 14px;border-radius:20px;border:1.5px solid var(--g200);background:var(--white);color:var(--g600);cursor:pointer;white-space:nowrap;transition:all .15s;flex-shrink:0}
+.filter-chip.active{background:var(--blue);border-color:var(--blue);color:var(--white)}
+
+/* ── PDF PASS ───────────────────────────────────────────── */
+.pass-preview{background:linear-gradient(135deg,#0d1f35,#0a1828);border-radius:var(--r);padding:22px;margin-bottom:14px;position:relative;overflow:hidden}
+.pass-preview::after{content:'';position:absolute;bottom:-20px;right:-20px;width:100px;height:100px;background:radial-gradient(circle,rgba(45,114,200,.12),transparent 70%)}
+.pass-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.pass-logo-text{font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:.9rem;letter-spacing:6px;color:var(--blue);text-transform:lowercase}
+.pass-certified{font-size:.65rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5);background:rgba(45,114,200,.2);padding:3px 10px;border-radius:2px}
+.pass-value{font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:2.4rem;color:#fff;letter-spacing:.02em;line-height:1;margin-bottom:4px}
+.pass-change{font-size:.78rem;color:#4ade80;margin-bottom:16px}
+.pass-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding-top:14px;border-top:1px solid rgba(255,255,255,.08)}
+.pass-stat-label{font-size:.62rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px}
+.pass-stat-value{font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:.9rem;color:#fff}
+
+/* ── ADMIN TABS ─────────────────────────────────────────── */
+.admin-tabs{display:flex;gap:0;border-bottom:1px solid var(--g200);margin-bottom:20px}
+.admin-tab{flex:1;padding:12px 8px;background:none;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:.8rem;font-weight:500;color:var(--g500);border-bottom:2px solid transparent;transition:all .15s;text-align:center}
+.admin-tab.active{color:var(--blue);border-bottom-color:var(--blue)}
+
 </style>
 </head>
 <body>
@@ -370,7 +422,10 @@ const S = {
   loading:false,
   draft:{ asset_id:null, asset:null, pkg:'performance', log:'home', addr:'', notes:'' },
   newAsset:{ brand:'', model:'', len:'', year:'', type:'ski' },
-  confirmed:null
+  confirmed:null,
+  adminTab: 'bookings',
+  adminFilter: 'all',
+  notifications: [],
 };
 
 const db = supabase.createClient(SB_URL, SB_KEY);
@@ -403,6 +458,80 @@ const badgeClass = s => {
   if(s==='cancelled') return 'chip s-cancelled';
   return 'chip chip-gray';
 };
+
+
+// Notifications
+function addNotification(booking, newStatus) {
+  const n = {
+    id: Date.now(),
+    booking_id: booking.id,
+    asset: booking.assets?.brand + ' ' + booking.assets?.model,
+    status: newStatus,
+    time: new Date(),
+    read: false
+  };
+  S.notifications.unshift(n);
+  // Persist in localStorage
+  try { localStorage.setItem('slopy_notifs_' + S.user?.id, JSON.stringify(S.notifications.slice(0,20))); } catch(e){}
+}
+
+function loadNotifications() {
+  try {
+    const saved = localStorage.getItem('slopy_notifs_' + S.user?.id);
+    if(saved) S.notifications = JSON.parse(saved);
+  } catch(e){}
+}
+
+function markNotifsRead() {
+  S.notifications = S.notifications.map(n => ({...n, read:true}));
+  try { localStorage.setItem('slopy_notifs_' + S.user?.id, JSON.stringify(S.notifications.slice(0,20))); } catch(e){}
+}
+
+const unreadCount = () => S.notifications.filter(n=>!n.read).length;
+
+// Analytics helpers
+function getMonthlyRevenue() {
+  const months = {};
+  S.bookings.forEach(b => {
+    if(b.status === 'cancelled') return;
+    const d = new Date(b.created_at);
+    const key = d.toLocaleDateString('de-AT',{month:'short'});
+    months[key] = (months[key]||0) + Number(b.price||0);
+  });
+  return months;
+}
+
+function getPkgDistribution() {
+  const dist = {essential:0, performance:0, world_cup:0};
+  S.bookings.forEach(b => { if(dist[b.service_package]!==undefined) dist[b.service_package]++; });
+  const total = Object.values(dist).reduce((a,b)=>a+b,0);
+  return { dist, total };
+}
+
+function getLogisticsDistribution() {
+  const dist = {};
+  S.bookings.forEach(b => { dist[b.logistics_type] = (dist[b.logistics_type]||0)+1; });
+  return dist;
+}
+
+function avgOrderValue() {
+  const valid = S.bookings.filter(b=>b.status!=='cancelled');
+  if(!valid.length) return 0;
+  return valid.reduce((s,b)=>s+Number(b.price||0),0)/valid.length;
+}
+
+// Resale value estimate
+function estimateResaleValue(assets, bookings) {
+  if(!assets || !assets.length) return 0;
+  const asset = assets[0];
+  const purchaseEst = 800; // avg premium ski value
+  const serviceCount = bookings.filter(b=>b.status==='completed').length;
+  const health = Math.round(((asset.edge_health||100)+(asset.base_health||100)+(asset.wax_health||100))/3);
+  const base = purchaseEst * 0.6;
+  const healthBonus = (health/100) * (purchaseEst * 0.25);
+  const serviceBonus = Math.min(serviceCount * 30, 150);
+  return Math.round(base + healthBonus + serviceBonus);
+}
 
 // ── Health Ring SVG ───────────────────────────────────────
 function healthRing(value, size=64, label) {
@@ -447,15 +576,19 @@ function stepsIndicator(current) {
 
 // ── Bottom Nav (Customer) ─────────────────────────────────
 function bottomNav(active) {
+  const unread = unreadCount();
   const items = [
     { k:'home',        l:'Home',    svg:`<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>` },
     { k:'book-1',      l:'Buchen',  svg:`<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>` },
     { k:'my-bookings', l:'Aufträge',svg:`<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>` },
+    { k:'notifications',l:'Updates', svg:`<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>` },
     { k:'profile',     l:'Profil',  svg:`<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>` }
   ];
   return `<nav class="bottom-nav">${items.map(x=>`
-    <button class="nav-item ${active===x.k?'active':''}" onclick="A.nav('${x.k}')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">${x.svg}</svg>${x.l}
+    <button class="nav-item ${active===x.k?'active':''}" onclick="A.nav('${x.k}')" style="position:relative;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">${x.svg}</svg>
+      ${x.k==='notifications'&&unread>0?'<div class="notif-dot"></div>':''}
+      ${x.l}
     </button>`).join('')}</nav>`;
 }
 
@@ -491,6 +624,9 @@ function vAuth() {
       <div class="auth-divider"><span>oder</span></div>
       <button class="btn btn-ghost" onclick="A.register()">
         ${S.loading?'<div class="spin-btn spin-btn-blue"></div>':'Neu registrieren'}
+      </button>
+      <button style="background:none;border:none;cursor:pointer;font-size:.82rem;color:var(--g500);margin-top:14px;text-decoration:underline;" onclick="A.go('pw-reset')">
+        Passwort vergessen?
       </button>
     </div>
   </div>`;
@@ -856,8 +992,9 @@ function vMyBookings() {
       </div>
     </div>
     <div class="screen fade-up">
-      <div style="margin-bottom:20px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
         <div class="page-title">Aufträge</div>
+        ${S.bookings.some(b=>b.status==='completed') ? `<button class="btn btn-sm btn-secondary" onclick="A.nav('pass')" style="font-size:.75rem;">Digital Pass</button>` : ''}
       </div>
       ${S.bookings.length === 0 ? `
         <div class="empty">
@@ -1029,6 +1166,397 @@ function vAdmin() {
     </div>`;
 }
 
+
+function vPwReset() {
+  return `<div class="auth-wrap fade-up">
+    <div style="margin-bottom:28px;">
+      <svg width="52" height="52" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="200" cy="200" r="195" fill="#2D72C8"/>
+        <path d="M 226,80 C 271,67 120,116 124,160 C 128,200 232,191 232,235 C 232,271 125,284 143,290" fill="none" stroke="#fff" stroke-width="11" stroke-linecap="round"/>
+        <path d="M 196,93 C 238,83 147,127 151,169 C 155,207 196,200 196,242 C 196,276 148,284 163,290" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity="0.42"/>
+      </svg>
+    </div>
+    <div style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:1.3rem;letter-spacing:.04em;margin-bottom:8px;">Passwort zurücksetzen</div>
+    <p style="font-size:.875rem;color:var(--g500);margin-bottom:28px;max-width:260px;line-height:1.6;">Wir senden dir einen Link zum Zurücksetzen deines Passworts.</p>
+    <div class="auth-form">
+      <div class="field">
+        <label class="field-label">E-Mail</label>
+        <input id="reset-email" class="input" type="email" placeholder="du@beispiel.at" autocomplete="email" inputmode="email">
+      </div>
+      <button class="btn btn-primary" onclick="A.sendPwReset()" style="margin-bottom:12px;">
+        ${S.loading?'<div class="spin-btn"></div>':'Link senden'}
+      </button>
+      <button class="btn btn-secondary" onclick="A.go('auth')">Zurück zum Login</button>
+    </div>
+  </div>`;
+}
+
+function vPwResetSent() {
+  return `<div class="auth-wrap fade-up">
+    <div style="font-size:3rem;margin-bottom:16px;">📬</div>
+    <div style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:1.3rem;letter-spacing:.04em;margin-bottom:8px;">Link gesendet</div>
+    <p style="font-size:.875rem;color:var(--g500);margin-bottom:28px;max-width:260px;line-height:1.6;">Schau in dein Postfach und klick auf den Link. Danach kannst du ein neues Passwort setzen.</p>
+    <button class="btn btn-primary" style="max-width:220px;" onclick="A.go('auth')">Zurück zum Login</button>
+  </div>`;
+}
+
+function vNotifications() {
+  markNotifsRead();
+  const notifs = S.notifications;
+  return `
+    <div class="topbar">
+      <button class="back-btn" onclick="A.nav('home')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="topbar-title">benachrichtigungen</div>
+      <div></div>
+    </div>
+    <div class="screen fade-up">
+      ${notifs.length === 0 ? `
+        <div class="empty">
+          <div class="empty-icon">🔔</div>
+          <div style="font-weight:500;margin-bottom:6px;">Keine Benachrichtigungen</div>
+          <p style="font-size:.875rem;color:var(--g500);">Status-Updates deiner Aufträge erscheinen hier.</p>
+        </div>
+      ` : notifs.map(n => `
+        <div class="notif-item">
+          <div class="notif-icon">🎿</div>
+          <div style="flex:1;">
+            <div style="font-weight:500;font-size:.88rem;">${esc(n.asset)}</div>
+            <div style="font-size:.8rem;color:var(--g600);margin-top:2px;">Status geändert zu <strong>${slabel(n.status)}</strong></div>
+            <div style="font-size:.72rem;color:var(--g400);margin-top:3px;">${new Date(n.time).toLocaleDateString('de-AT',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}</div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+    ${bottomNav('notifications')}`;
+}
+
+function vProductPass(bid) {
+  const b = bid ? S.bookings.find(x=>x.id===bid) : null;
+  const asset = b?.assets || S.assets[0];
+  const completedBookings = S.bookings.filter(x=>x.status==='completed');
+  const resale = estimateResaleValue(S.assets, S.bookings);
+  const overall = asset ? Math.round(((asset.edge_health||100)+(asset.base_health||100)+(asset.wax_health||100))/3) : 0;
+  const totalSpent = completedBookings.reduce((s,x)=>s+Number(x.price||0),0);
+
+  return `
+    <div class="topbar">
+      <button class="back-btn" onclick="A.nav('my-bookings')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="topbar-title">digital pass</div>
+      <button class="btn btn-sm btn-primary" onclick="A.exportPDF()" style="font-size:.72rem;padding:7px 12px;">PDF exportieren</button>
+    </div>
+    <div class="screen fade-up" id="pass-content">
+      <div class="pass-preview">
+        <div class="pass-header">
+          <div>
+            <div class="pass-logo-text">slopy</div>
+            <div style="font-size:.6rem;color:rgba(255,255,255,.4);letter-spacing:.1em;text-transform:uppercase;margin-top:1px;">Digital Product Pass</div>
+          </div>
+          <div class="pass-certified">✓ Certified</div>
+        </div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;">Geschätzter Restwert</div>
+        <div class="pass-value">€ ${resale.toLocaleString('de-AT')}</div>
+        <div class="pass-change">↑ Servicehistorie erhöht Wiederverkaufswert</div>
+        <div class="pass-grid">
+          <div>
+            <div class="pass-stat-label">Equipment</div>
+            <div class="pass-stat-value">${asset ? esc(asset.brand)+' '+esc(asset.model) : '—'}</div>
+          </div>
+          <div>
+            <div class="pass-stat-label">Health Score</div>
+            <div class="pass-stat-value" style="color:${healthColor(overall)}">${overall}%</div>
+          </div>
+          <div>
+            <div class="pass-stat-label">Services</div>
+            <div class="pass-stat-value">${completedBookings.length} total</div>
+          </div>
+        </div>
+      </div>
+
+      ${asset ? `
+        <div class="section-label">Equipment Health</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;">
+          ${healthRing(asset.edge_health||100, 72, 'Kanten')}
+          ${healthRing(asset.base_health||100, 72, 'Belag')}
+          ${healthRing(asset.wax_health||100, 72, 'Wachs')}
+        </div>
+      ` : ''}
+
+      <div class="section-label">Service-Historie</div>
+      ${completedBookings.length === 0 ? `
+        <div class="card" style="text-align:center;padding:20px;color:var(--g500);font-size:.875rem;">Noch keine abgeschlossenen Services.</div>
+      ` : completedBookings.map((b,i) => `
+        <div class="card" style="margin-bottom:8px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div style="width:32px;height:32px;background:var(--blue-tint);border-radius:var(--rs);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:600;color:var(--blue);flex-shrink:0;">#${completedBookings.length-i}</div>
+              <div>
+                <div style="font-weight:500;font-size:.88rem;">${PKG[b.service_package]?.name}</div>
+                <div style="font-size:.75rem;color:var(--g500);">${fmtDate(b.updated_at||b.created_at)} · ${LOG[b.logistics_type]?.name}</div>
+              </div>
+            </div>
+            <div style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:1rem;color:var(--blue);">${fmtEur(b.price)}</div>
+          </div>
+          ${b.admin_notes ? `<div style="margin-top:8px;padding:8px 10px;background:var(--g50);border-radius:var(--rs);font-size:.75rem;color:var(--g600);line-height:1.5;">💬 ${esc(b.admin_notes)}</div>` : ''}
+        </div>
+      `).join('')}
+
+      <div class="card" style="margin-top:6px;background:var(--blue-tint);border-color:rgba(45,114,200,.15);">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div style="font-size:.82rem;color:var(--g600);">Gesamtinvestition in Services</div>
+          <div style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:1.1rem;color:var(--blue);">${fmtEur(totalSpent)}</div>
+        </div>
+      </div>
+
+      <div style="margin-top:20px;padding:14px;background:var(--g50);border-radius:var(--rs);font-size:.75rem;color:var(--g500);line-height:1.7;text-align:center;">
+        Dieser Digital Product Pass wurde von Slopy erstellt und entspricht dem PASSAT-Standard der EU-Ökodesignverordnung. Gültig für ${asset ? esc(asset.brand)+' '+esc(asset.model) : 'dieses Equipment'}.
+      </div>
+    </div>
+    ${bottomNav('my-bookings')}`;
+}
+
+function vAdminAnalytics() {
+  const total = S.bookings.filter(b=>b.status!=='cancelled').length;
+  const revenue = S.bookings.filter(b=>b.status!=='cancelled').reduce((s,b)=>s+Number(b.price||0),0);
+  const completed = S.bookings.filter(b=>b.status==='completed').length;
+  const active = S.bookings.filter(b=>!['completed','cancelled'].includes(b.status)).length;
+  const avgVal = avgOrderValue();
+  const monthly = getMonthlyRevenue();
+  const { dist, total: pkgTotal } = getPkgDistribution();
+  const logDist = getLogisticsDistribution();
+  const months = Object.keys(monthly);
+  const maxRev = Math.max(...Object.values(monthly), 1);
+  const convRate = total > 0 ? Math.round((completed/total)*100) : 0;
+
+  return `
+    <div class="admin-wrap">
+      <div class="admin-topbar">
+        <div class="admin-topbar-logo">
+          <svg class="logo-svg" width="28" height="28" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="200" cy="200" r="195" fill="rgba(255,255,255,0.15)"/>
+            <path d="M 226,80 C 271,67 120,116 124,160 C 128,200 232,191 232,235 C 232,271 125,284 143,290" fill="none" stroke="#fff" stroke-width="11" stroke-linecap="round"/>
+            <path d="M 196,93 C 238,83 147,127 151,169 C 155,207 196,200 196,242 C 196,276 148,284 163,290" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity="0.42"/>
+          </svg>
+          <span class="admin-topbar-wordmark">slopy</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span class="admin-badge">Analytics</span>
+          <button class="btn btn-xs" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.15);" onclick="A.nav('admin')">← Aufträge</button>
+        </div>
+      </div>
+
+      <div class="admin-screen fade-up">
+
+        <!-- KPI Row -->
+        <div class="analytics-grid">
+          <div class="analytics-card">
+            <div class="analytics-value">${fmtEur(revenue)}</div>
+            <div class="analytics-label">Gesamtumsatz</div>
+            <div class="analytics-trend up">↑ alle Aufträge</div>
+          </div>
+          <div class="analytics-card">
+            <div class="analytics-value">${fmtEur(avgVal)}</div>
+            <div class="analytics-label">Ø Auftragswert</div>
+            <div class="analytics-trend ${avgVal >= 79 ? 'up' : 'down'}">${avgVal >= 79 ? '↑ über Ziel' : '↓ unter Ziel'}</div>
+          </div>
+          <div class="analytics-card">
+            <div class="analytics-value">${total}</div>
+            <div class="analytics-label">Buchungen gesamt</div>
+            <div class="analytics-trend up">${active} aktiv · ${completed} abg.</div>
+          </div>
+          <div class="analytics-card">
+            <div class="analytics-value">${convRate}%</div>
+            <div class="analytics-label">Abschlussrate</div>
+            <div class="analytics-trend ${convRate >= 70 ? 'up' : 'down'}">${convRate >= 70 ? '↑ gut' : '↓ optimierbar'}</div>
+          </div>
+        </div>
+
+        <!-- Revenue Chart -->
+        ${months.length > 0 ? `
+          <div class="chart-section">
+            <div class="chart-title">Umsatz nach Monat</div>
+            <div class="bar-chart">
+              ${months.map(m => {
+                const val = monthly[m];
+                const pct = Math.round((val/maxRev)*100);
+                return `<div class="bar-col">
+                  <div class="bar" style="height:${pct}%" title="${fmtEur(val)}"></div>
+                  <div class="bar-lbl">${m}</div>
+                </div>`;
+              }).join('')}
+            </div>
+          </div>
+        ` : ''}
+
+        <!-- Package Distribution -->
+        ${pkgTotal > 0 ? `
+          <div class="chart-section">
+            <div class="chart-title">Paket-Mix</div>
+            <div class="pkg-dist">
+              <div class="pkg-seg" style="width:${Math.round((dist.essential/pkgTotal)*100)}%;background:#2D72C8;" title="Essential"></div>
+              <div class="pkg-seg" style="width:${Math.round((dist.performance/pkgTotal)*100)}%;background:#1a5ba8;" title="Performance"></div>
+              <div class="pkg-seg" style="width:${Math.round((dist.world_cup/pkgTotal)*100)}%;background:#0d2d52;" title="World Cup"></div>
+            </div>
+            <div class="pkg-leg">
+              <div class="pkg-leg-item"><div class="pkg-leg-dot" style="background:#2D72C8"></div>Essential ${Math.round((dist.essential/pkgTotal)*100)}%</div>
+              <div class="pkg-leg-item"><div class="pkg-leg-dot" style="background:#1a5ba8"></div>Performance ${Math.round((dist.performance/pkgTotal)*100)}%</div>
+              <div class="pkg-leg-item"><div class="pkg-leg-dot" style="background:#0d2d52"></div>World Cup ${Math.round((dist.world_cup/pkgTotal)*100)}%</div>
+            </div>
+          </div>
+        ` : ''}
+
+        <!-- Logistics Mix -->
+        <div class="chart-section">
+          <div class="chart-title">Logistik-Kanäle</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            ${Object.entries(logDist).map(([type, count]) => {
+              const pct = Math.round((count/total)*100);
+              return `<div>
+                <div style="display:flex;justify-content:space-between;font-size:.78rem;margin-bottom:4px;">
+                  <span style="color:var(--g600);">${LOG[type]?.name||type}</span>
+                  <span style="font-weight:500;">${count} (${pct}%)</span>
+                </div>
+                <div style="height:6px;background:var(--g100);border-radius:3px;overflow:hidden;">
+                  <div style="height:100%;width:${pct}%;background:var(--blue);border-radius:3px;transition:width .6s;"></div>
+                </div>
+              </div>`;
+            }).join('')}
+          </div>
+        </div>
+
+        <!-- Top Packages Revenue -->
+        <div class="chart-section">
+          <div class="chart-title">Umsatz nach Paket</div>
+          ${['essential','performance','world_cup'].map(pkg => {
+            const pkgRevenue = S.bookings.filter(b=>b.service_package===pkg&&b.status!=='cancelled').reduce((s,b)=>s+Number(b.price||0),0);
+            const pct = revenue > 0 ? Math.round((pkgRevenue/revenue)*100) : 0;
+            return `<div style="margin-bottom:10px;">
+              <div style="display:flex;justify-content:space-between;font-size:.78rem;margin-bottom:4px;">
+                <span style="color:var(--g600);">${PKG[pkg]?.name}</span>
+                <span style="font-weight:500;">${fmtEur(pkgRevenue)} · ${pct}%</span>
+              </div>
+              <div style="height:6px;background:var(--g100);border-radius:3px;overflow:hidden;">
+                <div style="height:100%;width:${pct}%;background:var(--blue);border-radius:3px;transition:width .6s;"></div>
+              </div>
+            </div>`;
+          }).join('')}
+        </div>
+
+      </div>
+    </div>`;
+}
+
+function vAdmin() {
+  const tab = S.adminTab || 'bookings';
+  const filter = S.adminFilter || 'all';
+  const filtered = filter === 'all' ? S.bookings : S.bookings.filter(b=>b.status===filter);
+  const active = S.bookings.filter(b=>!['completed','cancelled'].includes(b.status));
+  const today = S.bookings.filter(b=>{const d=new Date(b.created_at);const n=new Date();return d.toDateString()===n.toDateString()});
+  const revenue = S.bookings.filter(b=>b.status!=='cancelled').reduce((s,b)=>s+Number(b.price||0),0);
+
+  return `
+    <div class="admin-wrap">
+      <div class="admin-topbar">
+        <div class="admin-topbar-logo">
+          <svg class="logo-svg" width="28" height="28" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="200" cy="200" r="195" fill="rgba(255,255,255,0.15)"/>
+            <path d="M 226,80 C 271,67 120,116 124,160 C 128,200 232,191 232,235 C 232,271 125,284 143,290" fill="none" stroke="#fff" stroke-width="11" stroke-linecap="round"/>
+            <path d="M 196,93 C 238,83 147,127 151,169 C 155,207 196,200 196,242 C 196,276 148,284 163,290" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity="0.42"/>
+          </svg>
+          <span class="admin-topbar-wordmark">slopy</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span class="admin-badge">Admin</span>
+          <button class="btn btn-xs" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.15);" onclick="A.logout()">Logout</button>
+        </div>
+      </div>
+
+      <div class="admin-screen fade-up">
+        <!-- KPI Strip -->
+        <div class="admin-stat-grid">
+          <div class="admin-stat">
+            <div class="admin-stat-value">${active.length}</div>
+            <div class="admin-stat-label">Aktive Aufträge</div>
+          </div>
+          <div class="admin-stat">
+            <div class="admin-stat-value">${today.length}</div>
+            <div class="admin-stat-label">Heute</div>
+          </div>
+        </div>
+        <div class="admin-card" style="margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;padding:14px 16px;">
+          <div>
+            <div style="font-size:.7rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--g500);margin-bottom:3px;">Gesamtumsatz</div>
+            <div style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:1.8rem;letter-spacing:.04em;color:var(--blue);">${fmtEur(revenue)}</div>
+          </div>
+          <button class="btn btn-sm btn-secondary" onclick="A.nav('admin-analytics')">Analytics →</button>
+        </div>
+
+        <!-- Tabs -->
+        <div class="admin-tabs">
+          <button class="admin-tab ${tab==='bookings'?'active':''}" onclick="A.setAdminTab('bookings')">Aufträge (${S.bookings.length})</button>
+          <button class="admin-tab ${tab==='active'?'active':''}" onclick="A.setAdminTab('active')">Aktiv (${active.length})</button>
+          <button class="admin-tab ${tab==='completed'?'active':''}" onclick="A.setAdminTab('completed')">Abgeschlossen</button>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+          ${[
+            {k:'all', l:'Alle'},
+            {k:'booked', l:'Gebucht'},
+            {k:'dropped_off', l:'Abgegeben'},
+            {k:'in_service', l:'In Bearbeitung'},
+            {k:'quality_check', l:'QC'},
+            {k:'ready', l:'Fertig'},
+            {k:'completed', l:'Abgeschlossen'},
+          ].map(f=>`<button class="filter-chip ${filter===f.k?'active':''}" onclick="A.setAdminFilter('${f.k}')">${f.l}</button>`).join('')}
+        </div>
+
+        <!-- Booking List -->
+        <div class="section-label">
+          ${filtered.length} Buchung${filtered.length!==1?'en':''}
+          ${filter!=='all'?` · Filter: ${slabel(filter)}`:''}
+        </div>
+        ${filtered.length === 0 ? `
+          <div class="empty"><p style="color:var(--g500)">Keine Buchungen für diesen Filter.</p></div>
+        ` : filtered.map(b => {
+          const curIdx = STATUS_FLOW.findIndex(s=>s.key===b.status);
+          const nextStatus = curIdx >= 0 && curIdx < STATUS_FLOW.length-1 ? STATUS_FLOW[curIdx+1] : null;
+          return `
+            <div class="admin-card" style="margin-bottom:10px;">
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;">
+                <div style="flex:1;min-width:0;margin-right:10px;">
+                  <div style="font-weight:600;font-size:.95rem;">${esc(b.assets?.brand||'?')} ${esc(b.assets?.model||'')}</div>
+                  <div style="font-size:.75rem;color:var(--g500);">${b.profiles?.email || b.user_id?.slice(0,8) || '—'}</div>
+                  <div style="font-size:.75rem;color:var(--g500);">${PKG[b.service_package]?.name} · ${fmtEur(b.price)} · ${LOG[b.logistics_type]?.name}</div>
+                  ${b.logistics_address?`<div style="font-size:.72rem;color:var(--g500);">📍 ${esc(b.logistics_address)}</div>`:''}
+                </div>
+                <div style="flex-shrink:0;text-align:right;">
+                  <span class="${badgeClass(b.status)}">${slabel(b.status)}</span>
+                  <div style="font-size:.7rem;color:var(--g500);margin-top:4px;">${fmtDate(b.created_at)}</div>
+                </div>
+              </div>
+              ${b.status !== 'completed' && b.status !== 'cancelled' ? `
+                <div class="divider" style="margin:8px 0;"></div>
+                <div style="display:flex;gap:8px;align-items:center;">
+                  <select class="status-select" onchange="A.updateStatus('${b.id}',this.value)">
+                    <option value="">Status ändern…</option>
+                    ${STATUS_FLOW.map(s=>`<option value="${s.key}" ${s.key===b.status?'selected':''}>${s.label}</option>`).join('')}
+                  </select>
+                  ${nextStatus ? `
+                    <button class="btn btn-sm btn-primary" onclick="A.updateStatus('${b.id}','${nextStatus.key}')" style="white-space:nowrap;">
+                      → ${nextStatus.label}
+                    </button>` : ''}
+                </div>
+              ` : ''}
+            </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+}
+
 // ════════════════════════════════════════════════════════════
 // ROUTER
 // ════════════════════════════════════════════════════════════
@@ -1041,20 +1569,26 @@ function go(view) {
 
   if(view.startsWith('tracking-')) {
     app.innerHTML = vTracking(view.replace('tracking-',''));
+  } else if(view.startsWith('pass-')) {
+    app.innerHTML = vProductPass(view.replace('pass-',''));
   } else {
     switch(view) {
-      case 'auth':         app.innerHTML = vAuth();        break;
-      case 'home':         app.innerHTML = vHome();        subCustomer(); break;
-      case 'profile':      app.innerHTML = vProfile();     break;
-      case 'book-1':       app.innerHTML = vBook1();       break;
-      case 'book-asset':   app.innerHTML = vBookAsset();   break;
-      case 'book-2':       app.innerHTML = vBook2();       break;
-      case 'book-3':       app.innerHTML = vBook3();       break;
-      case 'book-4':       app.innerHTML = vBook4();       break;
-      case 'book-confirm': app.innerHTML = vBookConfirm(); break;
-      case 'my-bookings':  app.innerHTML = vMyBookings();  subCustomer(); break;
-      case 'admin':        app.innerHTML = vAdmin();       subAdmin(); break;
-      default:             app.innerHTML = vAuth();
+      case 'auth':            app.innerHTML = vAuth();           break;
+      case 'pw-reset':        app.innerHTML = vPwReset();        break;
+      case 'pw-reset-sent':   app.innerHTML = vPwResetSent();    break;
+      case 'home':            app.innerHTML = vHome();           subCustomer(); loadNotifications(); break;
+      case 'profile':         app.innerHTML = vProfile();        break;
+      case 'notifications':   app.innerHTML = vNotifications();  break;
+      case 'book-1':          app.innerHTML = vBook1();          break;
+      case 'book-asset':      app.innerHTML = vBookAsset();      break;
+      case 'book-2':          app.innerHTML = vBook2();          break;
+      case 'book-3':          app.innerHTML = vBook3();          break;
+      case 'book-4':          app.innerHTML = vBook4();          break;
+      case 'book-confirm':    app.innerHTML = vBookConfirm();    break;
+      case 'my-bookings':     app.innerHTML = vMyBookings();     subCustomer(); break;
+      case 'admin':           app.innerHTML = vAdmin();          subAdmin(); break;
+      case 'admin-analytics': app.innerHTML = vAdminAnalytics(); break;
+      default:                app.innerHTML = vAuth();
     }
   }
   window.scrollTo(0,0);
@@ -1194,7 +1728,10 @@ async function updateStatus(id, newStatus) {
   if(!newStatus) return;
   const { error } = await db.from('bookings').update({ status: newStatus }).eq('id', id);
   if(error) { toast('Fehler beim Update'); return; }
+  const updated = S.bookings.find(b=>b.id===id);
   S.bookings = S.bookings.map(b => b.id===id ? {...b, status:newStatus} : b);
+  // Add notification for customer
+  if(updated) addNotification({...updated, assets:updated.assets}, newStatus);
   toast('Status: ' + slabel(newStatus));
   go('admin');
 }
@@ -1211,9 +1748,170 @@ async function saveProfile() {
   go('profile');
 }
 
+
+// ── Password Reset ────────────────────────────────────────
+async function sendPwReset() {
+  const email = document.getElementById('reset-email')?.value?.trim();
+  if(!email) { toast('Bitte E-Mail eingeben'); return; }
+  setL(true);
+  const { error } = await db.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + '?reset=true'
+  });
+  setL(false);
+  if(error) { toast('Fehler: ' + error.message); return; }
+  go('pw-reset-sent');
+}
+
+// ── Admin Tab / Filter ────────────────────────────────────
+function setAdminTab(tab) {
+  S.adminTab = tab;
+  if(tab === 'active') S.adminFilter = 'all';
+  else if(tab === 'completed') S.adminFilter = 'completed';
+  else S.adminFilter = 'all';
+  go('admin');
+}
+
+function setAdminFilter(filter) {
+  S.adminFilter = filter;
+  go('admin');
+}
+
+// ── PDF Export ────────────────────────────────────────────
+async function exportPDF() {
+  toast('PDF wird erstellt…', 2000);
+  const asset = S.assets[0];
+  const completedBookings = S.bookings.filter(b=>b.status==='completed');
+  const resale = estimateResaleValue(S.assets, S.bookings);
+  const overall = asset ? Math.round(((asset.edge_health||100)+(asset.base_health||100)+(asset.wax_health||100))/3) : 0;
+  const totalSpent = completedBookings.reduce((s,b)=>s+Number(b.price||0),0);
+  const date = new Date().toLocaleDateString('de-AT',{day:'numeric',month:'long',year:'numeric'});
+
+  const w = window.open('', '_blank');
+  w.document.write(`<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Slopy Digital Product Pass</title>
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@200;300;400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',sans-serif;background:#fff;color:#14141A;font-size:14px;line-height:1.5;padding:40px;max-width:700px;margin:0 auto}
+  .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;padding-bottom:20px;border-bottom:2px solid #2D72C8}
+  .logo-wrap{display:flex;align-items:center;gap:12px}
+  .wordmark{font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:1.4rem;letter-spacing:8px;color:#2D72C8;text-transform:lowercase}
+  .pass-title{font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:#9AA3AE}
+  .hero{background:linear-gradient(135deg,#0d1f35,#0a1828);border-radius:12px;padding:28px;margin-bottom:24px;color:#fff}
+  .hero-label{font-size:.65rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
+  .hero-value{font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:2.2rem;color:#fff;letter-spacing:.02em;line-height:1;margin-bottom:4px}
+  .hero-sub{font-size:.78rem;color:#4ade80;margin-bottom:20px}
+  .hero-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,.08)}
+  .hero-stat-label{font-size:.6rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px}
+  .hero-stat-value{font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:.9rem;color:#fff}
+  .section-title{font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#9AA3AE;margin:20px 0 10px}
+  .health-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+  .health-card{background:#F7F8FA;border-radius:8px;padding:14px;text-align:center}
+  .health-val{font-size:1.4rem;font-weight:600;margin-bottom:3px}
+  .health-lbl{font-size:.7rem;color:#6B7684;text-transform:uppercase;letter-spacing:.06em}
+  .booking-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #F0F2F5}
+  .booking-row:last-child{border-bottom:none}
+  .booking-no{width:28px;height:28px;background:#EBF2FB;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:600;color:#2D72C8;flex-shrink:0}
+  .booking-info{flex:1;margin:0 12px}
+  .booking-name{font-weight:500;font-size:.875rem}
+  .booking-date{font-size:.72rem;color:#9AA3AE}
+  .booking-notes{margin-top:4px;font-size:.72rem;color:#6B7684;background:#F7F8FA;padding:5px 8px;border-radius:4px}
+  .booking-price{font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:1rem;color:#2D72C8}
+  .total-row{display:flex;justify-content:space-between;align-items:center;background:#EBF2FB;padding:12px 14px;border-radius:8px;margin-top:12px}
+  .footer{margin-top:32px;padding-top:20px;border-top:1px solid #E2E6EA;font-size:.72rem;color:#9AA3AE;text-align:center;line-height:1.7}
+  .certified-badge{display:inline-block;background:#EBF2FB;color:#2D72C8;font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:2px;margin-bottom:6px}
+  @media print{body{padding:20px}@page{margin:1cm}}
+</style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo-wrap">
+      <svg width="36" height="36" viewBox="0 0 400 400"><circle cx="200" cy="200" r="195" fill="#2D72C8"/><path d="M 226,80 C 271,67 120,116 124,160 C 128,200 232,191 232,235 C 232,271 125,284 143,290" fill="none" stroke="#fff" stroke-width="11" stroke-linecap="round"/><path d="M 196,93 C 238,83 147,127 151,169 C 155,207 196,200 196,242 C 196,276 148,284 163,290" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity="0.42"/></svg>
+      <div>
+        <div class="wordmark">slopy</div>
+        <div class="pass-title">Digital Product Pass</div>
+      </div>
+    </div>
+    <div style="text-align:right;font-size:.75rem;color:#9AA3AE;">
+      Ausgestellt: ${date}<br>
+      PASSAT-Standard · EU ESPR konform
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-label">Geschätzter Restwert</div>
+    <div class="hero-value">€ ${resale.toLocaleString('de-AT')}</div>
+    <div class="hero-sub">↑ Servicehistorie erhöht Wiederverkaufswert nachweislich</div>
+    <div class="hero-grid">
+      <div>
+        <div class="hero-stat-label">Equipment</div>
+        <div class="hero-stat-value">${asset ? asset.brand+' '+asset.model : '—'}</div>
+      </div>
+      <div>
+        <div class="hero-stat-label">Health Score</div>
+        <div class="hero-stat-value">${overall}%</div>
+      </div>
+      <div>
+        <div class="hero-stat-label">Services gesamt</div>
+        <div class="hero-stat-value">${completedBookings.length}</div>
+      </div>
+    </div>
+  </div>
+
+  ${asset ? `
+  <div class="section-title">Equipment Health</div>
+  <div class="health-grid">
+    <div class="health-card">
+      <div class="health-val" style="color:${asset.edge_health>=70?'#16A34A':asset.edge_health>=40?'#D97706':'#DC2626'}">${asset.edge_health||100}%</div>
+      <div class="health-lbl">Kanten</div>
+    </div>
+    <div class="health-card">
+      <div class="health-val" style="color:${asset.base_health>=70?'#16A34A':asset.base_health>=40?'#D97706':'#DC2626'}">${asset.base_health||100}%</div>
+      <div class="health-lbl">Belag</div>
+    </div>
+    <div class="health-card">
+      <div class="health-val" style="color:${asset.wax_health>=70?'#16A34A':asset.wax_health>=40?'#D97706':'#DC2626'}">${asset.wax_health||100}%</div>
+      <div class="health-lbl">Wachs</div>
+    </div>
+  </div>` : ''}
+
+  <div class="section-title">Zertifizierte Service-Historie</div>
+  ${completedBookings.map((b,i) => `
+    <div class="booking-row">
+      <div class="booking-no">#${completedBookings.length-i}</div>
+      <div class="booking-info">
+        <div class="booking-name">${PKG[b.service_package]?.name} Service</div>
+        <div class="booking-date">${fmtDate(b.updated_at||b.created_at)} · ${LOG[b.logistics_type]?.name}</div>
+        ${b.admin_notes ? '<div class="booking-notes">'+b.admin_notes+'</div>' : ''}
+      </div>
+      <div class="booking-price">${fmtEur(b.price)}</div>
+    </div>
+  `).join('')}
+  <div class="total-row">
+    <span style="font-weight:500;">Gesamtinvestition in Services</span>
+    <span style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:1.1rem;color:#2D72C8;">${fmtEur(totalSpent)}</span>
+  </div>
+
+  <div class="footer">
+    <div class="certified-badge">✓ Slopy Certified</div><br>
+    Dieser Digital Product Pass wurde automatisch durch die Slopy-Plattform erstellt.<br>
+    Er dokumentiert alle durchgeführten Services und entspricht dem PASSAT-Standard der EU-Ökodesignverordnung (ESPR).<br>
+    <strong>slopy.at</strong> · Zero Friction. Smart Assets. Perfect Slopes.
+  </div>
+</body>
+</html>`);
+  w.document.close();
+  setTimeout(() => w.print(), 800);
+  toast('PDF geöffnet — drucken oder als PDF speichern');
+}
+
 // ── Global API ────────────────────────────────────────────
 window.A = {
   go, login, register, logout, addAsset, createBooking, updateStatus, saveProfile,
+  sendPwReset, setAdminTab, setAdminFilter, exportPDF,
   selectAsset(id) { S.draft.asset_id=id; S.draft.asset=S.assets.find(a=>a.id===id); go('book-1'); },
   selectPkg(id)   { S.draft.pkg=id; go('book-2'); },
   selectLog(id)   { S.draft.log=id; go('book-3'); },
@@ -1221,11 +1919,14 @@ window.A = {
   setNA(k,v) { S.newAsset[k]=v; },
   async nav(view) {
     if(rtCh) { db.removeChannel(rtCh); rtCh=null; }
-    if(view==='home')         { await loadAssets(); await loadMyBookings(); go('home'); }
-    else if(view==='book-1')  { await loadAssets(); S.draft={asset_id:null,asset:null,pkg:'performance',log:'home',addr:'',notes:''}; go('book-1'); }
+    if(view==='home')             { await loadAssets(); await loadMyBookings(); go('home'); }
+    else if(view==='book-1')      { await loadAssets(); S.draft={asset_id:null,asset:null,pkg:'performance',log:'home',addr:'',notes:''}; go('book-1'); }
     else if(view==='my-bookings') { await loadMyBookings(); go('my-bookings'); }
-    else if(view==='profile') { await loadAssets(); await loadMyBookings(); go('profile'); }
-    else if(view==='admin')   { await loadAllBookings(); go('admin'); }
+    else if(view==='profile')     { await loadAssets(); await loadMyBookings(); go('profile'); }
+    else if(view==='admin')       { await loadAllBookings(); go('admin'); }
+    else if(view==='admin-analytics') { await loadAllBookings(); go('admin-analytics'); }
+    else if(view==='notifications')   { go('notifications'); }
+    else if(view==='pass')            { await loadMyBookings(); go('pass-'); }
     else go(view);
   }
 };
