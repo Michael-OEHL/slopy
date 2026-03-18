@@ -428,6 +428,47 @@ html,body{
 .stripe-row{display:flex;gap:10px}
 .stripe-badge{display:flex;align-items:center;gap:6px;font-size:.75rem;color:var(--g500);justify-content:center;margin-top:10px}
 
+
+/* ── AUTOCOMPLETE ────────────────────────────────────────── */
+.autocomplete-wrap{position:relative}
+.autocomplete-list{position:absolute;top:100%;left:0;right:0;z-index:200;background:#fff;border:1.5px solid var(--blue);border-top:none;border-radius:0 0 var(--rs) var(--rs);max-height:220px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.autocomplete-item{padding:10px 14px;font-size:.88rem;cursor:pointer;border-bottom:1px solid var(--g100);transition:background .1s;display:flex;align-items:center;justify-content:space-between}
+.autocomplete-item:last-child{border-bottom:none}
+.autocomplete-item:hover,.autocomplete-item.selected{background:var(--blue-tint)}
+.autocomplete-item-brand{font-size:.72rem;color:var(--g500);margin-left:8px}
+.autocomplete-popular{font-size:.62rem;background:var(--blue-tint);color:var(--blue);padding:2px 6px;border-radius:2px}
+
+/* ── B2B MANAGER ─────────────────────────────────────────── */
+.b2bm-wrap{background:#0a0e14;min-height:100vh}
+.b2bm-topbar{background:#0d1520;border-bottom:1px solid rgba(255,255,255,.05);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:sticky;top:0;z-index:50}
+.b2bm-screen{padding:20px 20px 60px}
+.b2bm-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:var(--r);padding:16px;margin-bottom:10px}
+.b2bm-stat{text-align:center;padding:16px;background:rgba(45,114,200,.06);border:1px solid rgba(45,114,200,.12);border-radius:var(--r)}
+.b2bm-stat-val{font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:2rem;letter-spacing:.02em;color:var(--blue);line-height:1;margin-bottom:4px}
+.b2bm-stat-lbl{font-size:.65rem;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.1em}
+.b2bm-member{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.b2bm-member:last-child{border-bottom:none}
+.b2bm-avatar{width:36px;height:36px;border-radius:50%;background:rgba(45,114,200,.15);display:flex;align-items:center;justify-content:center;font-family:'Josefin Sans',sans-serif;font-weight:300;font-size:.85rem;color:var(--blue);flex-shrink:0}
+.b2bm-label{font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:10px}
+.b2bm-health-bar{height:4px;border-radius:2px;background:rgba(255,255,255,.06);overflow:hidden;margin-top:4px}
+.b2bm-health-fill{height:100%;border-radius:2px;transition:width .5s}
+.b2bm-tab{flex:1;padding:10px 6px;background:none;border:none;cursor:pointer;font-size:.78rem;font-weight:500;color:rgba(255,255,255,.35);border-bottom:2px solid transparent;transition:all .15s;text-align:center}
+.b2bm-tab.on{color:var(--blue);border-bottom-color:var(--blue)}
+.b2bm-tabs{display:flex;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:16px}
+
+/* ── B2B ONBOARDING ──────────────────────────────────────── */
+.b2b-onboard{min-height:100vh;background:#0a0e14;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;text-align:center}
+
+/* ── CANCEL BOOKING ──────────────────────────────────────── */
+.cancel-confirm{background:var(--red-tint);border:1px solid rgba(220,38,38,.2);border-radius:var(--r);padding:14px;margin-bottom:12px}
+
+/* ── SESSION EXPIRED ─────────────────────────────────────── */
+#session-toast{position:fixed;top:60px;left:50%;transform:translateX(-50%) translateY(-10px);background:var(--amber);color:#fff;padding:10px 18px;border-radius:var(--rs);font-size:.82rem;opacity:0;transition:all .3s;z-index:400;pointer-events:none;white-space:nowrap}
+#session-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── MANUAL BOOKING (Admin) ───────────────────────────────── */
+.manual-booking-wrap{background:var(--g50);min-height:100vh}
+
 </style>
 </head>
 <body>
@@ -444,6 +485,9 @@ html,body{
   </div>
 </div>
 <div id="toast"></div>
+
+<!-- Cookie Banner -->
+<div id="session-toast">Session abgelaufen — bitte neu einloggen</div>
 
 <!-- Cookie Banner -->
 <div id="cookie-banner">
@@ -513,6 +557,12 @@ const S = {
   selectedAssets: [],
   capacityData: {},
   b2bMode: false,
+  b2bGroup: null,
+  b2bMembers: [],
+  b2bTab: 'fleet',
+  skiCatalog: [],
+  autocomplete: { field:null, results:[], show:false },
+  manualBooking: { user_email:'', asset_brand:'', asset_model:'', pkg:'performance', log:'home', addr:'', notes:'' },
 };
 
 const db = supabase.createClient(SB_URL, SB_KEY);
@@ -1120,7 +1170,10 @@ function vMyBookings() {
           ${progressBar(b.status)}
           <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;">
             <span style="font-size:.78rem;color:var(--g500);">${LOG[b.logistics_type]?.name||b.logistics_type}</span>
-            <span style="font-family:var(--fd);font-weight:200;font-size:1rem;letter-spacing:.02em;color:var(--blue);">${fmtEur(b.price)}</span>
+            <div style="display:flex;align-items:center;gap:8px;">
+              ${b.status==='booked'?`<button onclick="event.stopPropagation();A.go('cancel-${b.id}')" style="background:none;border:none;font-size:.72rem;color:var(--red);cursor:pointer;">Stornieren</button>`:''}
+              <span style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:1rem;letter-spacing:.02em;color:var(--blue);">${fmtEur(b.price)}</span>
+            </div>
           </div>
         </div>
       `).join('')}
@@ -1377,9 +1430,10 @@ function vAdmin() {
             <div style="font-size:.7rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--g500);margin-bottom:3px;">Gesamtumsatz</div>
             <div style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:1.8rem;letter-spacing:.04em;color:var(--blue);">${fmtEur(revenue)}</div>
           </div>
-          <div style="display:flex;gap:8px;">
-            <button class="btn btn-sm btn-secondary" onclick="A.nav('admin-analytics')">Analytics →</button>
-            <button class="btn btn-sm btn-secondary" onclick="A.nav('admin-capacity')">Kalender →</button>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button class="btn btn-sm btn-secondary" onclick="A.nav('admin-analytics')">Analytics</button>
+            <button class="btn btn-sm btn-secondary" onclick="A.nav('admin-capacity')">Kalender</button>
+            <button class="btn btn-sm btn-primary" onclick="A.nav('admin-manual')">+ Walk-In</button>
           </div>
         </div>
 
@@ -2053,6 +2107,323 @@ function vB2B() {
   </div>`;
 }
 
+
+// ════════════════════════════════════════════════════════════
+// SKI AUTOCOMPLETE HELPER
+// ════════════════════════════════════════════════════════════
+function skiAutocompleteField(fieldId, placeholder, value, onSelect) {
+  return `<div class="autocomplete-wrap">
+    <input id="${fieldId}" class="input" type="text" placeholder="${placeholder}" value="${esc(value)}"
+      oninput="A.onSkiInput('${fieldId}', this.value)"
+      onblur="setTimeout(()=>A.hideAutocomplete(),200)"
+      autocomplete="off">
+    <div class="autocomplete-list" id="${fieldId}-list" style="display:none;"></div>
+  </div>`;
+}
+
+// ════════════════════════════════════════════════════════════
+// B2B MANAGER ONBOARDING
+// ════════════════════════════════════════════════════════════
+function vB2BOnboard() {
+  return `<div class="b2b-onboard fade-up">
+    <div style="margin-bottom:24px;">
+      <svg width="64" height="64" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="200" cy="200" r="195" fill="#2D72C8"/>
+        <path d="M 226,80 C 271,67 120,116 124,160 C 128,200 232,191 232,235 C 232,271 125,284 143,290" fill="none" stroke="#fff" stroke-width="11" stroke-linecap="round"/>
+        <path d="M 196,93 C 238,83 147,127 151,169 C 155,207 196,200 196,242 C 196,276 148,284 163,290" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity="0.42"/>
+      </svg>
+    </div>
+    <div style="font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:10px;">slopy corporate</div>
+    <div style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:1.8rem;letter-spacing:.04em;color:#fff;margin-bottom:10px;line-height:1.2;">
+      Willkommen beim<br>Corporate-Account
+    </div>
+    <p style="font-size:.875rem;color:rgba(255,255,255,.5);line-height:1.7;margin-bottom:32px;max-width:280px;">
+      Richte deine Unternehmensgruppe ein. Du kannst danach Skier für alle Mitarbeiter verwalten und Sammel-Services buchen.
+    </p>
+    <div style="width:100%;max-width:320px;text-align:left;">
+      <div class="field"><label class="il" style="color:rgba(255,255,255,.4);">Unternehmensname *</label>
+        <input id="b2b-company" class="input" type="text" placeholder="Hotel Bergkristall / Skischule / Firma"></div>
+      <div class="field"><label class="il" style="color:rgba(255,255,255,.4);">Unternehmenstyp</label>
+        <select id="b2b-type" class="input" style="cursor:pointer;">
+          <option value="hotel">Hotel / Resort</option>
+          <option value="skischool">Skischule</option>
+          <option value="corporate">Unternehmen</option>
+          <option value="other">Sonstiges</option>
+        </select></div>
+      <div class="field"><label class="il" style="color:rgba(255,255,255,.4);">Adresse</label>
+        <input id="b2b-addr" class="input" type="text" placeholder="Straße Nr, PLZ Ort"></div>
+      <div class="field"><label class="il" style="color:rgba(255,255,255,.4);">Ansprechperson</label>
+        <input id="b2b-contact" class="input" type="text" placeholder="Vor- und Nachname"></div>
+      <div class="field"><label class="il" style="color:rgba(255,255,255,.4);">Telefon</label>
+        <input id="b2b-phone" class="input" type="tel" placeholder="+43 123 456789" inputmode="tel"></div>
+      <button class="btn btn-primary" onclick="A.createB2BGroup()" style="margin-top:8px;">
+        ${S.loading?'<div class="spin-btn"></div>':'Gruppe erstellen & starten'}
+      </button>
+    </div>
+  </div>`;
+}
+
+// ════════════════════════════════════════════════════════════
+// B2B MANAGER DASHBOARD
+// ════════════════════════════════════════════════════════════
+function vB2BManager() {
+  const tab = S.b2bTab || 'fleet';
+  const group = S.b2bGroup;
+  const members = S.b2bMembers || [];
+  const assets = S.assets;
+  const active = S.bookings.filter(b=>!['completed','cancelled'].includes(b.status));
+  const completed = S.bookings.filter(b=>b.status==='completed');
+  const revenue = S.bookings.filter(b=>b.status!=='cancelled').reduce((s,b)=>s+Number(b.price||0),0);
+
+  return `<div class="b2bm-wrap">
+    <!-- Topbar -->
+    <div class="b2bm-topbar">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <svg width="26" height="26" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="200" cy="200" r="195" fill="rgba(255,255,255,0.1)"/>
+          <path d="M 226,80 C 271,67 120,116 124,160 C 128,200 232,191 232,235 C 232,271 125,284 143,290" fill="none" stroke="#fff" stroke-width="11" stroke-linecap="round"/>
+          <path d="M 196,93 C 238,83 147,127 151,169 C 155,207 196,200 196,242 C 196,276 148,284 163,290" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity="0.42"/>
+        </svg>
+        <div>
+          <div style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:.85rem;letter-spacing:5px;color:#fff;text-transform:lowercase;">slopy</div>
+          <div style="font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.3);">Corporate</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:rgba(45,114,200,.2);color:#7eb3f0;padding:3px 8px;border-radius:2px;border:1px solid rgba(45,114,200,.25);">B2B</span>
+        <button onclick="A.logout()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.6);border-radius:var(--rs);padding:5px 10px;font-size:.72rem;cursor:pointer;">Logout</button>
+      </div>
+    </div>
+
+    <div class="b2bm-screen">
+      <!-- Company Header -->
+      <div style="margin-bottom:18px;">
+        <div style="font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:4px;">${group?.company_type||'corporate'}</div>
+        <div style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:1.5rem;letter-spacing:.04em;color:#fff;margin-bottom:2px;">${esc(group?.company_name||'Corporate')}</div>
+        <div style="font-size:.75rem;color:rgba(255,255,255,.35);">${esc(group?.address||'')} · ${members.length} Mitarbeiter · ${assets.length} Geräte</div>
+      </div>
+
+      <!-- KPI Grid -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px;">
+        <div class="b2bm-stat"><div class="b2bm-stat-val">${assets.length}</div><div class="b2bm-stat-lbl">Geräte</div></div>
+        <div class="b2bm-stat"><div class="b2bm-stat-val" style="color:#4ade80;">${active.length}</div><div class="b2bm-stat-lbl">Aktiv</div></div>
+        <div class="b2bm-stat"><div class="b2bm-stat-val">${completed.length}</div><div class="b2bm-stat-lbl">Services</div></div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="b2bm-tabs">
+        <button class="b2bm-tab ${tab==='fleet'?'on':''}" onclick="A.setB2BTab('fleet')">Fleet (${assets.length})</button>
+        <button class="b2bm-tab ${tab==='team'?'on':''}" onclick="A.setB2BTab('team')">Team (${members.length})</button>
+        <button class="b2bm-tab ${tab==='orders'?'on':''}" onclick="A.setB2BTab('orders')">Aufträge (${S.bookings.length})</button>
+      </div>
+
+      <!-- Tab: Fleet -->
+      ${tab==='fleet' ? `
+        ${assets.length===0?`<div style="text-align:center;padding:32px;color:rgba(255,255,255,.3);font-size:.875rem;">Noch keine Geräte. Füge den ersten Ski hinzu.</div>`:''}
+        ${assets.map(a=>{
+          const overall=Math.round(((a.edge_health||100)+(a.base_health||100)+(a.wax_health||100))/3);
+          const color=overall>=70?'#4ade80':overall>=40?'#fbbf24':'#f87171';
+          const activeB=S.bookings.find(b=>b.asset_id===a.id&&!['completed','cancelled'].includes(b.status));
+          const member=members.find(m=>m.id===a.b2b_member_id);
+          return `<div class="b2bm-card">
+            <div style="display:flex;align-items:flex-start;gap:12px;">
+              <div style="font-size:1.3rem;margin-top:2px;">🎿</div>
+              <div style="flex:1;min-width:0;">
+                <div style="font-size:.88rem;font-weight:500;color:#fff;">${esc(a.brand)} ${esc(a.model)}</div>
+                <div style="font-size:.72rem;color:rgba(255,255,255,.35);margin-bottom:6px;">${member?esc(member.name)+' · ':''} ${a.year||''} ${a.length_cm?a.length_cm+'cm':''}</div>
+                <div class="b2bm-health-bar">
+                  <div class="b2bm-health-fill" style="width:${overall}%;background:${color};"></div>
+                </div>
+              </div>
+              <div style="text-align:right;flex-shrink:0;">
+                ${activeB?`<span class="${badgeClass(activeB.status)}" style="font-size:.62rem;">${slabel(activeB.status)}</span>`:
+                  `<span style="font-size:.78rem;font-weight:600;color:${color};">${overall}%</span>`}
+              </div>
+            </div>
+          </div>`;
+        }).join('')}
+        <button class="btn btn-primary" onclick="A.nav('book-1')" style="margin-top:8px;background:rgba(45,114,200,.3);border:1px solid rgba(45,114,200,.4);">
+          + Sammel-Service buchen
+        </button>
+      ` : ''}
+
+      <!-- Tab: Team -->
+      ${tab==='team' ? `
+        <div class="b2bm-card">
+          ${members.length===0?`<div style="text-align:center;padding:16px;color:rgba(255,255,255,.3);font-size:.875rem;">Noch keine Mitarbeiter</div>`:''}
+          ${members.map(m=>`<div class="b2bm-member">
+            <div class="b2bm-avatar">${(m.name||'?')[0].toUpperCase()}</div>
+            <div style="flex:1;">
+              <div style="font-size:.85rem;font-weight:500;color:#fff;">${esc(m.name)}</div>
+              <div style="font-size:.72rem;color:rgba(255,255,255,.35);">${esc(m.department||'')} ${m.email?'· '+esc(m.email):''}</div>
+            </div>
+            <div style="font-size:.7rem;color:rgba(255,255,255,.25);">${assets.filter(a=>a.b2b_member_id===m.id).length} Ski</div>
+          </div>`).join('')}
+        </div>
+        <button class="btn" onclick="A.go('b2b-add-member')" style="background:rgba(255,255,255,.06);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.1);margin-top:8px;">
+          + Mitarbeiter hinzufügen
+        </button>
+      ` : ''}
+
+      <!-- Tab: Orders -->
+      ${tab==='orders' ? `
+        ${S.bookings.length===0?`<div style="text-align:center;padding:32px;color:rgba(255,255,255,.3);font-size:.875rem;">Noch keine Buchungen</div>`:''}
+        ${S.bookings.map(b=>`<div class="b2bm-card">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;">
+            <div style="min-width:0;flex:1;margin-right:10px;">
+              <div style="font-size:.85rem;font-weight:500;color:#fff;">${esc(b.assets?.brand||'?')} ${esc(b.assets?.model||'')}</div>
+              <div style="font-size:.72rem;color:rgba(255,255,255,.35);">${PKG[b.service_package]?.name} · ${fmtDate(b.created_at)} · ${fmtEur(b.price)}</div>
+            </div>
+            <span class="${badgeClass(b.status)}" style="font-size:.62rem;flex-shrink:0;">${slabel(b.status)}</span>
+          </div>
+          ${!['completed','cancelled'].includes(b.status)?`<div style="margin-top:8px;">${progressBar(b.status)}</div>`:''}
+        </div>`).join('')}
+      ` : ''}
+
+      <!-- Revenue summary -->
+      ${S.bookings.length>0?`<div style="margin-top:16px;padding:14px;background:rgba(45,114,200,.06);border:1px solid rgba(45,114,200,.12);border-radius:var(--rs);display:flex;justify-content:space-between;align-items:center;">
+        <div style="font-size:.72rem;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.08em;">Gesamtinvestition</div>
+        <div style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:1.2rem;color:var(--blue);">${fmtEur(revenue)}</div>
+      </div>`:''}
+
+    </div>
+  </div>`;
+}
+
+// ════════════════════════════════════════════════════════════
+// B2B ADD MEMBER
+// ════════════════════════════════════════════════════════════
+function vB2BAddMember() {
+  return `<div class="b2bm-wrap">
+    <div class="b2bm-topbar">
+      <button onclick="A.go('b2b-manager')" style="background:none;border:none;color:rgba(255,255,255,.6);cursor:pointer;display:flex;align-items:center;gap:4px;font-size:.875rem;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>Zurück
+      </button>
+      <div style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:.85rem;letter-spacing:4px;color:rgba(255,255,255,.6);text-transform:lowercase;">mitarbeiter</div>
+      <div></div>
+    </div>
+    <div class="b2bm-screen">
+      <div class="field"><label class="il" style="color:rgba(255,255,255,.4);">Name *</label><input id="m-name" class="input" type="text" placeholder="Vor- und Nachname"></div>
+      <div class="field"><label class="il" style="color:rgba(255,255,255,.4);">Abteilung</label><input id="m-dept" class="input" type="text" placeholder="Skilehrer, Technik, Management…"></div>
+      <div class="field"><label class="il" style="color:rgba(255,255,255,.4);">E-Mail (optional)</label><input id="m-email" class="input" type="email" placeholder="name@unternehmen.at"></div>
+      <button class="btn btn-primary" onclick="A.addB2BMember()" style="margin-top:8px;">
+        ${S.loading?'<div class="spin-btn"></div>':'Mitarbeiter hinzufügen'}
+      </button>
+    </div>
+  </div>`;
+}
+
+// ════════════════════════════════════════════════════════════
+// CANCEL BOOKING
+// ════════════════════════════════════════════════════════════
+function vCancelBooking(bid) {
+  const b = S.bookings.find(x=>x.id===bid);
+  if(!b) { A.nav('my-bookings'); return ''; }
+  return `<div class="topbar">
+    <button class="back-btn" onclick="A.nav('my-bookings')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <div class="topbar-title">stornierung</div><div></div>
+  </div>
+  <div class="screen fade-up" style="display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:40px;">
+    <div style="font-size:3rem;margin-bottom:16px;">⚠️</div>
+    <div style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:1.3rem;letter-spacing:.04em;margin-bottom:8px;">Buchung stornieren?</div>
+    <p style="font-size:.875rem;color:var(--g500);margin-bottom:24px;max-width:260px;line-height:1.6;">
+      <strong>${esc(b.assets?.brand||'')} ${esc(b.assets?.model||'')}</strong><br>
+      ${PKG[b.service_package]?.name} · ${fmtEur(b.price)}
+    </p>
+    <div style="background:var(--green-tint);border-radius:var(--rs);padding:12px 16px;margin-bottom:20px;font-size:.82rem;color:var(--green);max-width:280px;line-height:1.6;">
+      ✓ Kostenlose Stornierung möglich — der Ski wurde noch nicht bearbeitet.
+    </div>
+    <button class="btn btn-danger" onclick="A.cancelBooking('${bid}')" style="max-width:240px;margin-bottom:10px;">
+      ${S.loading?'<div class="spin-btn spin-btn-blue"></div>':'Buchung stornieren'}
+    </button>
+    <button class="btn btn-secondary" onclick="A.nav('my-bookings')" style="max-width:240px;">Zurück</button>
+  </div>`;
+}
+
+// ════════════════════════════════════════════════════════════
+// ADMIN MANUAL BOOKING
+// ════════════════════════════════════════════════════════════
+function vManualBooking() {
+  const mb = S.manualBooking;
+  return `<div class="admin-wrap">
+    <div class="admin-topbar">
+      <button onclick="A.nav('admin')" style="background:none;border:none;color:rgba(255,255,255,.7);cursor:pointer;display:flex;align-items:center;gap:4px;font-size:.875rem;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>Zurück
+      </button>
+      <span class="admin-badge">Walk-In Buchung</span>
+      <div></div>
+    </div>
+    <div class="admin-screen fade-up">
+      <p style="font-size:.82rem;color:var(--g500);margin-bottom:20px;line-height:1.6;">Buchung für einen Kunden direkt anlegen — ohne App. Der Kunde wird per E-Mail informiert.</p>
+      <div class="field"><label class="field-label">Kunden-E-Mail *</label>
+        <input id="mb-email" class="input" type="email" placeholder="kunde@email.at" value="${esc(mb.user_email)}" oninput="A.setMB('user_email',this.value)"></div>
+      <div class="field"><label class="field-label">Marke *</label>
+        <input id="mb-brand" class="input" type="text" placeholder="Atomic, Rossignol…" value="${esc(mb.asset_brand)}" oninput="A.setMB('asset_brand',this.value)"></div>
+      <div class="field"><label class="field-label">Modell *</label>
+        <input id="mb-model" class="input" type="text" placeholder="Redster X9i…" value="${esc(mb.asset_model)}" oninput="A.setMB('asset_model',this.value)"></div>
+      <div class="field"><label class="field-label">Service-Paket</label>
+        <select class="input" style="cursor:pointer;" onchange="A.setMB('pkg',this.value)">
+          ${Object.values(PKG).map(p=>`<option value="${p.id}" ${mb.pkg===p.id?'selected':''}>${p.name} — ${fmtEur(p.price)}</option>`).join('')}
+        </select></div>
+      <div class="field"><label class="field-label">Logistik</label>
+        <select class="input" style="cursor:pointer;" onchange="A.setMB('log',this.value)">
+          ${Object.values(LOG).map(l=>`<option value="${l.id}" ${mb.log===l.id?'selected':''}>${l.name}</option>`).join('')}
+        </select></div>
+      <div class="field"><label class="field-label">Notizen</label>
+        <input class="input" type="text" placeholder="Interne Anmerkungen…" value="${esc(mb.notes)}" oninput="A.setMB('notes',this.value)"></div>
+      <button class="btn btn-primary" onclick="A.createManualBooking()">
+        ${S.loading?'<div class="spin-btn"></div>':'Buchung anlegen'}
+      </button>
+    </div>
+  </div>`;
+}
+
+// ════════════════════════════════════════════════════════════
+// UPDATED vBookAsset with AUTOCOMPLETE
+// ════════════════════════════════════════════════════════════
+function vBookAssetV2() {
+  const a = S.newAsset;
+  const brands = [...new Set(S.skiCatalog.map(s=>s.brand))].sort();
+  return `<div class="topbar">
+    <button class="back-btn" onclick="A.go('book-1')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <div class="topbar-title">ski hinzufügen</div><div></div>
+  </div>
+  <div class="screen fade-up">
+    <div class="field">
+      <label class="field-label">Marke *</label>
+      <div class="autocomplete-wrap">
+        <input id="na-brand" class="input" type="text" placeholder="Atomic, Rossignol, Fischer…"
+          value="${esc(a.brand)}"
+          oninput="A.onBrandInput(this.value)"
+          onblur="setTimeout(()=>A.hideAutocomplete('brand'),200)"
+          autocomplete="off">
+        <div class="autocomplete-list" id="brand-list" style="display:none;"></div>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label">Modell *</label>
+      <div class="autocomplete-wrap">
+        <input id="na-model" class="input" type="text" placeholder="Modell wählen oder eingeben…"
+          value="${esc(a.model)}"
+          oninput="A.onModelInput(this.value)"
+          onblur="setTimeout(()=>A.hideAutocomplete('model'),200)"
+          autocomplete="off">
+        <div class="autocomplete-list" id="model-list" style="display:none;"></div>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label class="field-label">Länge (cm)</label>
+        <input id="na-len" class="input" type="number" value="${a.len}" placeholder="175" inputmode="numeric" oninput="A.setNA('len',this.value)"></div>
+      <div class="field"><label class="field-label">Baujahr</label>
+        <input id="na-year" class="input" type="number" value="${a.year}" placeholder="2024" inputmode="numeric" oninput="A.setNA('year',this.value)"></div>
+    </div>
+    <button class="btn btn-primary" onclick="A.addAsset()">
+      ${S.loading?'<div class="spin-btn"></div>':'Ski speichern & weiter'}
+    </button>
+    <p style="font-size:.75rem;color:var(--g500);text-align:center;margin-top:10px;">Nicht in der Liste? Einfach manuell eingeben.</p>
+  </div>`;
+}
+
 // ════════════════════════════════════════════════════════════
 // ROUTER
 // ════════════════════════════════════════════════════════════
@@ -2063,7 +2434,9 @@ function go(view) {
   const app = document.getElementById('app');
   if(!app) return;
 
-  if(view.startsWith('tracking-')) {
+  if(view.startsWith('cancel-')) {
+    app.innerHTML = vCancelBooking(view.replace('cancel-',''));
+  } else if(view.startsWith('tracking-')) {
     app.innerHTML = vTracking(view.replace('tracking-',''));
   } else if(view.startsWith('pass-')) {
     app.innerHTML = vProductPass(view.replace('pass-',''));
@@ -2098,6 +2471,11 @@ function go(view) {
       case 'impressum':       app.innerHTML = vImpressum();      break;
       case 'onboard':         app.innerHTML = vOnboard();        break;
       case 'b2b':             app.innerHTML = vB2B();            break;
+      case 'b2b-onboard':     app.innerHTML = vB2BOnboard();     break;
+      case 'b2b-manager':     app.innerHTML = vB2BManager();     break;
+      case 'b2b-add-member':  app.innerHTML = vB2BAddMember();   break;
+      case 'admin-manual':    app.innerHTML = vManualBooking();  break;
+      case 'book-asset':      app.innerHTML = vBookAssetV2();    break;
       default:                app.innerHTML = vAuth();
     }
   }
@@ -2259,6 +2637,168 @@ async function saveProfile() {
 }
 
 
+
+
+// ── Ski Catalog ───────────────────────────────────────────
+async function loadSkiCatalog() {
+  if(S.skiCatalog.length > 0) return;
+  const { data } = await db.from('ski_catalog').select('*').order('popular', { ascending:false }).order('brand');
+  S.skiCatalog = data || [];
+}
+
+function onBrandInput(val) {
+  S.newAsset.brand = val;
+  document.getElementById('na-brand').value = val;
+  if(!val || val.length < 1) { hideAutocomplete('brand'); return; }
+  const brands = [...new Set(S.skiCatalog.map(s=>s.brand))].filter(b=>b.toLowerCase().includes(val.toLowerCase())).slice(0,8);
+  const list = document.getElementById('brand-list');
+  if(!list) return;
+  if(!brands.length) { list.style.display='none'; return; }
+  list.innerHTML = brands.map(b=>`<div class="autocomplete-item" onmousedown="A.selectBrand('${b}')">${b}</div>`).join('');
+  list.style.display='block';
+}
+
+function onModelInput(val) {
+  S.newAsset.model = val;
+  if(!S.newAsset.brand || val.length < 1) { hideAutocomplete('model'); return; }
+  const models = S.skiCatalog.filter(s=>s.brand===S.newAsset.brand && s.model.toLowerCase().includes(val.toLowerCase())).slice(0,8);
+  const list = document.getElementById('model-list');
+  if(!list) return;
+  if(!models.length) { list.style.display='none'; return; }
+  list.innerHTML = models.map(m=>`<div class="autocomplete-item" onmousedown="A.selectModel('${m.model.replace(/'/g,"\'")}')">
+    <span>${m.model}</span>
+    ${m.popular?'<span class="autocomplete-popular">Beliebt</span>':''}
+  </div>`).join('');
+  list.style.display='block';
+}
+
+function selectBrand(brand) {
+  S.newAsset.brand = brand;
+  const inp = document.getElementById('na-brand');
+  if(inp) inp.value = brand;
+  hideAutocomplete('brand');
+  // Focus model field
+  setTimeout(()=>{ const m=document.getElementById('na-model'); if(m)m.focus(); }, 100);
+}
+
+function selectModel(model) {
+  S.newAsset.model = model;
+  const inp = document.getElementById('na-model');
+  if(inp) inp.value = model;
+  hideAutocomplete('model');
+}
+
+function hideAutocomplete(field) {
+  const list = document.getElementById((field||'brand')+'-list');
+  if(list) list.style.display='none';
+}
+
+// ── B2B Data ──────────────────────────────────────────────
+async function loadB2BData() {
+  if(!S.user) return;
+  const { data: group } = await db.from('b2b_groups').select('*').eq('manager_id', S.user.id).single();
+  S.b2bGroup = group || null;
+  if(group) {
+    const { data: members } = await db.from('b2b_members').select('*').eq('group_id', group.id).order('name');
+    S.b2bMembers = members || [];
+    const { data: bookings } = await db.from('bookings').select('*,assets(*)').eq('user_id', S.user.id).order('created_at', { ascending:false });
+    S.bookings = bookings || [];
+  }
+  await loadAssets();
+}
+
+async function createB2BGroup() {
+  const name    = document.getElementById('b2b-company')?.value?.trim();
+  const type    = document.getElementById('b2b-type')?.value;
+  const addr    = document.getElementById('b2b-addr')?.value?.trim();
+  const contact = document.getElementById('b2b-contact')?.value?.trim();
+  const phone   = document.getElementById('b2b-phone')?.value?.trim();
+  if(!name) { toast('Unternehmensname ist Pflichtfeld'); return; }
+  setL(true);
+  const { data, error } = await db.from('b2b_groups').insert({
+    manager_id: S.user.id, company_name: name, company_type: type||'other',
+    address: addr||null, contact_name: contact||null, contact_phone: phone||null
+  }).select().single();
+  setL(false);
+  if(error) { toast('Fehler: '+error.message); return; }
+  S.b2bGroup = data;
+  toast('Gruppe erstellt!');
+  go('b2b-manager');
+}
+
+async function addB2BMember() {
+  const name = document.getElementById('m-name')?.value?.trim();
+  const dept = document.getElementById('m-dept')?.value?.trim();
+  const email = document.getElementById('m-email')?.value?.trim();
+  if(!name) { toast('Name ist Pflichtfeld'); return; }
+  if(!S.b2bGroup) { toast('Keine Gruppe vorhanden'); return; }
+  setL(true);
+  const { data, error } = await db.from('b2b_members').insert({
+    group_id: S.b2bGroup.id, name, department: dept||null, email: email||null
+  }).select().single();
+  setL(false);
+  if(error) { toast('Fehler: '+error.message); return; }
+  S.b2bMembers.push(data);
+  toast('Mitarbeiter hinzugefügt');
+  go('b2b-manager');
+}
+
+function setB2BTab(tab) {
+  S.b2bTab = tab;
+  go('b2b-manager');
+}
+
+// ── Cancel Booking ────────────────────────────────────────
+async function cancelBooking(id) {
+  setL(true);
+  const { error } = await db.from('bookings').update({ status: 'cancelled' }).eq('id', id);
+  setL(false);
+  if(error) { toast('Fehler: '+error.message); return; }
+  S.bookings = S.bookings.map(b => b.id===id ? {...b, status:'cancelled'} : b);
+  toast('Buchung storniert');
+  A.nav('my-bookings');
+}
+
+// ── Manual Booking (Admin) ────────────────────────────────
+function setMB(k,v) { S.manualBooking[k]=v; }
+
+async function createManualBooking() {
+  const mb = S.manualBooking;
+  if(!mb.user_email || !mb.asset_brand || !mb.asset_model) {
+    toast('E-Mail, Marke und Modell sind Pflichtfelder'); return;
+  }
+  setL(true);
+  // Find or notify user
+  const { data: profile } = await db.from('profiles').select('id').eq('email', mb.user_email).single();
+  if(!profile) { setL(false); toast('Kein User mit dieser E-Mail gefunden'); return; }
+  // Create asset
+  const { data: asset, error: ae } = await db.from('assets').insert({
+    user_id: profile.id, type:'ski', brand: mb.asset_brand, model: mb.asset_model
+  }).select().single();
+  if(ae) { setL(false); toast('Fehler beim Anlegen des Skis'); return; }
+  // Create booking
+  const pkg = PKG[mb.pkg];
+  const est = new Date(); est.setDate(est.getDate()+pkg.days+1);
+  const { error: be } = await db.from('bookings').insert({
+    user_id: profile.id, asset_id: asset.id,
+    service_package: mb.pkg, logistics_type: mb.log,
+    price: pkg.price, status: 'booked',
+    logistics_notes: mb.notes||null,
+    estimated_completion: est.toISOString().split('T')[0]
+  });
+  setL(false);
+  if(be) { toast('Fehler beim Anlegen der Buchung'); return; }
+  S.manualBooking = { user_email:'', asset_brand:'', asset_model:'', pkg:'performance', log:'home', addr:'', notes:'' };
+  toast('Walk-In Buchung angelegt!');
+  await loadAllBookings();
+  go('admin');
+}
+
+// ── Session monitoring ────────────────────────────────────
+function showSessionToast() {
+  const el = document.getElementById('session-toast');
+  if(el) { el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),4000); }
+}
 
 // ── Onboarding ────────────────────────────────────────────
 function nextOnboard() {
@@ -2582,6 +3122,8 @@ window.A = {
   go, login, register, logout, addAsset, createBooking, updateStatus, saveProfile,
   sendPwReset, setAdminTab, setAdminFilter, exportPDF,
   nextOnboard, skipOnboard, saveAsset, deleteAsset, toggleAsset, processPayment, setStar, submitRating, saveAdminNote,
+  onBrandInput, onModelInput, selectBrand, selectModel, hideAutocomplete,
+  createB2BGroup, addB2BMember, setB2BTab, cancelBooking, createManualBooking, setMB,
   selectAsset(id) { S.draft.asset_id=id; S.draft.asset=S.assets.find(a=>a.id===id); go('book-1'); },
   selectPkg(id)   { S.draft.pkg=id; go('book-2'); },
   selectLog(id)   { S.draft.log=id; go('book-3'); },
@@ -2590,13 +3132,16 @@ window.A = {
   async nav(view) {
     if(rtCh) { db.removeChannel(rtCh); rtCh=null; }
     if(view==='home')             { await loadAssets(); await loadMyBookings(); go('home'); }
-    else if(view==='book-1')      { await loadAssets(); S.draft={asset_id:null,asset:null,pkg:'performance',log:'home',addr:'',notes:''}; go('book-1'); }
+    else if(view==='book-1')      { await loadSkiCatalog(); await loadAssets(); S.draft={asset_id:null,asset:null,pkg:'performance',log:'home',addr:'',notes:''}; S.selectedAssets=[]; go('book-1'); }
     else if(view==='my-bookings') { await loadMyBookings(); go('my-bookings'); }
     else if(view==='profile')     { await loadAssets(); await loadMyBookings(); go('profile'); }
     else if(view==='admin')       { await loadAllBookings(); go('admin'); }
     else if(view==='admin-analytics') { await loadAllBookings(); go('admin-analytics'); }
+    else if(view==='admin-manual')    { go('admin-manual'); }
     else if(view==='notifications')   { go('notifications'); }
     else if(view==='pass')            { await loadMyBookings(); go('pass-'); }
+    else if(view==='b2b-manager')     { await loadB2BData(); go('b2b-manager'); }
+    else if(view==='book-asset')      { await loadSkiCatalog(); go('book-asset'); }
     else go(view);
   }
 };
@@ -2612,8 +3157,13 @@ async function init() {
     if(S.profile?.role === 'admin') {
       await loadAllBookings();
       go('admin');
+    } else if(S.profile?.role === 'b2b_manager') {
+      await loadB2BData();
+      if(!S.b2bGroup) go('b2b-onboard');
+      else go('b2b-manager');
     } else {
-      go('home');
+      loadNotifications();
+      if(!checkOnboard()) go('home');
     }
   } else {
     go('auth');
@@ -2627,11 +3177,18 @@ async function init() {
       if(S.profile?.role === 'admin') {
         await loadAllBookings();
         go('admin');
+      } else if(S.profile?.role === 'b2b_manager') {
+        await loadB2BData();
+        if(!S.b2bGroup) go('b2b-onboard');
+        else go('b2b-manager');
       } else {
         if(!checkOnboard()) go('home');
       }
+    } else if(event === 'TOKEN_REFRESHED') {
+      // Session still valid
     } else if(event === 'SIGNED_OUT') {
-      go('auth');
+      showSessionToast();
+      setTimeout(()=>go('auth'), 1500);
     }
   });
 }
