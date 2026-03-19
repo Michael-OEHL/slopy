@@ -492,6 +492,88 @@ html,body{
 .rental-book-card:hover{border-color:rgba(45,114,200,.4);background:rgba(45,114,200,.06)}
 .rental-book-card.sel{border-color:var(--blue);background:rgba(45,114,200,.1)}
 
+
+/* ── DARK MODE ───────────────────────────────────────────── */
+.dark-mode {
+  --blue:#3d8ef0;--blue-tint:rgba(61,142,240,0.12);--blue-soft:rgba(61,142,240,0.08);
+  --obsidian:#E8EAF0;--snow:#1a1d24;--white:#12151C;
+  --g50:#161920;--g100:#1e2129;--g200:#252930;--g300:#2e333d;
+  --g400:#6B7684;--g500:#8A94A0;--g600:#A0AAB4;
+  --green:#22c55e;--green-tint:rgba(34,197,94,0.12);
+  --amber:#f59e0b;--amber-tint:rgba(245,158,11,0.12);
+  --red:#ef4444;--red-tint:rgba(239,68,68,0.12);
+}
+.dark-mode body { background: #12151C; color: #E8EAF0; }
+.dark-mode #app { background: #12151C; }
+.dark-mode .topbar, .dark-mode .bottom-nav {
+  background: rgba(18,21,28,0.95);
+  border-color: rgba(255,255,255,0.06);
+}
+.dark-mode .card { background: #1a1d24; border-color: #252930; }
+.dark-mode .input { background: #1e2129; border-color: #2e333d; color: #E8EAF0; }
+.dark-mode .input:focus { border-color: var(--blue); background: #12151C; }
+.dark-mode .btn-secondary { background: rgba(61,142,240,0.12); }
+.dark-mode .admin-card { background: #1a1d24; border-color: #252930; }
+.dark-mode .admin-stat { background: #1a1d24; border-color: #252930; }
+
+/* ── LANG TOGGLE ─────────────────────────────────────────── */
+.lang-btn { font-size:.72rem;font-weight:600;letter-spacing:.08em;background:var(--g100);color:var(--g500);border:1px solid var(--g200);border-radius:4px;padding:4px 8px;cursor:pointer;transition:all .15s; }
+.lang-btn:hover { border-color:var(--blue);color:var(--blue); }
+
+/* ── DARK MODE TOGGLE ────────────────────────────────────── */
+.theme-btn { font-size:1rem;background:none;border:none;cursor:pointer;padding:4px;border-radius:6px;transition:all .15s;color:var(--g500); }
+.theme-btn:hover { background:var(--g100); }
+
+/* ── HOW TO / TOOLTIPS ───────────────────────────────────── */
+.tooltip-overlay { position:fixed;inset:0;z-index:900;background:rgba(0,0,0,0.6);display:flex;align-items:flex-end;justify-content:center;padding:20px; }
+.tooltip-card { background:var(--white);border-radius:var(--r);padding:24px;max-width:380px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,0.3);animation:slideUp .3s ease; }
+@keyframes slideUp { from{transform:translateY(20px);opacity:0} to{transform:none;opacity:1} }
+.tooltip-step { display:flex;gap:10px;align-items:flex-start;margin-bottom:14px; }
+.tooltip-num { width:24px;height:24px;border-radius:50%;background:var(--blue);color:#fff;font-size:.72rem;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px; }
+.tooltip-text { font-size:.875rem;color:var(--g600);line-height:1.6; }
+.howto-fab { position:fixed;bottom:80px;right:18px;width:42px;height:42px;border-radius:50%;background:var(--blue);color:#fff;border:none;font-size:1.1rem;cursor:pointer;box-shadow:0 4px 14px rgba(45,114,200,.4);z-index:100;display:flex;align-items:center;justify-content:center;transition:all .2s; }
+.howto-fab:hover { transform:scale(1.08); }
+
+/* ── MANAGEMENT DASHBOARD ────────────────────────────────── */
+.mgmt-wrap { background:var(--snow);min-height:100vh; }
+.mgmt-topbar { background:var(--obsidian);padding:0 20px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50; }
+.mgmt-screen { padding:20px 20px 60px; }
+.kpi-grid { display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px; }
+.kpi-card { background:var(--white);border:1px solid var(--g200);border-radius:var(--r);padding:16px;box-shadow:0 1px 3px rgba(0,0,0,.06); }
+.kpi-value { font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:1.8rem;letter-spacing:.02em;color:var(--blue);line-height:1;margin-bottom:3px; }
+.kpi-label { font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--g500); }
+.kpi-trend { font-size:.72rem;margin-top:3px; }
+.kpi-trend.up { color:var(--green); }
+.kpi-trend.dn { color:var(--red); }
+.price-row { display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--g100); }
+.price-input { width:80px;padding:7px 10px;border:1.5px solid var(--g200);border-radius:var(--rs);font-family:'Inter',sans-serif;font-size:.9rem;font-weight:500;color:var(--blue);text-align:right;background:var(--snow);outline:none; }
+.price-input:focus { border-color:var(--blue); }
+.discount-row { display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--g100); }
+
+/* ── ANALYTICS FIX ───────────────────────────────────────── */
+.bar-chart { display:flex;align-items:flex-end;gap:4px;height:100px;padding-bottom:4px; }
+.bar-col { display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;min-width:0; }
+.bar { width:100%;border-radius:3px 3px 0 0;cursor:pointer;transition:all .2s;min-height:3px; }
+.bar:hover { filter:brightness(1.15); }
+.bar-val { font-size:8px;color:var(--g500);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;text-align:center; }
+.bar-lbl { font-size:9px;color:var(--g500);white-space:nowrap; }
+
+/* ── SHARE ───────────────────────────────────────────────── */
+.share-btn { display:flex;align-items:center;gap:6px;padding:9px 14px;border-radius:var(--rs);border:none;cursor:pointer;font-size:.78rem;font-weight:500;transition:all .15s;width:100%;justify-content:center;margin-bottom:8px; }
+.share-wa { background:#25D366;color:#fff; }
+.share-ig { background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);color:#fff; }
+.share-copy { background:var(--g100);color:var(--g600); }
+
+/* ── HEALTH SCORE PAGE ───────────────────────────────────── */
+.health-explanation { background:var(--snow);border-radius:var(--r);padding:14px 16px;margin-bottom:10px;border:1px solid var(--g100); }
+.health-bar-row { display:flex;align-items:center;gap:12px;margin-bottom:6px; }
+.health-bar-track { flex:1;height:8px;background:var(--g200);border-radius:4px;overflow:hidden; }
+.health-bar-fill { height:100%;border-radius:4px;transition:width .8s ease; }
+.health-status { font-size:.75rem;font-weight:600;padding:3px 10px;border-radius:20px; }
+.health-status.good { background:var(--green-tint);color:var(--green); }
+.health-status.warn { background:var(--amber-tint);color:var(--amber); }
+.health-status.bad  { background:var(--red-tint);color:var(--red); }
+
 </style>
 </head>
 <body>
@@ -563,6 +645,80 @@ const STATUS_FLOW = [
   { key:'completed',        label:'Abgeschlossen' }
 ];
 
+
+const T = {
+  de: {
+    greeting_morning: 'Guten Morgen', greeting_day: 'Guten Tag', greeting_evening: 'Guten Abend',
+    welcome_back: 'Willkommen zurück', active_order: 'Aktiver Auftrag', my_equipment: 'Mein Equipment',
+    book_service: 'Service buchen', health: 'Health', no_equipment: 'Noch kein Equipment',
+    add_ski: 'Ski hinzufügen', orders: 'Aufträge', profile: 'Profil', book: 'Buchen',
+    home: 'Home', logout: 'Logout', save: 'Speichern', back: 'Zurück',
+    which_ski: 'Welcher Ski?', service_package: 'Service-Paket', logistics: 'Logistik',
+    confirm: 'Bestätigung', booking_confirmed: 'Buchung bestätigt',
+    cancel: 'Stornieren', cancel_booking: 'Buchung stornieren', digital_pass: 'Digital Pass',
+    live_tracking: 'Live Tracking', current_status: 'Aktueller Status',
+    est_completion: 'Fertig ca.', order_id: 'Auftrags-ID', all_orders: 'Alle Aufträge',
+    active: 'Aktiv', completed: 'Abgeschlossen', analytics: 'Analytics', calendar: 'Kalender',
+    walk_in: '+ Walk-In', total_revenue: 'Gesamtumsatz', revenue_by_month: 'Umsatz nach Monat',
+    package_mix: 'Paket-Mix', logistics_channels: 'Logistik-Kanäle', avg_order: 'Ø Auftragswert',
+    completion_rate: 'Abschlussrate', status_change: 'Status ändern…',
+    next_step: 'Weiter', book_now: 'Jetzt buchen', review: 'Bestellung prüfen',
+    edit: 'Bearbeiten', delete: 'Löschen', password_reset: 'Passwort zurücksetzen',
+    send_link: 'Link senden', forgot_password: 'Passwort vergessen?',
+    new_register: 'Neu registrieren', login: 'Einloggen', email: 'E-Mail',
+    password: 'Passwort', name: 'Name', phone: 'Telefon', address: 'Adresse',
+    notes: 'Anmerkungen', optional: 'optional', save_profile: 'Profil speichern',
+    member_since: 'Mitglied seit', total_bookings: 'Buchungen', equipment: 'Equipment',
+    resale_value: 'Geschätzter Restwert', service_history: 'Zertifizierte Service-Historie',
+    export_pdf: 'PDF exportieren', certified: 'Zertifiziert',
+    rate_service: 'Service bewerten', submit_rating: 'Bewertung abschicken',
+    capacity: 'Kapazität', free: 'Frei', half: 'Halb', full: 'Voll',
+    active_orders_week: 'Aktive Aufträge diese Woche',
+    tagline: 'Das Betriebssystem für dein Ski-Equipment.',
+    no_orders: 'Noch keine Aufträge', first_service: 'Dein erster Service wartet.',
+  },
+  en: {
+    greeting_morning: 'Good morning', greeting_day: 'Good afternoon', greeting_evening: 'Good evening',
+    welcome_back: 'Welcome back', active_order: 'Active Order', my_equipment: 'My Equipment',
+    book_service: 'Book Service', health: 'Health', no_equipment: 'No equipment yet',
+    add_ski: 'Add Ski', orders: 'Orders', profile: 'Profile', book: 'Book',
+    home: 'Home', logout: 'Logout', save: 'Save', back: 'Back',
+    which_ski: 'Which Ski?', service_package: 'Service Package', logistics: 'Logistics',
+    confirm: 'Confirmation', booking_confirmed: 'Booking confirmed',
+    cancel: 'Cancel', cancel_booking: 'Cancel Booking', digital_pass: 'Digital Pass',
+    live_tracking: 'Live Tracking', current_status: 'Current Status',
+    est_completion: 'Ready approx.', order_id: 'Order ID', all_orders: 'All Orders',
+    active: 'Active', completed: 'Completed', analytics: 'Analytics', calendar: 'Calendar',
+    walk_in: '+ Walk-In', total_revenue: 'Total Revenue', revenue_by_month: 'Revenue by Month',
+    package_mix: 'Package Mix', logistics_channels: 'Logistics Channels', avg_order: 'Avg. Order Value',
+    completion_rate: 'Completion Rate', status_change: 'Change status…',
+    next_step: 'Next', book_now: 'Book now', review: 'Review Order',
+    edit: 'Edit', delete: 'Delete', password_reset: 'Reset Password',
+    send_link: 'Send Link', forgot_password: 'Forgot password?',
+    new_register: 'Register', login: 'Login', email: 'Email',
+    password: 'Password', name: 'Name', phone: 'Phone', address: 'Address',
+    notes: 'Notes', optional: 'optional', save_profile: 'Save Profile',
+    member_since: 'Member since', total_bookings: 'Bookings', equipment: 'Equipment',
+    resale_value: 'Estimated Resale Value', service_history: 'Certified Service History',
+    export_pdf: 'Export PDF', certified: 'Certified',
+    rate_service: 'Rate Service', submit_rating: 'Submit Rating',
+    capacity: 'Capacity', free: 'Available', half: 'Half', full: 'Full',
+    active_orders_week: 'Active Orders This Week',
+    tagline: 'The operating system for your ski equipment.',
+    no_orders: 'No orders yet', first_service: 'Your first service awaits.',
+  }
+};
+let lang = 'de';
+const t = (key) => T[lang]?.[key] || T.de[key] || key;
+function toggleLang() {
+  lang = lang === 'de' ? 'en' : 'de';
+  try { localStorage.setItem('slopy_lang', lang); } catch(e){}
+  A.nav(S.view) || go(S.view);
+}
+function initLang() {
+  try { lang = localStorage.getItem('slopy_lang') || 'de'; } catch(e){}
+}
+
 // ── State ─────────────────────────────────────────────────
 const S = {
   view:'loading', user:null, profile:null,
@@ -580,6 +736,10 @@ const S = {
   selectedAssets: [],
   capacityData: {},
   b2bMode: false,
+  darkMode: false,
+  showHowTo: false,
+  mgmtPrices: { essential:49, performance:79, world_cup:119 },
+  mgmtDiscounts: [],
   b2bGroup: null,
   b2bMembers: [],
   b2bTab: 'fleet',
@@ -658,10 +818,19 @@ function getMonthlyRevenue() {
   S.bookings.forEach(b => {
     if(b.status === 'cancelled') return;
     const d = new Date(b.created_at);
-    const key = d.toLocaleDateString('de-AT',{month:'short'});
-    months[key] = (months[key]||0) + Number(b.price||0);
+    const yearMonth = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+    const label = d.toLocaleDateString(lang==='en'?'en-US':'de-AT',{month:'short'});
+    if(!months[yearMonth]) months[yearMonth] = { label, rev:0, count:0 };
+    months[yearMonth].rev += Number(b.price||0);
+    months[yearMonth].count++;
   });
-  return months;
+  // Sort by date and return last 6 months
+  return Object.fromEntries(
+    Object.entries(months)
+      .sort(([a],[b])=>a.localeCompare(b))
+      .slice(-6)
+      .map(([k,v])=>[v.label, v.rev])
+  );
 }
 
 function getPkgDistribution() {
@@ -809,9 +978,13 @@ function vHome() {
         </svg>
         <span class="topbar-wordmark">slopy</span>
       </div>
-      <button onclick="A.nav('profile')" style="background:none;border:none;cursor:pointer;">
-        <div class="avatar" style="width:34px;height:34px;font-size:.78rem;">${ini}</div>
-      </button>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <button class="lang-btn" onclick="toggleLang()">${lang==="de"?"EN":"DE"}</button>
+        <button class="theme-btn" onclick="A.toggleDark()">${S.darkMode?"☀️":"🌙"}</button>
+        <button onclick="A.nav('profile')" style="background:none;border:none;cursor:pointer;">
+          <div class="avatar" style="width:34px;height:34px;font-size:.78rem;">${ini}</div>
+        </button>
+      </div>
     </div>
     <div class="screen fade-up">
       <div style="margin-bottom:24px;">
@@ -876,7 +1049,15 @@ function vHome() {
         <span style="font-size:.6rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:rgba(45,114,200,.3);color:#7eb3f0;padding:2px 7px;border-radius:2px;">B2B</span>
         Corporate-Account
       </button>
-      <div style="display:flex;justify-content:center;gap:16px;margin-top:20px;padding-top:16px;border-top:1px solid var(--g100);">
+      ${S.assets.length>0?`<div style="display:flex;gap:8px;margin-bottom:8px;">
+        <button class="btn btn-secondary" onclick="A.nav('health-score')" style="flex:1;font-size:.82rem;">
+          💚 Health Score
+        </button>
+        <button class="btn btn-secondary" onclick="A.go('share')" style="flex:1;font-size:.82rem;">
+          📤 Teilen
+        </button>
+      </div>`:""}
+      <div style="display:flex;justify-content:center;gap:16px;margin-top:16px;padding-top:14px;border-top:1px solid var(--g100);">
         <button onclick="A.go('dsgvo')" style="background:none;border:none;font-size:.72rem;color:var(--g500);cursor:pointer;">Datenschutz</button>
         <button onclick="A.go('agb')" style="background:none;border:none;font-size:.72rem;color:var(--g500);cursor:pointer;">AGB</button>
         <button onclick="A.go('impressum')" style="background:none;border:none;font-size:.72rem;color:var(--g500);cursor:pointer;">Impressum</button>
@@ -1352,9 +1533,10 @@ function vAdminAnalytics() {
             <div class="bar-chart">
               ${months.map(m => {
                 const val = monthly[m];
-                const pct = Math.round((val/maxRev)*100);
+                const pct = Math.max(Math.round((val/maxRev)*100), 3);
                 return `<div class="bar-col">
-                  <div class="bar" style="height:${pct}%" title="${fmtEur(val)}"></div>
+                  <div class="bar-val">${val>0?Math.round(val)+"€":""}</div>
+                  <div class="bar" style="height:${pct}%;background:var(--blue);opacity:${pct>60?1:0.5+pct/200};" title="${fmtEur(val)}"></div>
                   <div class="bar-lbl">${m}</div>
                 </div>`;
               }).join('')}
@@ -1466,6 +1648,7 @@ function vAdmin() {
             <button class="btn btn-sm btn-secondary" onclick="A.nav('admin-analytics')">Analytics</button>
             <button class="btn btn-sm btn-secondary" onclick="A.nav('admin-capacity')">Kalender</button>
             <button class="btn btn-sm btn-primary" onclick="A.nav('admin-manual')">+ Walk-In</button>
+            <button class="btn btn-sm" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.15);" onclick="A.nav('management')">Management</button>
           </div>
         </div>
 
@@ -1790,11 +1973,12 @@ function vCapacity() {
   const firstDay = new Date(year, month, 1).getDay() || 7; // Mon=1
   const MAX_PER_DAY = 8;
 
-  // Count bookings per day
+  // Count active bookings by estimated_completion date
   const counts = {};
   S.bookings.forEach(b => {
     if(['completed','cancelled'].includes(b.status)) return;
-    const d = new Date(b.created_at);
+    if(!b.estimated_completion) return;
+    const d = new Date(b.estimated_completion);
     if(d.getMonth()===month && d.getFullYear()===year) {
       const key = d.getDate();
       counts[key] = (counts[key]||0)+1;
@@ -1820,9 +2004,12 @@ function vCapacity() {
       </div>
     </div>
     <div class="admin-screen fade-up">
-      <div style="margin-bottom:16px;">
+      <div style="margin-bottom:14px;">
         <div class="page-title">${monthName}</div>
-        <div style="font-size:.78rem;color:var(--g500);">Kapazität: max. ${MAX_PER_DAY} Aufträge/Tag</div>
+        <div style="font-size:.78rem;color:var(--g500);">Geplante Abgabetermine · max. ${MAX_PER_DAY}/Tag</div>
+      </div>
+      <div style="background:var(--blue-tint);border-radius:var(--rs);padding:10px 14px;margin-bottom:14px;font-size:.78rem;color:var(--blue);line-height:1.5;">
+        💡 Die Kacheln zeigen wann Skier fertig sein sollen — nicht wann sie gebucht wurden.
       </div>
       <div style="display:flex;justify-content:flex-end;margin-bottom:12px;">
         <div style="display:flex;gap:8px;font-size:.72rem;">
@@ -2667,6 +2854,304 @@ function vBookAssetV2() {
   </div>`;
 }
 
+
+// ════════════════════════════════════════════════════════════
+// HEALTH SCORE PAGE
+// ════════════════════════════════════════════════════════════
+function vHealthScore() {
+  const assets = S.assets;
+  if(!assets.length) { A.nav("home"); return ""; }
+
+  function scoreInfo(v) {
+    if(v >= 80) return { label: lang==="en"?"Excellent":"Ausgezeichnet", cls:"good", tip: lang==="en"?"Top condition. Ready for any slope.":"Top-Zustand. Bereit für jede Piste." };
+    if(v >= 60) return { label: lang==="en"?"Good":"Gut", cls:"good", tip: lang==="en"?"Minor wear. Service recommended next season.":"Leichte Abnutzung. Service nächste Saison empfohlen." };
+    if(v >= 40) return { label: lang==="en"?"Fair":"In Ordnung", cls:"warn", tip: lang==="en"?"Noticeable wear. Service recommended soon.":"Spürbare Abnutzung. Service bald empfohlen." };
+    return { label: lang==="en"?"Needs Service":"Service nötig", cls:"bad", tip: lang==="en"?"Service urgently recommended.":"Service dringend empfohlen." };
+  }
+
+  return `<div class="topbar">
+    <button class="back-btn" onclick="A.nav('home')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <div class="topbar-title">health score</div><div></div>
+  </div>
+  <div class="screen fade-up">
+    <div style="background:linear-gradient(135deg,var(--blue-tint),rgba(45,114,200,.04));border:1.5px solid rgba(45,114,200,.15);border-radius:var(--r);padding:16px;margin-bottom:20px;">
+      <div style="font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin-bottom:8px;">Was ist der Slopy Health Score?</div>
+      <p style="font-size:.82rem;color:var(--g600);line-height:1.7;">Drei Faktoren bestimmen den Zustand deines Skis. Nach jedem Service aktualisiert Slopy automatisch alle Werte — du siehst immer den aktuellen Stand deines Equipments.</p>
+    </div>
+
+    ${assets.map(a => {
+      const edge = scoreInfo(a.edge_health||100);
+      const base = scoreInfo(a.base_health||100);
+      const wax  = scoreInfo(a.wax_health||100);
+      const overall = Math.round(((a.edge_health||100)+(a.base_health||100)+(a.wax_health||100))/3);
+      const ov = scoreInfo(overall);
+      return `<div class="card" style="margin-bottom:14px;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--g100);">
+          <div style="font-size:1.5rem;">🎿</div>
+          <div style="flex:1;">
+            <div style="font-weight:600;">${esc(a.brand)} ${esc(a.model)}</div>
+            <div style="font-size:.78rem;color:var(--g500);">${a.year||''} ${a.length_cm?a.length_cm+"cm":""}</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:1.4rem;font-weight:700;color:${healthColor(overall)};">${overall}%</div>
+            <span class="health-status ${ov.cls}" style="font-size:.65rem;">${ov.label}</span>
+          </div>
+        </div>
+
+        ${[
+          { label:"🔪 Kanten", desc:"Schärfe und Winkel der Stahlkante", val:a.edge_health||100 },
+          { label:"🏂 Belag", desc:"Zustand der Gleitfläche (P-Tex)", val:a.base_health||100 },
+          { label:"🧴 Wachs", desc:"Wachsschicht für optimales Gleiten", val:a.wax_health||100 },
+        ].map(item => {
+          const info = scoreInfo(item.val);
+          return `<div class="health-explanation">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+              <div>
+                <div style="font-weight:500;font-size:.88rem;">${item.label}</div>
+                <div style="font-size:.72rem;color:var(--g500);">${item.desc}</div>
+              </div>
+              <div style="text-align:right;">
+                <div style="font-size:1rem;font-weight:600;color:${healthColor(item.val)};">${item.val}%</div>
+                <span class="health-status ${info.cls}" style="font-size:.62rem;">${info.label}</span>
+              </div>
+            </div>
+            <div class="health-bar-row">
+              <div class="health-bar-track">
+                <div class="health-bar-fill" style="width:${item.val}%;background:${healthColor(item.val)};"></div>
+              </div>
+            </div>
+            <div style="font-size:.72rem;color:var(--g500);margin-top:5px;line-height:1.5;">${info.tip}</div>
+          </div>`;
+        }).join("")}
+
+        <button class="btn btn-primary" onclick="A.nav('book-1')" style="margin-top:4px;font-size:.85rem;">
+          Service buchen
+        </button>
+      </div>`;
+    }).join("")}
+  </div>`;
+}
+
+// ════════════════════════════════════════════════════════════
+// SHARE VIEW
+// ════════════════════════════════════════════════════════════
+function vShare(bid) {
+  const b = bid ? S.bookings.find(x=>x.id===bid) : S.bookings.find(x=>x.status==="completed");
+  const asset = b?.assets || S.assets[0];
+  const url = window.location.origin;
+  const completedCount = S.bookings.filter(x=>x.status==="completed").length;
+  const overall = asset ? Math.round(((asset.edge_health||100)+(asset.base_health||100)+(asset.wax_health||100))/3) : 100;
+
+  const waText = encodeURIComponent(`🎿 Mein ${esc(asset?.brand||"")} ${esc(asset?.model||"")} wurde gerade bei Slopy gewartet!\n\nHealth Score: ${overall}% ✅\nServices: ${completedCount}x\n\nSlopy — Zero Friction. Smart Assets.\n${url}`);
+  const copyText = `🎿 ${asset?.brand||""} ${asset?.model||""} — Slopy Health Score: ${overall}% | ${completedCount} Services | ${url}`;
+
+  return `<div class="topbar">
+    <button class="back-btn" onclick="history.back()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <div class="topbar-title">teilen</div><div></div>
+  </div>
+  <div class="screen fade-up" style="display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:32px;">
+    <div style="font-size:3rem;margin-bottom:12px;">🎿</div>
+    <div style="font-family:var(--fd);font-weight:200;font-size:1.3rem;letter-spacing:.04em;margin-bottom:6px;">Teile deinen Pass</div>
+    <p style="font-size:.875rem;color:var(--g500);margin-bottom:24px;max-width:260px;line-height:1.6;">
+      ${esc(asset?.brand||"")} ${esc(asset?.model||"")} · Health Score ${overall}% · ${completedCount} Services
+    </p>
+    <div style="width:100%;max-width:320px;">
+      <a href="https://wa.me/?text=${waText}" target="_blank" class="share-btn share-wa">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        WhatsApp
+      </a>
+      <button class="share-btn" style="background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);color:#fff;" onclick="A.shareInstagram()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        Instagram Story
+      </button>
+      <button class="share-btn share-copy" onclick="A.copyShare('${copyText.replace(/'/g,"\'")}')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        Link kopieren
+      </button>
+    </div>
+  </div>`;
+}
+
+// ════════════════════════════════════════════════════════════
+// HOW TO OVERLAY
+// ════════════════════════════════════════════════════════════
+const HOWTO = {
+  home: {
+    title: { de:"Dashboard — auf einen Blick", en:"Dashboard — at a glance" },
+    steps: {
+      de: ["Dein aktiver Auftrag erscheint ganz oben mit Live-Status.", "Der Health Score zeigt dir wann dein Ski Service braucht.", "Über 'Service buchen' startest du einen neuen Auftrag."],
+      en: ["Your active order appears at the top with live status.", "The Health Score shows when your ski needs service.", "Tap 'Book Service' to start a new order."]
+    }
+  },
+  "my-bookings": {
+    title: { de:"Aufträge verwalten", en:"Manage Orders" },
+    steps: {
+      de: ["Klicke auf einen Auftrag für Live-Tracking und Details.", "Neue Buchungen können jederzeit storniert werden.", "Der Digital Pass fasst alle Services zusammen."],
+      en: ["Tap an order for live tracking and details.", "New bookings can be cancelled at any time.", "The Digital Pass summarizes all services."]
+    }
+  },
+  admin: {
+    title: { de:"Admin Dashboard — Werkstatt-Steuerung", en:"Admin Dashboard — Workshop Control" },
+    steps: {
+      de: ["Status-Updates per Klick — Kunde sieht es sofort in Echtzeit.", "Notizen werden im Digital Pass des Kunden gespeichert.", "Analytics und Kalender zeigen dir Kapazität und Umsatz."],
+      en: ["Status updates with one click — customer sees it in real time.", "Notes are saved in the customer's Digital Pass.", "Analytics and Calendar show capacity and revenue."]
+    }
+  },
+  "b2b-manager": {
+    title: { de:"Corporate Dashboard", en:"Corporate Dashboard" },
+    steps: {
+      de: ["Personal vs. Leihflotte — toggle zwischen den zwei Welten.", "Sammel-Service: mehrere Skier auf einmal einschicken.", "Team-Tab zeigt alle Mitarbeiter und ihre Equipment-Zuordnung."],
+      en: ["Personal vs. Rental Fleet — toggle between the two worlds.", "Group Service: send multiple skis at once.", "Team tab shows all staff and their equipment."]
+    }
+  }
+};
+
+function vHowToOverlay(view) {
+  const guide = HOWTO[view] || HOWTO["home"];
+  const title = guide.title[lang] || guide.title.de;
+  const steps = guide.steps[lang] || guide.steps.de;
+  return `<div class="tooltip-overlay" onclick="A.closeHowTo()">
+    <div class="tooltip-card" onclick="event.stopPropagation()">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+        <div style="font-family:var(--fd);font-weight:300;font-size:1rem;letter-spacing:.04em;">${title}</div>
+        <button onclick="A.closeHowTo()" style="background:none;border:none;font-size:1.2rem;cursor:pointer;color:var(--g400);">×</button>
+      </div>
+      ${steps.map((s,i)=>`<div class="tooltip-step">
+        <div class="tooltip-num">${i+1}</div>
+        <div class="tooltip-text">${s}</div>
+      </div>`).join("")}
+      <button class="btn btn-primary" onclick="A.closeHowTo()" style="margin-top:8px;font-size:.85rem;">
+        ${lang==="en"?"Got it":"Verstanden"} ✓
+      </button>
+    </div>
+  </div>`;
+}
+
+// ════════════════════════════════════════════════════════════
+// MANAGEMENT DASHBOARD
+// ════════════════════════════════════════════════════════════
+function vManagement() {
+  // Load all bookings from state (admin loads them)
+  const all = S.bookings;
+  const revenue = all.filter(b=>b.status!=="cancelled").reduce((s,b)=>s+Number(b.price||0),0);
+  const completed = all.filter(b=>b.status==="completed").length;
+  const active = all.filter(b=>!["completed","cancelled"].includes(b.status)).length;
+  const avg = all.filter(b=>b.status!=="cancelled").length > 0
+    ? revenue / all.filter(b=>b.status!=="cancelled").length : 0;
+  const convRate = all.length > 0 ? Math.round((completed/all.length)*100) : 0;
+
+  // Monthly breakdown
+  const monthly = {};
+  all.filter(b=>b.status!=="cancelled").forEach(b=>{
+    const d = new Date(b.created_at);
+    const key = d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0");
+    const lbl = d.toLocaleDateString(lang==="en"?"en-US":"de-AT",{month:"short"});
+    if(!monthly[key]) monthly[key]={lbl,rev:0,count:0};
+    monthly[key].rev += Number(b.price||0);
+    monthly[key].count++;
+  });
+  const months = Object.keys(monthly).sort().slice(-6);
+  const maxRev = Math.max(...months.map(k=>monthly[k].rev), 1);
+
+  const prices = S.mgmtPrices || { essential:49, performance:79, world_cup:119 };
+
+  return `<div class="mgmt-wrap">
+    <div class="mgmt-topbar">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <svg width="26" height="26" viewBox="0 0 400 400"><circle cx="200" cy="200" r="195" fill="rgba(255,255,255,0.15)"/>
+          <path d="M 226,80 C 271,67 120,116 124,160 C 128,200 232,191 232,235 C 232,271 125,284 143,290" fill="none" stroke="#fff" stroke-width="11" stroke-linecap="round"/>
+          <path d="M 196,93 C 238,83 147,127 151,169 C 155,207 196,200 196,242 C 196,276 148,284 163,290" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity="0.42"/>
+        </svg>
+        <div>
+          <div style="font-family:var(--fd);font-weight:200;font-size:.85rem;letter-spacing:5px;color:#fff;text-transform:lowercase;">slopy</div>
+          <div style="font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.4);">Management</div>
+        </div>
+      </div>
+      <button onclick="A.nav('admin')" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.7);border-radius:var(--rs);padding:5px 10px;font-size:.72rem;cursor:pointer;">← Werkstatt</button>
+    </div>
+
+    <div class="mgmt-screen">
+      <!-- KPIs -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-value">${fmtEur(revenue)}</div>
+          <div class="kpi-label">Gesamtumsatz</div>
+          <div class="kpi-trend up">↑ alle Aufträge</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value">${fmtEur(avg)}</div>
+          <div class="kpi-label">Ø Auftragswert</div>
+          <div class="kpi-trend ${avg>=79?"up":"dn"}">${avg>=79?"↑ über Ziel":"↓ unter Ziel"}</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value">${all.length}</div>
+          <div class="kpi-label">Buchungen</div>
+          <div class="kpi-trend up">${active} aktiv · ${completed} fertig</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value">${convRate}%</div>
+          <div class="kpi-label">Abschlussrate</div>
+          <div class="kpi-trend ${convRate>=70?"up":"dn"}">${convRate>=70?"↑ gut":"↓ optimierbar"}</div>
+        </div>
+      </div>
+
+      <!-- Revenue Chart FIXED -->
+      ${months.length > 0 ? `
+        <div class="card" style="margin-bottom:14px;">
+          <div class="section-label" style="margin-bottom:12px;">Umsatz nach Monat</div>
+          <div class="bar-chart">
+            ${months.map(k=>{
+              const m = monthly[k];
+              const pct = Math.round((m.rev/maxRev)*100);
+              return `<div class="bar-col">
+                <div class="bar-val">${m.rev>0?Math.round(m.rev)+"€":""}</div>
+                <div class="bar" style="height:${Math.max(pct,3)}%;background:var(--blue);opacity:${pct>60?1:0.6+pct/200};" title="${fmtEur(m.rev)}"></div>
+                <div class="bar-lbl">${m.lbl}</div>
+              </div>`;
+            }).join("")}
+          </div>
+        </div>
+      ` : ""}
+
+      <!-- Price Config -->
+      <div class="card" style="margin-bottom:14px;">
+        <div class="section-label" style="margin-bottom:12px;">Preise konfigurieren</div>
+        ${Object.values(PKG).map(p=>`
+          <div class="price-row">
+            <div>
+              <div style="font-weight:500;font-size:.88rem;">${p.name}</div>
+              <div style="font-size:.72rem;color:var(--g500);">${p.tag}</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <input class="price-input" type="number" value="${prices[p.id]||p.price}"
+                onchange="A.updatePrice('${p.id}',this.value)" min="0" max="999">
+              <span style="font-size:.82rem;color:var(--g500);">€</span>
+            </div>
+          </div>`).join("")}
+        <button class="btn btn-primary" onclick="A.savePrices()" style="margin-top:12px;font-size:.85rem;">Preise speichern</button>
+      </div>
+
+      <!-- Discounts -->
+      <div class="card" style="margin-bottom:14px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <div class="section-label">Rabatte & Aktionen</div>
+          <button onclick="A.addDiscount()" style="background:var(--blue-tint);color:var(--blue);border:none;border-radius:var(--rs);padding:5px 12px;font-size:.75rem;font-weight:500;cursor:pointer;">+ Rabatt</button>
+        </div>
+        ${(S.mgmtDiscounts||[]).length===0?`<div style="font-size:.82rem;color:var(--g500);text-align:center;padding:12px;">Noch keine Rabatte angelegt.</div>`:""}
+        ${(S.mgmtDiscounts||[]).map((d,i)=>`
+          <div class="discount-row">
+            <div style="flex:1;">
+              <div style="font-size:.85rem;font-weight:500;">${esc(d.name)}</div>
+              <div style="font-size:.72rem;color:var(--g500);">${d.type==="percent"?d.value+"%":fmtEur(d.value)} Rabatt</div>
+            </div>
+            <button onclick="A.removeDiscount(${i})" style="background:var(--red-tint);color:var(--red);border:none;border-radius:var(--rs);padding:4px 10px;font-size:.72rem;cursor:pointer;">Löschen</button>
+          </div>`).join("")}
+      </div>
+
+    </div>
+  </div>`;
+}
+
 // ════════════════════════════════════════════════════════════
 // ROUTER
 // ════════════════════════════════════════════════════════════
@@ -2677,7 +3162,9 @@ function go(view) {
   const app = document.getElementById('app');
   if(!app) return;
 
-  if(view.startsWith('cancel-')) {
+  if(view.startsWith('share-')) {
+    app.innerHTML = vShare(view.replace('share-',''));
+  } else if(view.startsWith('cancel-')) {
     app.innerHTML = vCancelBooking(view.replace('cancel-',''));
   } else if(view.startsWith('tracking-')) {
     app.innerHTML = vTracking(view.replace('tracking-',''));
@@ -2721,11 +3208,30 @@ function go(view) {
       case 'rental-book':     app.innerHTML = vRentalBook();     break;
       case 'b2b-add-member':  app.innerHTML = vB2BAddMember();   break;
       case 'admin-manual':    app.innerHTML = vManualBooking();  break;
+      case 'management':      app.innerHTML = vManagement();     break;
+      case 'health-score':    app.innerHTML = vHealthScore();    break;
+      case 'share':           app.innerHTML = vShare();          break;
       case 'book-asset':      app.innerHTML = vBookAssetV2();    break;
       default:                app.innerHTML = vAuth();
     }
   }
   window.scrollTo(0,0);
+  // Render HowTo overlay if needed
+  if(S.showHowTo) {
+    const overlay = document.createElement('div');
+    overlay.id = 'howto-overlay';
+    overlay.innerHTML = vHowToOverlay(view);
+    document.getElementById('app')?.appendChild(overlay);
+  }
+  // Render HowTo FAB for customer views
+  if(['home','my-bookings','profile'].includes(view)) {
+    const fab = document.createElement('button');
+    fab.className = 'howto-fab';
+    fab.innerHTML = '?';
+    fab.title = 'How-To';
+    fab.onclick = () => { S.showHowTo=true; go(S.view); };
+    document.getElementById('app')?.appendChild(fab);
+  }
 }
 
 // ── Realtime ──────────────────────────────────────────────
@@ -3477,6 +3983,65 @@ function resetOnboarding() {
   toast('Onboarding zurückgesetzt — beim nächsten Login aktiv');
 }
 
+
+// ── Dark Mode ─────────────────────────────────────────────
+function toggleDark() {
+  S.darkMode = !S.darkMode;
+  document.documentElement.classList.toggle('dark-mode', S.darkMode);
+  try { localStorage.setItem('slopy_dark', S.darkMode?'1':'0'); } catch(e){}
+  go(S.view);
+}
+function initDark() {
+  try { S.darkMode = localStorage.getItem('slopy_dark')==='1'; } catch(e){}
+  document.documentElement.classList.toggle('dark-mode', S.darkMode);
+}
+
+// ── HowTo ─────────────────────────────────────────────────
+function closeHowTo() {
+  S.showHowTo = false;
+  const el = document.getElementById('howto-overlay');
+  if(el) el.remove();
+}
+
+// ── Share ──────────────────────────────────────────────────
+function shareInstagram() {
+  toast(lang==='en'?'Open Instagram and paste from clipboard':'Instagram öffnen und aus Zwischenablage einfügen');
+  const asset = S.assets[0];
+  const overall = asset ? Math.round(((asset.edge_health||100)+(asset.base_health||100)+(asset.wax_health||100))/3) : 100;
+  const text = `🎿 ${asset?.brand||''} ${asset?.model||''} — Slopy Health Score: ${overall}% ✅ | slopy.at`;
+  navigator.clipboard?.writeText(text).catch(()=>{});
+}
+function copyShare(text) {
+  navigator.clipboard?.writeText(text).then(()=>toast(lang==='en'?'Copied!':'Kopiert!')).catch(()=>toast('Link: '+text));
+}
+
+// ── Management ────────────────────────────────────────────
+function updatePrice(pkg, val) {
+  if(!S.mgmtPrices) S.mgmtPrices = {};
+  S.mgmtPrices[pkg] = Number(val);
+}
+function savePrices() {
+  // Update PKG prices in memory
+  Object.keys(S.mgmtPrices||{}).forEach(k => {
+    if(PKG[k]) PKG[k].price = S.mgmtPrices[k];
+  });
+  toast(lang==='en'?'Prices saved':'Preise gespeichert');
+}
+function addDiscount() {
+  const name = prompt(lang==='en'?'Discount name (e.g. Friends & Family):':'Rabatt-Name (z.B. Freunde & Familie):');
+  if(!name) return;
+  const val = prompt(lang==='en'?'Value in % (e.g. 20 for 20%):':'Wert in % (z.B. 20 für 20%):');
+  if(!val || isNaN(val)) return;
+  if(!S.mgmtDiscounts) S.mgmtDiscounts = [];
+  S.mgmtDiscounts.push({ name, value: Number(val), type: 'percent' });
+  toast(lang==='en'?'Discount added':'Rabatt hinzugefügt');
+  go('management');
+}
+function removeDiscount(i) {
+  S.mgmtDiscounts?.splice(i,1);
+  go('management');
+}
+
 // ── Global API ────────────────────────────────────────────
 window.A = {
   go, login, register, logout, addAsset, createBooking, updateStatus, saveProfile,
@@ -3485,6 +4050,7 @@ window.A = {
   onBrandInput, onModelInput, selectBrand, selectModel, hideAutocomplete,
   createB2BGroup, addB2BMember, setB2BTab, cancelBooking, createManualBooking, setMB,
   setFleetMode, addRentalSki, toggleRentalSki, bookRentalService, resetOnboarding,
+  toggleDark, closeHowTo, shareInstagram, copyShare, updatePrice, savePrices, addDiscount, removeDiscount,
   selectAsset(id) { S.draft.asset_id=id; S.draft.asset=S.assets.find(a=>a.id===id); go('book-1'); },
   selectPkg(id)   { S.draft.pkg=id; go('book-2'); },
   selectLog(id)   { S.draft.log=id; go('book-3'); },
@@ -3506,12 +4072,17 @@ window.A = {
     else if(view==='rental-add')      { await loadSkiCatalog(); go('rental-add'); }
     else if(view==='rental-book')     { await loadRentalSkis(); S.selectedRentalSkis=[]; go('rental-book'); }
     else if(view==='book-asset')      { await loadSkiCatalog(); go('book-asset'); }
+    else if(view==='health-score')    { await loadAssets(); go('health-score'); }
+    else if(view==='management')      { await loadAllBookings(); go('management'); }
+    else if(view==='share')           { go('share'); }
     else go(view);
   }
 };
 
 // ── Init ──────────────────────────────────────────────────
 async function init() {
+  initLang();
+  initDark();
   const { data:{ session } } = await db.auth.getSession();
   if(session) {
     await loadProfile(session.user);
