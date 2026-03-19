@@ -295,6 +295,19 @@ select.corp-input option{background:#1a1e28;color:#fff}
 /* ── PASS ────────────────────────────────────────── */
 .pass-hero{background:linear-gradient(135deg,#0d1f35,#0a1828);border-radius:var(--r);padding:22px;margin-bottom:14px;position:relative;overflow:hidden}
 .pass-certified{font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5);background:rgba(45,114,200,.2);padding:3px 10px;border-radius:2px}
+
+/* ── DEMO MODAL ──────────────────────────────────────────── */
+.demo-modal-overlay{position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.6);display:flex;align-items:flex-end;justify-content:center;padding:0;animation:fadeInBg .2s}
+@keyframes fadeInBg{from{opacity:0}to{opacity:1}}
+.demo-modal{background:var(--white);border-radius:var(--r) var(--r) 0 0;width:100%;max-width:900px;padding:28px 24px 40px;animation:slideUpModal .35s cubic-bezier(.34,1.2,.64,1)}
+@keyframes slideUpModal{from{transform:translateY(100%)}to{transform:none}}
+.demo-role-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:20px 0}
+.demo-role-card{padding:16px;border:1.5px solid var(--g200);border-radius:var(--rs);cursor:pointer;transition:all .2s;text-align:left;background:var(--white)}
+.demo-role-card:hover,.demo-role-card.on{border-color:var(--blue);background:var(--blue-tint)}
+.demo-role-icon{font-size:1.5rem;margin-bottom:8px;display:block}
+.demo-role-name{font-weight:500;font-size:.9rem;margin-bottom:2px}
+.demo-role-desc{font-size:.75rem;color:var(--g500);font-weight:300;line-height:1.4}
+
 </style>
 </head>
 <body>
@@ -382,6 +395,7 @@ const HOWTO = {
 // ── State ──────────────────────────────────────────────────
 const S = {
   view:'loading', user:null, profile:null, dark:false,
+  history:[],
   assets:[], bookings:[], skiCatalog:[],
   loading:false, loadingMsg:'',
   draft:{ assets:[], pkg:'performance', log:'home', addr:'', notes:'' },
@@ -495,7 +509,7 @@ function bottomNav(active) {
 
 // ── Topbar helpers ────────────────────────────────────────
 function customerTopbar(title) {
-  if(title) return `<div class="topbar"><button class="back-btn" onclick="history.back()">${ico.back} ${t('back')}</button><div class="topbar-title">${title}</div><div></div></div>`;
+  if(title) return `<div class="topbar"><button class="back-btn" onclick="A.goBack()">${ico.back} ${t('back')}</button><div class="topbar-title">${title}</div><div></div></div>`;
   return `<div class="topbar">
     <div class="topbar-logo">
       <svg width="28" height="28" viewBox="0 0 400 400"><circle cx="200" cy="200" r="195" fill="#2D72C8"/><path d="M 226,80 C 271,67 120,116 124,160 C 128,200 232,191 232,235 C 232,271 125,284 143,290" fill="none" stroke="#fff" stroke-width="11" stroke-linecap="round"/><path d="M 196,93 C 238,83 147,127 151,169 C 155,207 196,200 196,242 C 196,276 148,284 163,290" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity=".42"/></svg>
@@ -576,7 +590,11 @@ function vAuth() {
       <button onclick="A.go('pw-reset')" style="background:none;border:none;cursor:pointer;font-size:.82rem;color:var(--g500);width:100%;text-decoration:underline;">Passwort vergessen?</button>
       ${S.demo?'':''/* demo button is in demoBanner */}
     </div>
-    <button onclick="A.demoOn()" style="margin-top:20px;background:none;border:1px dashed #7c3aed;color:#7c3aed;border-radius:var(--rs);padding:8px 18px;font-size:.75rem;cursor:pointer;font-weight:500;">🎭 Demo-Modus starten</button>
+    <div style="margin-top:28px;text-align:center;padding-top:20px;border-top:1px solid var(--g100);">
+      <button onclick="A.openDemoModal()" style="background:none;border:none;cursor:pointer;font-size:.78rem;color:var(--g500);font-weight:300;letter-spacing:.04em;">
+        Kein Account? <span style="color:var(--blue);font-weight:500;text-decoration:underline;">Demo starten →</span>
+      </button>
+    </div>
   </div>`;
 }
 
@@ -1711,7 +1729,7 @@ function vCorpAddSki() {
   const nextId = 'SKI-' + String((S.corpInventory?.length||0)+1).padStart(3,'0');
   return `<div class="corp-wrap">
     <div class="corp-topbar">
-      <button onclick="A.setCorpTab('inventory');A.go('corp-dashboard')" style="background:none;border:none;color:rgba(255,255,255,.6);cursor:pointer;display:flex;align-items:center;gap:4px;font-size:.875rem;">${ico.back} ${t('back')}</button>
+      <button onclick="A.nav('corp-dashboard')" style="background:none;border:none;color:rgba(255,255,255,.6);cursor:pointer;display:flex;align-items:center;gap:4px;font-size:.875rem;">${ico.back} ${t('back')}</button>
       <div style="font-family:var(--fd);font-weight:200;font-size:.85rem;letter-spacing:4px;color:rgba(255,255,255,.6);">ski hinzufügen</div>
       <div></div>
     </div>
@@ -1748,6 +1766,10 @@ function vLegal(type) {
 // ROUTER
 // ════════════════════════════════════════════════════════════
 function go(view) {
+  // Track navigation history for back button
+  if(S.view && S.view !== view && S.view !== 'loading') {
+    S.history = [...(S.history||[]).slice(-10), S.view];
+  }
   S.view = view; S.showHowTo = false;
   if(rtCh) { db.removeChannel(rtCh); rtCh=null; }
   const app = document.getElementById('app');
@@ -2214,23 +2236,93 @@ function rejectCookies(){try{localStorage.setItem('slopy_cookie','rejected');}ca
 // ════════════════════════════════════════════════════════════
 // DEMO MODE
 // ════════════════════════════════════════════════════════════
-function demoOn(){S.demo=true;S.demoRole='customer';document.body.classList.add('demo-active');go('auth');}
-function demoOff(){S.demo=false;S.demoRole=null;document.body.classList.remove('demo-active');go('auth');}
+function openDemoModal() {
+  S.demo=true;
+  S.demoSelected=null;
+  // Render modal over current view
+  const existing=document.getElementById('demo-modal');
+  if(existing)existing.remove();
+  const modal=document.createElement('div');
+  modal.id='demo-modal';
+  modal.className='demo-modal-overlay';
+  modal.innerHTML=renderDemoModal();
+  document.getElementById('app').appendChild(modal);
+}
+function renderDemoModal() {
+  const roles=[
+    {id:'customer',icon:'🎿',name:'Kunde',desc:'Ski buchen, Health Score, Digital Pass, Tracking'},
+    {id:'admin',icon:'🔧',name:'Werkstatt Admin',desc:'Aufträge verwalten, Status updaten, Analytics'},
+    {id:'management',icon:'📊',name:'Management',desc:'KPIs, Preise konfigurieren, Umsatz-Übersicht'},
+    {id:'corp',icon:'🏔️',name:'Corporate',desc:'Skiflotten verwalten, Sammel-Service buchen'},
+  ];
+  const sel=S.demoSelected;
+  return `<div class="demo-modal" onclick="event.stopPropagation()">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+      <div style="font-family:var(--fd);font-weight:200;font-size:1.2rem;letter-spacing:.04em;">Demo starten</div>
+      <button onclick="A.closeDemoModal()" style="background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--g400);line-height:1;padding:4px 8px;">×</button>
+    </div>
+    <p style="font-size:.82rem;color:var(--g500);margin-bottom:4px;">Wähle eine Rolle — keine Registrierung nötig.</p>
+    <div class="demo-role-grid">
+      ${roles.map(r=>`
+        <div class="demo-role-card ${sel===r.id?'on':''}" onclick="A.selectDemoRole('${r.id}')">
+          <span class="demo-role-icon">${r.icon}</span>
+          <div class="demo-role-name">${r.name}</div>
+          <div class="demo-role-desc">${r.desc}</div>
+        </div>`).join('')}
+    </div>
+    ${sel?`<button onclick="A.startDemo()" class="btn btn-primary" style="font-size:.9rem;">
+      Demo als ${roles.find(r=>r.id===sel)?.name} starten →
+    </button>`:`<div style="text-align:center;padding:10px;font-size:.78rem;color:var(--g400);">Rolle auswählen um fortzufahren</div>`}
+  </div>`;
+}
+function selectDemoRole(role) {
+  S.demoSelected=role;
+  const modal=document.getElementById('demo-modal');
+  if(modal) modal.innerHTML=renderDemoModal();
+}
+async function startDemo() {
+  const role=S.demoSelected;
+  if(!role){toast('Bitte Rolle wählen');return;}
+  S.demoRole=role;
+  document.body.classList.add('demo-active');
+  closeDemoModal();
+  // Show loading
+  toast('Demo wird geladen…');
+  const creds={
+    customer:{email:'demo-kunde@slopy.at',pass:'SlopDemo2025'},
+    admin:   {email:'demo-admin@slopy.at',pass:'SlopDemo2025'},
+    management:{email:'demo-admin@slopy.at',pass:'SlopDemo2025'},
+    corp:    {email:'hotel@slopy.at',pass:'SlopDemo2025'}
+  };
+  const cr=creds[role];
+  if(!cr){toast('Demo-Credentials fehlen');return;}
+  const {error}=await db.auth.signInWithPassword({email:cr.email,password:cr.pass});
+  if(error){toast('Demo-Login fehlgeschlagen: '+error.message);return;}
+  if(role==='management'&&S.profile){S.profile={...S.profile,role:'management'};}
+}
+function closeDemoModal() {
+  const el=document.getElementById('demo-modal');
+  if(el)el.remove();
+  if(!S.demoRole){S.demo=false;}
+}
+function demoOff(){
+  S.demo=false;S.demoRole=null;S.demoSelected=null;
+  document.body.classList.remove('demo-active');
+  db.auth.signOut().then(()=>go('auth'));
+}
 async function demoSwitch(role) {
   S.demoRole=role;
-  // Log in as appropriate demo user
   const creds={
-    customer: {email:'demo-kunde@slopy.at',pass:'SlopDemo2025'},
-    admin:    {email:'demo-admin@slopy.at',pass:'SlopDemo2025'},
+    customer:{email:'demo-kunde@slopy.at',pass:'SlopDemo2025'},
+    admin:   {email:'demo-admin@slopy.at',pass:'SlopDemo2025'},
     management:{email:'demo-admin@slopy.at',pass:'SlopDemo2025'},
-    corp:     {email:'hotel@slopy.at',pass:'SlopDemo2025'}
+    corp:    {email:'hotel@slopy.at',pass:'SlopDemo2025'}
   };
-  const c=creds[role];
-  if(!c) return;
-  await db.auth.signInWithPassword({email:c.email,password:c.pass});
-  // Role override for demo
-  if(role==='management'&&S.profile){S.profile={...S.profile,role:'management'};}
-  toast('Demo: '+role);
+  const cr=creds[role];
+  if(!cr)return;
+  toast('Wechsle zu '+role+'…');
+  const {error}=await db.auth.signInWithPassword({email:cr.email,password:cr.pass});
+  if(!error&&role==='management'&&S.profile){S.profile={...S.profile,role:'management'};}
 }
 
 // ════════════════════════════════════════════════════════════
@@ -2289,6 +2381,21 @@ function routeByRole() {
 }
 
 
+function goBack() {
+  const hist = S.history||[];
+  if(hist.length > 0) {
+    const prev = hist[hist.length-1];
+    S.history = hist.slice(0,-1);
+    nav(prev);
+  } else {
+    // Fallback by role
+    const role = S.profile?.role;
+    if(role==='admin'||role==='management') nav('admin');
+    else if(role==='b2b_manager') nav('corp-dashboard');
+    else nav('home');
+  }
+}
+
 function nextOnboard() {
   if(S.onboardStep < 3) { S.onboardStep++; go('onboard'); }
   else { go('home'); }
@@ -2306,8 +2413,8 @@ window.A={go,nav,login,register,logout,sendPwReset,toggleDark,toggleLang,
   createCorpGroup,addCorpSki,setCorpTab,createCorpBooking,
   setStar,submitRating,copyShare,exportPDF,
   updatePrice,savePrices,addDiscount,removeDiscount,
-  openHowTo,closeHowTo,acceptCookies,rejectCookies,
-  nextOnboard,skipOnboard,resetOnboarding,demoOn,demoOff,demoSwitch,
+  openHowTo,closeHowTo,acceptCookies,rejectCookies,openDemoModal,closeDemoModal,selectDemoRole,startDemo,
+  nextOnboard,skipOnboard,resetOnboarding,goBack,demoOn,demoOff,demoSwitch,
   nav(view){nav(view);}
 };
 
