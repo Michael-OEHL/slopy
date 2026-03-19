@@ -469,6 +469,29 @@ html,body{
 /* ── MANUAL BOOKING (Admin) ───────────────────────────────── */
 .manual-booking-wrap{background:var(--g50);min-height:100vh}
 
+
+/* ── RENTAL FLEET ────────────────────────────────────────── */
+.fleet-toggle{display:flex;background:rgba(255,255,255,.05);border-radius:var(--r);padding:3px;margin-bottom:16px;gap:3px}
+.fleet-toggle-btn{flex:1;padding:8px;border:none;border-radius:10px;font-size:.78rem;font-weight:500;cursor:pointer;transition:all .2s;color:rgba(255,255,255,.4);background:transparent}
+.fleet-toggle-btn.on{background:var(--blue);color:#fff;box-shadow:0 2px 8px rgba(45,114,200,.3)}
+.rental-ski{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.rental-ski:last-child{border-bottom:none}
+.rental-ski-id{font-family:monospace;font-size:.82rem;font-weight:700;color:var(--blue);background:rgba(45,114,200,.12);padding:3px 8px;border-radius:4px;flex-shrink:0;min-width:70px;text-align:center}
+.rental-size{font-size:.7rem;color:rgba(255,255,255,.3);margin-top:2px}
+.ski-status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.ski-status-dot.available{background:#4ade80}
+.ski-status-dot.in-service{background:var(--blue)}
+.ski-status-dot.unavailable{background:#f87171}
+
+/* ── ONBOARDING RESET ────────────────────────────────────── */
+.demo-reset-btn{display:flex;align-items:center;gap:6px;background:none;border:1px dashed var(--g300);color:var(--g500);border-radius:var(--rs);padding:8px 14px;font-size:.75rem;cursor:pointer;width:100%;justify-content:center;margin-top:8px;transition:all .2s}
+.demo-reset-btn:hover{border-color:var(--blue);color:var(--blue)}
+
+/* ── RENTAL BOOKING ──────────────────────────────────────── */
+.rental-book-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:var(--r);padding:14px;margin-bottom:8px;cursor:pointer;transition:all .2s}
+.rental-book-card:hover{border-color:rgba(45,114,200,.4);background:rgba(45,114,200,.06)}
+.rental-book-card.sel{border-color:var(--blue);background:rgba(45,114,200,.1)}
+
 </style>
 </head>
 <body>
@@ -560,6 +583,9 @@ const S = {
   b2bGroup: null,
   b2bMembers: [],
   b2bTab: 'fleet',
+  b2bFleetMode: 'personal',
+  rentalSkis: [],
+  selectedRentalSkis: [],
   skiCatalog: [],
   autocomplete: { field:null, results:[], show:false },
   manualBooking: { user_email:'', asset_brand:'', asset_model:'', pkg:'performance', log:'home', addr:'', notes:'' },
@@ -915,6 +941,12 @@ function vProfile() {
         ${S.loading?'<div class="spin-btn"></div>':'Speichern'}
       </button>
       <div class="divider"></div>
+      ${S.user?.email === 'demo-kunde@slopy.at' ? `
+        <button class="demo-reset-btn" onclick="A.resetOnboarding()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.11"/></svg>
+          Demo: Onboarding zurücksetzen
+        </button>
+      ` : ''}
       <button class="btn btn-danger" onclick="A.logout()">Ausloggen</button>
     </div>
     ${bottomNav('profile')}`;
@@ -2163,20 +2195,201 @@ function vB2BOnboard() {
   </div>`;
 }
 
+
 // ════════════════════════════════════════════════════════════
-// B2B MANAGER DASHBOARD
+// RENTAL FLEET MANAGEMENT
 // ════════════════════════════════════════════════════════════
-function vB2BManager() {
+function vRentalFleet() {
+  const skis = S.rentalSkis || [];
+  const available = skis.filter(s=>s.status==='available');
+  const inService = skis.filter(s=>s.status==='in_service');
+
+  return `<div class="b2bm-wrap">
+    <div class="b2bm-topbar">
+      <button onclick="A.go('b2b-manager')" style="background:none;border:none;color:rgba(255,255,255,.6);cursor:pointer;display:flex;align-items:center;gap:4px;font-size:.875rem;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>Zurück
+      </button>
+      <div style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:.85rem;letter-spacing:4px;color:rgba(255,255,255,.6);text-transform:lowercase;">leihflotte</div>
+      <button onclick="A.go('rental-add')" style="background:rgba(45,114,200,.2);border:1px solid rgba(45,114,200,.3);color:#7eb3f0;border-radius:var(--rs);padding:5px 12px;font-size:.75rem;cursor:pointer;">+ Ski</button>
+    </div>
+    <div class="b2bm-screen">
+
+      <!-- Stats -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;">
+        <div class="b2bm-stat"><div class="b2bm-stat-val">${skis.length}</div><div class="b2bm-stat-lbl">Gesamt</div></div>
+        <div class="b2bm-stat"><div class="b2bm-stat-val" style="color:#4ade80;">${available.length}</div><div class="b2bm-stat-lbl">Verfügbar</div></div>
+        <div class="b2bm-stat"><div class="b2bm-stat-val" style="color:var(--blue);">${inService.length}</div><div class="b2bm-stat-lbl">Im Service</div></div>
+      </div>
+
+      <!-- Legend -->
+      <div style="display:flex;gap:14px;margin-bottom:12px;font-size:.72rem;color:rgba(255,255,255,.35);">
+        <span style="display:flex;align-items:center;gap:5px;"><span class="ski-status-dot available"></span>Verfügbar</span>
+        <span style="display:flex;align-items:center;gap:5px;"><span class="ski-status-dot in-service"></span>Im Service</span>
+        <span style="display:flex;align-items:center;gap:5px;"><span class="ski-status-dot unavailable"></span>Gesperrt</span>
+      </div>
+
+      <!-- Ski List -->
+      ${skis.length === 0 ? `
+        <div style="text-align:center;padding:40px 20px;color:rgba(255,255,255,.25);">
+          <div style="font-size:2.5rem;margin-bottom:12px;">🎿</div>
+          <div style="font-size:.875rem;">Noch keine Leihskier. Füge den ersten Ski hinzu.</div>
+        </div>
+      ` : `
+        <div class="b2bm-card">
+          ${skis.map(s => {
+            const dot = s.status==='available'?'available':s.status==='in_service'?'in-service':'unavailable';
+            const activeB = S.bookings.find(b=>b.asset_id===s.id&&!['completed','cancelled'].includes(b.status));
+            return `<div class="rental-ski">
+              <span class="ski-status-dot ${dot}"></span>
+              <div class="rental-ski-id">${esc(s.slopy_id||'SKI-???')}</div>
+              <div style="flex:1;min-width:0;">
+                <div style="font-size:.82rem;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(s.brand)} ${esc(s.model)}</div>
+                <div class="rental-size">${s.length_cm?s.length_cm+'cm':''} ${s.year?'· '+s.year:''}</div>
+              </div>
+              <div style="text-align:right;flex-shrink:0;">
+                ${activeB?`<span style="font-size:.62rem;background:rgba(45,114,200,.15);color:#7eb3f0;padding:2px 7px;border-radius:2px;">${slabel(activeB.status)}</span>`:
+                  `<span style="font-size:.72rem;color:${s.status==='available'?'#4ade80':'rgba(255,255,255,.25)'};">${s.status==='available'?'Frei':s.status==='in_service'?'Service':'Gesperrt'}</span>`}
+              </div>
+            </div>`;
+          }).join('')}
+        </div>
+      `}
+
+      <!-- Book Service for Fleet -->
+      ${available.length > 0 ? `
+        <button class="btn btn-primary" onclick="A.go('rental-book')" style="margin-top:8px;background:rgba(45,114,200,.3);border:1px solid rgba(45,114,200,.4);">
+          Flotten-Service buchen
+        </button>
+      ` : ''}
+    </div>
+  </div>`;
+}
+
+// ════════════════════════════════════════════════════════════
+// ADD RENTAL SKI
+// ════════════════════════════════════════════════════════════
+function vRentalAdd() {
+  const nextId = 'SKI-' + String((S.rentalSkis?.length||0)+1).padStart(3,'0');
+  return `<div class="b2bm-wrap">
+    <div class="b2bm-topbar">
+      <button onclick="A.go('rental-fleet')" style="background:none;border:none;color:rgba(255,255,255,.6);cursor:pointer;display:flex;align-items:center;gap:4px;font-size:.875rem;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>Zurück
+      </button>
+      <div style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:.85rem;letter-spacing:4px;color:rgba(255,255,255,.6);text-transform:lowercase;">ski hinzufügen</div>
+      <div></div>
+    </div>
+    <div class="b2bm-screen">
+      <p style="font-size:.82rem;color:rgba(255,255,255,.4);margin-bottom:20px;line-height:1.6;">
+        Füge einen Leihski zur Flotte hinzu. Die ID wird automatisch vergeben — du kannst sie manuell überschreiben.
+      </p>
+      <div class="field">
+        <label class="il" style="color:rgba(255,255,255,.4);">Ski-ID</label>
+        <input id="r-id" class="input" type="text" value="${nextId}" placeholder="SKI-001">
+        <div style="font-size:.7rem;color:rgba(255,255,255,.25);margin-top:4px;">Automatisch vergeben — kann überschrieben werden</div>
+      </div>
+      <div class="field">
+        <label class="il" style="color:rgba(255,255,255,.4);">Marke *</label>
+        <div class="autocomplete-wrap">
+          <input id="r-brand" class="input" type="text" placeholder="Atomic, Rossignol…"
+            oninput="A.onBrandInput(this.value)" onblur="setTimeout(()=>A.hideAutocomplete('brand'),200)" autocomplete="off">
+          <div class="autocomplete-list" id="brand-list" style="display:none;"></div>
+        </div>
+      </div>
+      <div class="field">
+        <label class="il" style="color:rgba(255,255,255,.4);">Modell *</label>
+        <div class="autocomplete-wrap">
+          <input id="r-model" class="input" type="text" placeholder="Modell…"
+            oninput="A.onModelInput(this.value)" onblur="setTimeout(()=>A.hideAutocomplete('model'),200)" autocomplete="off">
+          <div class="autocomplete-list" id="model-list" style="display:none;"></div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+        <div class="field"><label class="il" style="color:rgba(255,255,255,.4);">Länge</label>
+          <input id="r-len" class="input" type="number" placeholder="170" inputmode="numeric"></div>
+        <div class="field"><label class="il" style="color:rgba(255,255,255,.4);">Baujahr</label>
+          <input id="r-year" class="input" type="number" placeholder="2024" inputmode="numeric"></div>
+        <div class="field"><label class="il" style="color:rgba(255,255,255,.4);">Größe</label>
+          <select id="r-size" class="input" style="cursor:pointer;font-size:.82rem;">
+            <option value="">–</option>
+            <option>XS</option><option>S</option><option selected>M</option><option>L</option><option>XL</option>
+          </select></div>
+      </div>
+      <button class="btn btn-primary" onclick="A.addRentalSki()" style="margin-top:8px;">
+        ${S.loading?'<div class="spin-btn"></div>':'Ski zur Flotte hinzufügen'}
+      </button>
+    </div>
+  </div>`;
+}
+
+// ════════════════════════════════════════════════════════════
+// RENTAL BOOK SERVICE
+// ════════════════════════════════════════════════════════════
+function vRentalBook() {
+  const available = (S.rentalSkis||[]).filter(s=>s.status==='available');
+  const selected = S.selectedRentalSkis || [];
+  return `<div class="b2bm-wrap">
+    <div class="b2bm-topbar">
+      <button onclick="A.go('rental-fleet')" style="background:none;border:none;color:rgba(255,255,255,.6);cursor:pointer;display:flex;align-items:center;gap:4px;font-size:.875rem;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>Zurück
+      </button>
+      <div style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:.85rem;letter-spacing:4px;color:rgba(255,255,255,.6);text-transform:lowercase;">service buchen</div>
+      <div></div>
+    </div>
+    <div class="b2bm-screen">
+      <div class="b2bm-label">Paket wählen</div>
+      ${Object.values(PKG).map(p=>`
+        <div class="rental-book-card ${S.draft.pkg===p.id?'sel':''}" onclick="A.selectPkg('${p.id}')">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <div style="font-size:.88rem;font-weight:500;color:#fff;">${p.name}</div>
+              <div style="font-size:.72rem;color:rgba(255,255,255,.35);">${p.tag} · ${p.days} Werktage</div>
+            </div>
+            <div style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:1.3rem;color:var(--blue);">${p.price}€</div>
+          </div>
+        </div>`).join('')}
+
+      <div class="b2bm-label" style="margin-top:16px;">Skier auswählen (${selected.length} gewählt)</div>
+      ${available.length===0?`<div style="font-size:.82rem;color:rgba(255,255,255,.3);padding:12px 0;">Alle Skier sind bereits im Service.</div>`:''}
+      ${available.map(s=>`
+        <div class="rental-book-card ${selected.includes(s.id)?'sel':''}" onclick="A.toggleRentalSki('${s.id}')">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="width:18px;height:18px;border-radius:4px;border:2px solid ${selected.includes(s.id)?'var(--blue)':'rgba(255,255,255,.2)'};background:${selected.includes(s.id)?'var(--blue)':'transparent'};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              ${selected.includes(s.id)?'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>':''}
+            </div>
+            <div class="rental-ski-id" style="font-size:.72rem;">${esc(s.slopy_id||'SKI-?')}</div>
+            <div><div style="font-size:.82rem;color:#fff;">${esc(s.brand)} ${esc(s.model)}</div>
+            <div style="font-size:.68rem;color:rgba(255,255,255,.3);">${s.length_cm?s.length_cm+'cm':''}</div></div>
+          </div>
+        </div>`).join('')}
+
+      ${selected.length > 0 ? `
+        <div style="margin-top:12px;padding:12px;background:rgba(45,114,200,.08);border:1px solid rgba(45,114,200,.15);border-radius:var(--rs);font-size:.82rem;color:rgba(255,255,255,.6);">
+          ${selected.length} Ski · ${PKG[S.draft.pkg]?.name} · Gesamt: ${fmtEur(selected.length * (PKG[S.draft.pkg]?.price||0))}
+        </div>
+        <button class="btn btn-primary" onclick="A.bookRentalService()" style="margin-top:10px;">
+          ${S.loading?'<div class="spin-btn"></div>':'Sammel-Service buchen'}
+        </button>
+      ` : ''}
+    </div>
+  </div>`;
+}
+
+// ════════════════════════════════════════════════════════════
+// UPDATED B2BManager — with fleet toggle
+// ════════════════════════════════════════════════════════════
+function vB2BManagerUpdated() {
   const tab = S.b2bTab || 'fleet';
+  const fleetMode = S.b2bFleetMode || 'personal';
   const group = S.b2bGroup;
   const members = S.b2bMembers || [];
-  const assets = S.assets;
+  const rentalSkis = S.rentalSkis || [];
+  const personalAssets = S.assets.filter(a=>!a.slopy_id?.startsWith('SKI-')||!a.slopy_id);
+  const assets = tab==='fleet'&&fleetMode==='rental' ? rentalSkis : (tab==='fleet'&&fleetMode==='personal' ? personalAssets : S.assets);
   const active = S.bookings.filter(b=>!['completed','cancelled'].includes(b.status));
   const completed = S.bookings.filter(b=>b.status==='completed');
   const revenue = S.bookings.filter(b=>b.status!=='cancelled').reduce((s,b)=>s+Number(b.price||0),0);
 
   return `<div class="b2bm-wrap">
-    <!-- Topbar -->
     <div class="b2bm-topbar">
       <div style="display:flex;align-items:center;gap:10px;">
         <svg width="26" height="26" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
@@ -2196,58 +2409,87 @@ function vB2BManager() {
     </div>
 
     <div class="b2bm-screen">
-      <!-- Company Header -->
-      <div style="margin-bottom:18px;">
+      <div style="margin-bottom:16px;">
         <div style="font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:4px;">${group?.company_type||'corporate'}</div>
         <div style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:1.5rem;letter-spacing:.04em;color:#fff;margin-bottom:2px;">${esc(group?.company_name||'Corporate')}</div>
-        <div style="font-size:.75rem;color:rgba(255,255,255,.35);">${esc(group?.address||'')} · ${members.length} Mitarbeiter · ${assets.length} Geräte</div>
+        <div style="font-size:.75rem;color:rgba(255,255,255,.35);">${esc(group?.address||'')} · ${members.length} Mitarbeiter · ${S.assets.length} Geräte</div>
       </div>
 
-      <!-- KPI Grid -->
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px;">
-        <div class="b2bm-stat"><div class="b2bm-stat-val">${assets.length}</div><div class="b2bm-stat-lbl">Geräte</div></div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;">
+        <div class="b2bm-stat"><div class="b2bm-stat-val">${S.assets.length + rentalSkis.length}</div><div class="b2bm-stat-lbl">Geräte</div></div>
         <div class="b2bm-stat"><div class="b2bm-stat-val" style="color:#4ade80;">${active.length}</div><div class="b2bm-stat-lbl">Aktiv</div></div>
         <div class="b2bm-stat"><div class="b2bm-stat-val">${completed.length}</div><div class="b2bm-stat-lbl">Services</div></div>
       </div>
 
-      <!-- Tabs -->
       <div class="b2bm-tabs">
-        <button class="b2bm-tab ${tab==='fleet'?'on':''}" onclick="A.setB2BTab('fleet')">Fleet (${assets.length})</button>
+        <button class="b2bm-tab ${tab==='fleet'?'on':''}" onclick="A.setB2BTab('fleet')">Flotte</button>
         <button class="b2bm-tab ${tab==='team'?'on':''}" onclick="A.setB2BTab('team')">Team (${members.length})</button>
         <button class="b2bm-tab ${tab==='orders'?'on':''}" onclick="A.setB2BTab('orders')">Aufträge (${S.bookings.length})</button>
       </div>
 
-      <!-- Tab: Fleet -->
       ${tab==='fleet' ? `
-        ${assets.length===0?`<div style="text-align:center;padding:32px;color:rgba(255,255,255,.3);font-size:.875rem;">Noch keine Geräte. Füge den ersten Ski hinzu.</div>`:''}
-        ${assets.map(a=>{
-          const overall=Math.round(((a.edge_health||100)+(a.base_health||100)+(a.wax_health||100))/3);
-          const color=overall>=70?'#4ade80':overall>=40?'#fbbf24':'#f87171';
-          const activeB=S.bookings.find(b=>b.asset_id===a.id&&!['completed','cancelled'].includes(b.status));
-          const member=members.find(m=>m.id===a.b2b_member_id);
-          return `<div class="b2bm-card">
-            <div style="display:flex;align-items:flex-start;gap:12px;">
-              <div style="font-size:1.3rem;margin-top:2px;">🎿</div>
-              <div style="flex:1;min-width:0;">
-                <div style="font-size:.88rem;font-weight:500;color:#fff;">${esc(a.brand)} ${esc(a.model)}</div>
-                <div style="font-size:.72rem;color:rgba(255,255,255,.35);margin-bottom:6px;">${member?esc(member.name)+' · ':''} ${a.year||''} ${a.length_cm?a.length_cm+'cm':''}</div>
-                <div class="b2bm-health-bar">
-                  <div class="b2bm-health-fill" style="width:${overall}%;background:${color};"></div>
+        <!-- Fleet Mode Toggle -->
+        <div class="fleet-toggle">
+          <button class="fleet-toggle-btn ${fleetMode==='personal'?'on':''}" onclick="A.setFleetMode('personal')">
+            👥 Personal (${personalAssets.length})
+          </button>
+          <button class="fleet-toggle-btn ${fleetMode==='rental'?'on':''}" onclick="A.setFleetMode('rental')">
+            🎿 Leihflotte (${rentalSkis.length})
+          </button>
+        </div>
+
+        ${fleetMode==='personal' ? `
+          ${personalAssets.length===0?`<div style="text-align:center;padding:24px;color:rgba(255,255,255,.25);font-size:.875rem;">Noch keine Personal-Skier.</div>`:''}
+          ${personalAssets.map(a=>{
+            const overall=Math.round(((a.edge_health||100)+(a.base_health||100)+(a.wax_health||100))/3);
+            const color=overall>=70?'#4ade80':overall>=40?'#fbbf24':'#f87171';
+            const activeB=S.bookings.find(b=>b.asset_id===a.id&&!['completed','cancelled'].includes(b.status));
+            const member=members.find(m=>m.id===a.b2b_member_id);
+            return `<div class="b2bm-card">
+              <div style="display:flex;align-items:center;gap:10px;">
+                <div style="font-size:1.2rem;">🎿</div>
+                <div style="flex:1;min-width:0;">
+                  <div style="font-size:.85rem;font-weight:500;color:#fff;">${esc(a.brand)} ${esc(a.model)}</div>
+                  <div style="font-size:.7rem;color:rgba(255,255,255,.3);">${member?esc(member.name)+' · ':''} ${a.year||''}</div>
+                  <div class="b2bm-health-bar"><div class="b2bm-health-fill" style="width:${overall}%;background:${color};"></div></div>
+                </div>
+                <div style="text-align:right;flex-shrink:0;">
+                  ${activeB?`<span class="${badgeClass(activeB.status)}" style="font-size:.62rem;">${slabel(activeB.status)}</span>`:
+                    `<span style="font-size:.75rem;font-weight:600;color:${color};">${overall}%</span>`}
                 </div>
               </div>
-              <div style="text-align:right;flex-shrink:0;">
-                ${activeB?`<span class="${badgeClass(activeB.status)}" style="font-size:.62rem;">${slabel(activeB.status)}</span>`:
-                  `<span style="font-size:.78rem;font-weight:600;color:${color};">${overall}%</span>`}
-              </div>
+            </div>`;
+          }).join('')}
+          <button class="btn" onclick="A.nav('book-1')" style="background:rgba(45,114,200,.15);color:#7eb3f0;border:1px solid rgba(45,114,200,.25);margin-top:8px;font-size:.82rem;">
+            + Personal-Service buchen
+          </button>
+        ` : `
+          <!-- Rental Fleet Quick View -->
+          ${rentalSkis.length===0?`
+            <div style="text-align:center;padding:32px;color:rgba(255,255,255,.25);">
+              <div style="font-size:2rem;margin-bottom:10px;">🎿</div>
+              <div style="font-size:.875rem;margin-bottom:16px;">Noch keine Leihskier. Starte deine Leihflotte.</div>
+              <button onclick="A.go('rental-add')" style="background:var(--blue);color:#fff;border:none;border-radius:var(--rs);padding:10px 20px;font-size:.82rem;cursor:pointer;">Ersten Ski hinzufügen</button>
             </div>
-          </div>`;
-        }).join('')}
-        <button class="btn btn-primary" onclick="A.nav('book-1')" style="margin-top:8px;background:rgba(45,114,200,.3);border:1px solid rgba(45,114,200,.4);">
-          + Sammel-Service buchen
-        </button>
+          ` : `
+            <div class="b2bm-card" style="margin-bottom:8px;">
+              ${rentalSkis.slice(0,5).map(s=>`
+                <div class="rental-ski">
+                  <span class="ski-status-dot ${s.status==='available'?'available':s.status==='in_service'?'in-service':'unavailable'}"></span>
+                  <div class="rental-ski-id" style="font-size:.7rem;min-width:60px;">${esc(s.slopy_id||'?')}</div>
+                  <div style="flex:1;min-width:0;"><div style="font-size:.78rem;color:#fff;">${esc(s.brand)} ${esc(s.model)}</div></div>
+                  <div style="font-size:.68rem;color:rgba(255,255,255,.3);">${s.length_cm?s.length_cm+'cm':''}</div>
+                </div>`).join('')}
+              ${rentalSkis.length>5?`<div style="font-size:.72rem;color:rgba(255,255,255,.25);padding:8px 0 0;text-align:center;">+${rentalSkis.length-5} weitere</div>`:''}
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button onclick="A.go('rental-fleet')" style="flex:1;background:rgba(255,255,255,.05);color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.1);border-radius:var(--rs);padding:9px;font-size:.78rem;cursor:pointer;">Alle anzeigen</button>
+              <button onclick="A.go('rental-book')" style="flex:1;background:rgba(45,114,200,.2);color:#7eb3f0;border:1px solid rgba(45,114,200,.25);border-radius:var(--rs);padding:9px;font-size:.78rem;cursor:pointer;">Service buchen</button>
+            </div>
+          `}
+        `}
       ` : ''}
 
-      <!-- Tab: Team -->
       ${tab==='team' ? `
         <div class="b2bm-card">
           ${members.length===0?`<div style="text-align:center;padding:16px;color:rgba(255,255,255,.3);font-size:.875rem;">Noch keine Mitarbeiter</div>`:''}
@@ -2255,22 +2497,21 @@ function vB2BManager() {
             <div class="b2bm-avatar">${(m.name||'?')[0].toUpperCase()}</div>
             <div style="flex:1;">
               <div style="font-size:.85rem;font-weight:500;color:#fff;">${esc(m.name)}</div>
-              <div style="font-size:.72rem;color:rgba(255,255,255,.35);">${esc(m.department||'')} ${m.email?'· '+esc(m.email):''}</div>
+              <div style="font-size:.72rem;color:rgba(255,255,255,.35);">${esc(m.department||'')}${m.email?' · '+esc(m.email):''}</div>
             </div>
-            <div style="font-size:.7rem;color:rgba(255,255,255,.25);">${assets.filter(a=>a.b2b_member_id===m.id).length} Ski</div>
+            <div style="font-size:.7rem;color:rgba(255,255,255,.25);">${S.assets.filter(a=>a.b2b_member_id===m.id).length} Ski</div>
           </div>`).join('')}
         </div>
-        <button class="btn" onclick="A.go('b2b-add-member')" style="background:rgba(255,255,255,.06);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.1);margin-top:8px;">
+        <button onclick="A.go('b2b-add-member')" style="background:rgba(255,255,255,.05);color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.1);border-radius:var(--rs);padding:10px;font-size:.78rem;cursor:pointer;width:100%;margin-top:8px;">
           + Mitarbeiter hinzufügen
         </button>
       ` : ''}
 
-      <!-- Tab: Orders -->
       ${tab==='orders' ? `
         ${S.bookings.length===0?`<div style="text-align:center;padding:32px;color:rgba(255,255,255,.3);font-size:.875rem;">Noch keine Buchungen</div>`:''}
         ${S.bookings.map(b=>`<div class="b2bm-card">
           <div style="display:flex;align-items:flex-start;justify-content:space-between;">
-            <div style="min-width:0;flex:1;margin-right:10px;">
+            <div style="min-width:0;flex:1;margin-right:8px;">
               <div style="font-size:.85rem;font-weight:500;color:#fff;">${esc(b.assets?.brand||'?')} ${esc(b.assets?.model||'')}</div>
               <div style="font-size:.72rem;color:rgba(255,255,255,.35);">${PKG[b.service_package]?.name} · ${fmtDate(b.created_at)} · ${fmtEur(b.price)}</div>
             </div>
@@ -2280,9 +2521,8 @@ function vB2BManager() {
         </div>`).join('')}
       ` : ''}
 
-      <!-- Revenue summary -->
-      ${S.bookings.length>0?`<div style="margin-top:16px;padding:14px;background:rgba(45,114,200,.06);border:1px solid rgba(45,114,200,.12);border-radius:var(--rs);display:flex;justify-content:space-between;align-items:center;">
-        <div style="font-size:.72rem;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.08em;">Gesamtinvestition</div>
+      ${S.bookings.length>0?`<div style="margin-top:14px;padding:12px 14px;background:rgba(45,114,200,.06);border:1px solid rgba(45,114,200,.1);border-radius:var(--rs);display:flex;justify-content:space-between;align-items:center;">
+        <div style="font-size:.7rem;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.08em;">Gesamtinvestition</div>
         <div style="font-family:'Josefin Sans',sans-serif;font-weight:200;font-size:1.2rem;color:var(--blue);">${fmtEur(revenue)}</div>
       </div>`:''}
 
@@ -2290,6 +2530,9 @@ function vB2BManager() {
   </div>`;
 }
 
+// ════════════════════════════════════════════════════════════
+// B2B MANAGER DASHBOARD
+// ════════════════════════════════════════════════════════════
 // ════════════════════════════════════════════════════════════
 // B2B ADD MEMBER
 // ════════════════════════════════════════════════════════════
@@ -2472,7 +2715,10 @@ function go(view) {
       case 'onboard':         app.innerHTML = vOnboard();        break;
       case 'b2b':             app.innerHTML = vB2B();            break;
       case 'b2b-onboard':     app.innerHTML = vB2BOnboard();     break;
-      case 'b2b-manager':     app.innerHTML = vB2BManager();     break;
+      case 'b2b-manager':     app.innerHTML = vB2BManagerUpdated(); break;
+      case 'rental-fleet':    app.innerHTML = vRentalFleet();    break;
+      case 'rental-add':      app.innerHTML = vRentalAdd();      break;
+      case 'rental-book':     app.innerHTML = vRentalBook();     break;
       case 'b2b-add-member':  app.innerHTML = vB2BAddMember();   break;
       case 'admin-manual':    app.innerHTML = vManualBooking();  break;
       case 'book-asset':      app.innerHTML = vBookAssetV2();    break;
@@ -2705,6 +2951,12 @@ async function loadB2BData() {
     S.bookings = bookings || [];
   }
   await loadAssets();
+  // Load rental skis (those with SKI- prefix)
+  S.rentalSkis = S.assets.filter(a=>a.slopy_id?.startsWith('SKI-')).map(s=>({
+    ...s,
+    status: S.bookings.find(b=>b.asset_id===s.id&&!['completed','cancelled'].includes(b.status))
+      ? 'in_service' : 'available'
+  }));
 }
 
 async function createB2BGroup() {
@@ -3117,6 +3369,114 @@ async function exportPDF() {
   toast('PDF geöffnet — drucken oder als PDF speichern');
 }
 
+
+// ── Fleet Mode ────────────────────────────────────────────
+function setFleetMode(mode) {
+  S.b2bFleetMode = mode;
+  if(mode === 'rental' && S.rentalSkis.length === 0) {
+    loadRentalSkis();
+  }
+  go('b2b-manager');
+}
+
+async function loadRentalSkis() {
+  if(!S.user) return;
+  // Rental skis identified by slopy_id starting with 'SKI-'
+  const { data } = await db.from('assets')
+    .select('*')
+    .eq('user_id', S.user.id)
+    .like('slopy_id', 'SKI-%')
+    .order('slopy_id');
+  S.rentalSkis = (data || []).map(s => ({
+    ...s,
+    status: S.bookings.find(b=>b.asset_id===s.id&&!['completed','cancelled'].includes(b.status))
+      ? 'in_service' : 'available'
+  }));
+}
+
+async function addRentalSki() {
+  const skiId  = document.getElementById('r-id')?.value?.trim();
+  const brand  = document.getElementById('r-brand')?.value?.trim() || S.newAsset.brand;
+  const model  = document.getElementById('r-model')?.value?.trim() || S.newAsset.model;
+  const len    = document.getElementById('r-len')?.value;
+  const year   = document.getElementById('r-year')?.value;
+  const size   = document.getElementById('r-size')?.value;
+
+  if(!brand || !model) { toast('Marke und Modell sind Pflichtfelder'); return; }
+
+  // Check ID uniqueness
+  if(skiId) {
+    const existing = S.rentalSkis.find(s=>s.slopy_id===skiId);
+    if(existing) { toast('Diese Ski-ID existiert bereits'); return; }
+  }
+
+  setL(true);
+  const { data, error } = await db.from('assets').insert({
+    user_id: S.user.id,
+    type: 'ski',
+    brand,
+    model,
+    slopy_id: skiId || null,
+    length_cm: len ? parseInt(len) : null,
+    year: year ? parseInt(year) : null,
+    color: size || null,
+    b2b_group_id: S.b2bGroup?.id || null,
+    edge_health: 100, base_health: 100, wax_health: 100
+  }).select().single();
+  setL(false);
+
+  if(error) { toast('Fehler: '+error.message); return; }
+  S.rentalSkis.push({ ...data, status:'available' });
+  S.assets.push(data);
+  toast('Ski ' + (skiId||'') + ' zur Flotte hinzugefügt');
+  go('rental-fleet');
+}
+
+function toggleRentalSki(id) {
+  if(!S.selectedRentalSkis) S.selectedRentalSkis = [];
+  const idx = S.selectedRentalSkis.indexOf(id);
+  if(idx >= 0) S.selectedRentalSkis.splice(idx, 1);
+  else S.selectedRentalSkis.push(id);
+  go('rental-book');
+}
+
+async function bookRentalService() {
+  const selected = S.selectedRentalSkis || [];
+  if(selected.length === 0) { toast('Bitte Skier auswählen'); return; }
+  const pkg = PKG[S.draft.pkg];
+  if(!pkg) return;
+  setL(true);
+  const est = new Date(); est.setDate(est.getDate()+pkg.days+1);
+
+  // Create one booking per ski
+  const promises = selected.map(assetId =>
+    db.from('bookings').insert({
+      user_id: S.user.id,
+      asset_id: assetId,
+      service_package: S.draft.pkg,
+      logistics_type: 'corporate',
+      price: pkg.price,
+      status: 'booked',
+      b2b_group_id: S.b2bGroup?.id || null,
+      estimated_completion: est.toISOString().split('T')[0],
+      logistics_notes: 'B2B Leihflotten-Service'
+    })
+  );
+  await Promise.all(promises);
+  setL(false);
+
+  S.selectedRentalSkis = [];
+  toast(`${selected.length} Buchungen angelegt`);
+  await loadB2BData();
+  go('b2b-manager');
+}
+
+// ── Onboarding Reset (Demo) ───────────────────────────────
+function resetOnboarding() {
+  try { localStorage.removeItem('slopy_onboard_' + S.user?.id); } catch(e){}
+  toast('Onboarding zurückgesetzt — beim nächsten Login aktiv');
+}
+
 // ── Global API ────────────────────────────────────────────
 window.A = {
   go, login, register, logout, addAsset, createBooking, updateStatus, saveProfile,
@@ -3124,6 +3484,7 @@ window.A = {
   nextOnboard, skipOnboard, saveAsset, deleteAsset, toggleAsset, processPayment, setStar, submitRating, saveAdminNote,
   onBrandInput, onModelInput, selectBrand, selectModel, hideAutocomplete,
   createB2BGroup, addB2BMember, setB2BTab, cancelBooking, createManualBooking, setMB,
+  setFleetMode, addRentalSki, toggleRentalSki, bookRentalService, resetOnboarding,
   selectAsset(id) { S.draft.asset_id=id; S.draft.asset=S.assets.find(a=>a.id===id); go('book-1'); },
   selectPkg(id)   { S.draft.pkg=id; go('book-2'); },
   selectLog(id)   { S.draft.log=id; go('book-3'); },
@@ -3141,6 +3502,9 @@ window.A = {
     else if(view==='notifications')   { go('notifications'); }
     else if(view==='pass')            { await loadMyBookings(); go('pass-'); }
     else if(view==='b2b-manager')     { await loadB2BData(); go('b2b-manager'); }
+    else if(view==='rental-fleet')    { await loadRentalSkis(); go('rental-fleet'); }
+    else if(view==='rental-add')      { await loadSkiCatalog(); go('rental-add'); }
+    else if(view==='rental-book')     { await loadRentalSkis(); S.selectedRentalSkis=[]; go('rental-book'); }
     else if(view==='book-asset')      { await loadSkiCatalog(); go('book-asset'); }
     else go(view);
   }
